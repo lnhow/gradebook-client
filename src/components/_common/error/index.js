@@ -20,7 +20,7 @@ function ErrorPage({ code, title, details, message = null, children = null, back
         direction='column'
         alignItems='center'
         justifyContent='center'
-        style={{ minHeight: '100vh' }}
+        style={{ minHeight: '90vh' /* Layout height */}}
       >
         <Grid item xs={3}>
           <Box>

@@ -11,7 +11,7 @@ export const apiURL = baseURL + `/${version}`;
 
 const api = axios.create({
   baseURL: apiURL,
-  withCredentials: true,
+  // withCredentials: true, // Required for http-only cookie
 });
 
 export default api;

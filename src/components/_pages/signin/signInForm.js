@@ -46,15 +46,16 @@ export default function SignInForm() {
 
   const onSignInSuccess = (res) => {
     const resData = formatSignInResponse(res);
+    setFormStates({...formStates, isSubmitting: false});
+    
     dispatch(signIn(resData));
-    setFormStates({...formStates, isSubmitting: true});
     handleSignInSuccess();
     history.push('/');
   }
 
   const onSignInFailure = (err) => {
+    setFormStates({...formStates, isSubmitting: false});
     handleSignInFailure(err);
-    setFormStates({...formStates, isSubmitting: true});
   }
 
   const handleSubmit = async (values) => {

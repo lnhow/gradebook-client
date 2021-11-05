@@ -19,6 +19,7 @@ function DefaultLayout() {
         autoClose={3000}
         pauseOnHover={false}
         closeOnClick
+        pauseOnFocusLoss={false}
       />
       <Footer />
     </BrowserRouter>

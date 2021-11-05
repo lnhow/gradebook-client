@@ -13,8 +13,6 @@ export default function AuthorizationRoute({
   const user = useSelector(selectUser);
   let goToPath = path;
   let goToPathExact = exact;
-  console.log(user.isLogin)
-  console.log(authRequired)
 
   return (
     <Route

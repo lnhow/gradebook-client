@@ -6,14 +6,17 @@ import { useState } from 'react';
 import ClassroomAPI from "../../../../../helpers/api/classrooms";
 
 const validationSchema = yup.object({
-  className: yup
-    .string('Enter classrooom name')
-    .min(6, 'Classroom name must be of minimum 6 characters')
-    .required('Classroom name is required'),
+  class_name: yup
+    .string('Nhập tên lớp')
+    .min(6, 'Tối thiểu 6 ký tự')
+    .max(30, 'Tối đa 30 ký tự')
+    .required('Bắt buộc'),
   subject: yup
-    .string('Enter subject')
-    .min(6, 'Subject must be of minimum 6 characters')
-    .required('Subject is required')
+    .string('Nhập môn học')
+    .max(30, 'Tối đa 30 ký tự')
+    .required('Bắt buộc'),
+  description: yup
+    .string('Nhập mô tả')
 });
 
 function NewClassroomDialog({open, onClose, onSuccess, onFailed}) {
@@ -36,8 +39,9 @@ function NewClassroomDialog({open, onClose, onSuccess, onFailed}) {
 
   const formik = useFormik({
     initialValues: {
-      className: '',
-      subject: ''
+      class_name: '',
+      subject: '',
+      description: ''
     },
     validationSchema: validationSchema,
     onSubmit: handleSubmit
@@ -50,33 +54,45 @@ function NewClassroomDialog({open, onClose, onSuccess, onFailed}) {
 
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Add new classroom</DialogTitle>
+      <DialogTitle>Tạo lớp mới</DialogTitle>
       <DialogContent>
         <form onSubmit={formik.handleSubmit}>
           <TextField
             fullWidth
             autoFocus
             margin='normal'
-            id='className'
-            name='className'
-            label='Classroom Name'
+            id='class_name'
+            name='class_name'
+            label='Tên lớp'
             variant='outlined'
-            value={formik.values.className}
+            value={formik.values.class_name}
             onChange={formik.handleChange}
-            error={formik.touched.className && Boolean(formik.errors.className)}
-            helperText={formik.touched.className && formik.errors.className}
+            error={Boolean(formik.errors.class_name)}
+            helperText={formik.errors.class_name || ' '}
           />
           <TextField
             fullWidth
             margin='normal'
             id='subject'
             name='subject'
-            label='Subject'
+            label='Môn học'
             variant='outlined'
             value={formik.values.subject}
             onChange={formik.handleChange}
-            error={formik.touched.subject && Boolean(formik.errors.subject)}
-            helperText={formik.touched.subject && formik.errors.subject}
+            error={Boolean(formik.errors.subject)}
+            helperText={formik.errors.subject || ' '}
+          />
+          <TextField
+            fullWidth
+            margin='normal'
+            id='description'
+            name='description'
+            label='Mô tả'
+            variant='outlined'
+            value={formik.values.description}
+            onChange={formik.handleChange}
+            error={Boolean(formik.errors.description)}
+            helperText={formik.errors.description || ' '}
           />
           <Button 
             disabled={isSubmitting}

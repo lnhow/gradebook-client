@@ -1,13 +1,14 @@
-import api from "..";
+import api, { getAuthConfig } from "..";
 
 const baseURL = '/auth';
 
-export const signIn = async () => {
-
+export const selfMakeSignIn = async (userInfo) => {
+  return api.post(`${baseURL}/sign-in`, userInfo);
 }
 
 export const signOut = async () => {
-  return api.post(`${baseURL}/sign-out`);
+  const config = getAuthConfig();
+  return api.post(`${baseURL}/sign-out`, {}, config);
 }
 
 export const googleSignIn = (googleData) => {
@@ -16,3 +17,11 @@ export const googleSignIn = (googleData) => {
   //   token: googleData.token,
   // });
 }
+
+const AuthAPI = {
+  selfMakeSignIn,
+  googleSignIn,
+  signOut
+}
+
+export default AuthAPI;

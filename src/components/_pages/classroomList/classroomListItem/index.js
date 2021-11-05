@@ -30,7 +30,7 @@ export default function ClassroomListItem({classroom}) {
       <CardActionArea sx={{flexGrow: 1}}>
         <CardContent>
           <Typography gutterBottom variant="h6" component="div" sx={{wordWrap: 'break-word'}}>
-            {classroom.className}
+            <b>{classroom.class_name}</b>
           </Typography>
           <Typography variant="subtitle2" color="text.secondary" sx={{wordWrap: 'break-word'}}>
             <b>{classroom.subject}</b>

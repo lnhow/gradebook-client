@@ -32,7 +32,7 @@ function ClassroomListToolbar({
               startIcon={<AddIcon/>}
               onClick={handleOpenNewDialog}
             >
-              New
+              Tạo
             </Button>
           </Stack>
         </Toolbar>

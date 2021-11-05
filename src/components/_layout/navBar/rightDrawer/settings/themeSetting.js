@@ -21,7 +21,7 @@ export default function ThemeSetting() {
       <ListItemIcon>
         <DarkModeIcon />
       </ListItemIcon>
-      <ListItemText>Dark mode</ListItemText>
+      <ListItemText>Chủ đề tối</ListItemText>
       <Switch
         edge='end'
         checked={isDarkmode}

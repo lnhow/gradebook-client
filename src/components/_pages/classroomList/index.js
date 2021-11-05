@@ -26,7 +26,7 @@ function ClassroomListPage() {
     .then(
       (result) => {
         setIsLoaded(true);
-        setClassrooms(result.data);
+        setClassrooms(result.data.data);
       },
     )
     .catch(

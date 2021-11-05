@@ -1,13 +1,16 @@
 import api from "..";
+import { getAuthConfig } from "..";
 
 const baseURL = '/classrooms';
 
 export const fetchAll = () => {
-  return api.get(baseURL);
+  const config = getAuthConfig();
+  return api.get(baseURL, config);
 }
 
 export const addNewClassroom = (newClassroom) => {
-  return api.post(baseURL, {...newClassroom});
+  const config = getAuthConfig();
+  return api.post(baseURL, {...newClassroom}, config);
 }
 
 const ClassroomAPI = {

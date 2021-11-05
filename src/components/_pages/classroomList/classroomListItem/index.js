@@ -19,7 +19,6 @@ export default function ClassroomListItem({classroom}) {
   const toggleRaised = (raised) => () => {
     setIsRaised(raised);
   }
-  console.log(classroom)
 
   return (
     <Card

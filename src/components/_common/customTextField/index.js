@@ -2,7 +2,7 @@ import { FormControl, InputLabel, OutlinedInput, FormHelperText } from "@mui/mat
 
 export default function CustomTextField({
   id, label, autoFocus, disabled,
-  fullWidth, margin='normal', error=false, 
+  fullWidth, margin='dense', error=false, 
   type, value, onChange,
   endAdornment,
   helperText

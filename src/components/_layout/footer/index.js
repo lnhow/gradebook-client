@@ -10,7 +10,10 @@ export default function Footer() {
       <Divider />
       <Container maxWidth='xl' sx={{marginY: 4}}>
         <Typography variant='subtitle1'>
-          [[CQ]PTUDWNC - 18_3] 18120355 - Lê Nguyên Hào
+          <b>Gradebook project</b>
+        </Typography>
+        <Typography variant='subtitle1'>
+          [[CQ]PTUDWNC - 18_3] 18120335 - 18120355 - 18120452
         </Typography>
       </Container>
     </Container>

@@ -24,7 +24,7 @@ export default function SignOutButton({onAfterClicked = () => {}}) {
       variant='outlined' 
       startIcon={<LogoutIcon/>}
     >
-      Sign out
+      Đăng xuất
     </Button>
   )
 }

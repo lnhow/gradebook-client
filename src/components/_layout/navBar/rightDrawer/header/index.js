@@ -72,7 +72,7 @@ export default function Header({
             component={Link} to='/signin'
             variant='outlined'
             startIcon={<LoginIcon/>}
-          >Sign in</Button>
+          >Đăng nhập</Button>
         }
       </AlignEnd>
     </>

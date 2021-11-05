@@ -10,20 +10,29 @@ import {
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Visibility from '@mui/icons-material/Visibility';
 
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router';
+import { selfMakeSignIn } from '../../../helpers/api/auth';
+import { signIn } from '../../../redux/slices/user';
+
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { useState } from 'react';
 import CustomTextField from '../../_common/customTextField';
+import { formatSignInResponse, handleSignInFailure, handleSignInSuccess } from '../../../helpers/auth/selfmake';
 
 const validationSchema = yup.object({
   username: yup
-    .string('Enter username')
-    .min(6, 'Username must be of minimum 6 characters')
-    .required('Username is required'),
+    .string('Nhập username')
+    .required('Bắt buộc'),
   password: yup
-    .string('Enter password')
-    .min(6, 'Password must be of minimum 6 characters')
-    .required('Password is required')
+    .string('Nhập mật khẩu')
+    .min(8, 'Tối thiểu 8 ký tự')
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/,
+      "Ít nhất một ký tự viết hoa, một ký tự viết thường, một chữ số và một ký tự đặc biệt(@#$%^&*)"
+    )
+    .required('Bắt buộc')
 });
 
 export default function SignInForm() {
@@ -32,10 +41,28 @@ export default function SignInForm() {
     showPassword: false
   });
 
-  const handleSubmit = async (values) => {
-    //const submitData = values;
-    setFormStates({...formStates, isSubmitting: true});
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const onSignInSuccess = (res) => {
+    const resData = formatSignInResponse(res);
     setFormStates({...formStates, isSubmitting: false});
+    
+    dispatch(signIn(resData));
+    handleSignInSuccess();
+    history.push('/');
+  }
+
+  const onSignInFailure = (err) => {
+    setFormStates({...formStates, isSubmitting: false});
+    handleSignInFailure(err);
+  }
+
+  const handleSubmit = async (values) => {
+    setFormStates({...formStates, isSubmitting: true});
+    selfMakeSignIn(values)
+    .then(onSignInSuccess)
+    .catch(onSignInFailure)
   }
   const handleToggleShowPassword = () => {
     setFormStates({...formStates, showPassword: !formStates.showPassword})
@@ -43,8 +70,8 @@ export default function SignInForm() {
   
   const formik = useFormik({
     initialValues: {
-      className: '',
-      subject: ''
+      username: '',
+      password: ''
     },
     validationSchema: validationSchema,
     onSubmit: handleSubmit
@@ -55,7 +82,6 @@ export default function SignInForm() {
       <CustomTextField
         fullWidth
         autoFocus
-        margin='normal'
         id='username'
         name='username'
         label='Username'
@@ -66,11 +92,10 @@ export default function SignInForm() {
       />
       <CustomTextField
         fullWidth
-        margin='normal'
         type={formStates.showPassword ? 'text' : 'password'}
         id='password'
         name='password'
-        label='Password'
+        label='Mật khẩu'
         endAdornment={
           <InputAdornment position='end'>
             <IconButton
@@ -92,7 +117,7 @@ export default function SignInForm() {
         fullWidth 
         type='submit'
       >
-        {formStates.isSubmitting ? <CircularProgress color='inherit'/>:'Sign In' }
+        {formStates.isSubmitting ? <CircularProgress color='inherit'/>:'Đăng nhập' }
       </Button>
     </form>
   );

@@ -19,6 +19,7 @@ export default function ClassroomListItem({classroom}) {
   const toggleRaised = (raised) => () => {
     setIsRaised(raised);
   }
+  console.log(classroom)
 
   return (
     <Card
@@ -30,7 +31,7 @@ export default function ClassroomListItem({classroom}) {
       <CardActionArea sx={{flexGrow: 1}}>
         <CardContent>
           <Typography gutterBottom variant="h6" component="div" sx={{wordWrap: 'break-word'}}>
-            {classroom.className}
+            {classroom.class_name}
           </Typography>
           <Typography variant="subtitle2" color="text.secondary" sx={{wordWrap: 'break-word'}}>
             <b>{classroom.subject}</b>

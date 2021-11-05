@@ -33,6 +33,7 @@ export const UserSlice = createSlice({
       ) {
         state.isLogin = true;
         state.id = id;
+        state.username = username;
         state.full_name = full_name;
         state.avatar = avatar;
         // To help to persist logged in user

@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 
 import { GoogleLogin } from 'react-google-login';
@@ -36,7 +36,11 @@ export default function GoogleSignInButton() {
           fullWidth
           startIcon={<GoogleIcon/>}
         >
-          Đăng nhập bằng Google
+          {
+            isLoading ? 
+            <CircularProgress color='inherit'/>
+            :'Đăng nhập bằng Google' 
+          }
         </Button>
       )}
       onSuccess={handleSigninGoogleAuth}

@@ -3,10 +3,9 @@ import {
   , Box, Button
 } from '@mui/material';
 import { Link } from 'react-router-dom';
-// import GoogleSignInButton from './googleSignInButton'; Disable for now
-import SignInForm from './signInForm';
+import SignUpForm from './signUpForm';
 
-export default function SignInPage() {
+export default function SignUpPage() {
   return (
     <Grid
       container
@@ -20,16 +19,13 @@ export default function SignInPage() {
 
       <Grid item xs={3}>
       <Paper sx={{ width: 360, padding: 2 }}>
-        <Typography variant='h4' align='center'>Đăng nhập</Typography>
-        <SignInForm/>
+        <Typography variant='h4' align='center'>Đăng ký</Typography>
+        <SignUpForm/>
         <Box mt={2}>
-          <Button fullWidth size='small' component={Link} to='/signup'>
-            Chưa có tài khoản? Đăng ký
+          <Button fullWidth size='small' component={Link} to='/signin'>
+            Đã có tài khoản? Đăng nhập
           </Button>
         </Box>
-        {/* <Box mt={2}>  Disable for now
-          <GoogleSignInButton />
-        </Box> */}
       </Paper>
       </Grid>   
       

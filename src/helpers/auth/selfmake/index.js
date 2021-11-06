@@ -12,7 +12,11 @@ export const handleSignInSuccess = () => {
   toast.success('Đăng nhập thành công');
 }
 
-export const handleSignInFailure = (err) => {
-  const message = err.response.data.message || err;
+export const handleSignUpSuccess = () => {
+  toast.success('Tạo tài khoản thành công');
+}
+
+export const handleFailure = (err) => {
+  const message = err.response.data.message || err.message;
   toast.error(message);
 }

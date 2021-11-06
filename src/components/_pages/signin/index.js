@@ -3,7 +3,7 @@ import {
   , Box, Button
 } from '@mui/material';
 import { Link } from 'react-router-dom';
-// import GoogleSignInButton from './googleSignInButton'; Disable for now
+import GoogleSignInButton from './googleSignInButton'; 
 import SignInForm from './signInForm';
 
 export default function SignInPage() {
@@ -27,9 +27,10 @@ export default function SignInPage() {
             Chưa có tài khoản? Đăng ký
           </Button>
         </Box>
-        {/* <Box mt={2}>  Disable for now
-          <GoogleSignInButton />
-        </Box> */}
+        <Box my={1}>
+          <Typography align='center'>Hoặc</Typography>
+        </Box>
+        <GoogleSignInButton />
       </Paper>
       </Grid>   
       

@@ -11,16 +11,15 @@ export const signOut = async () => {
   return api.post(`${baseURL}/sign-out`, {}, config);
 }
 
-export const googleSignIn = (googleData) => {
-  // API do not support yet
-  // return api.post('/auth/google', {
-  //   token: googleData.token,
-  // });
+export const handleGoogleSignIn = (googleData) => {
+  return api.post('/auth/google', {
+    token: googleData.token,
+  });
 }
 
 const AuthAPI = {
   selfMakeSignIn,
-  googleSignIn,
+  handleGoogleSignIn,
   signOut
 }
 

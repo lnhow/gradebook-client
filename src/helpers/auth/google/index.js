@@ -1,22 +1,22 @@
 import { toast } from 'react-toastify';
-import { googleSignIn } from '../../api/auth';
-import SubmitMessage from '../../../components/_common/submitMessage';
+import { handleGoogleSignIn } from '../../api/auth';
 
 export const handleGoogleAuthSuccess = (res, callback) => {
   const token = res?.tokenId; // Exist else undefined
 
-  googleSignIn({token})
+  handleGoogleSignIn({token})
   .then((res) => {
-    toast.success('Sign in successfully');
+    toast.success('Đăng nhập thành công');
     callback(res.data.user);
   })
   .catch((err) => {
-    toast.error(<SubmitMessage {...err}/>);
+    const message = err.response.data.message || err.message;
+    toast.error(message);
   });
 }
 
 export const handleGoogleAuthFailure = (err) => {
   if (err.error !== null && err.error !== 'popup_closed_by_user') {
-    toast.error('Google sign in failed. Please try again');
+    toast.error('Đăng nhập không thành công. Vui lòng thử lại');
   }
 }

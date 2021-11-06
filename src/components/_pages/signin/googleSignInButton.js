@@ -30,7 +30,7 @@ export default function GoogleSignInButton() {
           fullWidth
           startIcon={<GoogleIcon/>}
         >
-          Sign in with Google
+          Đăng nhập bằng Google
         </Button>
       )}
       onSuccess={handleSigninGoogleAuth}

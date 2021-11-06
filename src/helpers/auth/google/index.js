@@ -19,7 +19,6 @@ export const handleGoogleAuthSuccess = (res, callback, failureCallback) => {
     callback(data);
   })
   .catch((err) => {
-    console.log(err.response?.data);
     const message = err.response?.data?.message || err.message;
     toast.error(message);
     failureCallback();

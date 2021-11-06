@@ -1,17 +1,28 @@
 import { toast } from 'react-toastify';
 import { handleGoogleSignIn } from '../../api/auth';
 
-export const handleGoogleAuthSuccess = (res, callback) => {
+const formatSignInResponse = (res) => {
+  const data = res.data.data;
+  return {
+    ...data.user_info,
+    token: data.token,
+  }
+}
+
+export const handleGoogleAuthSuccess = (res, callback, failureCallback) => {
   const token = res?.tokenId; // Exist else undefined
 
   handleGoogleSignIn({token})
-  .then((res) => {
+  .then(formatSignInResponse)
+  .then((data) => {
     toast.success('Đăng nhập thành công');
-    callback(res.data.user);
+    callback(data);
   })
   .catch((err) => {
-    const message = err.response.data.message || err.message;
+    console.log(err.response?.data);
+    const message = err.response?.data?.message || err.message;
     toast.error(message);
+    failureCallback();
   });
 }
 

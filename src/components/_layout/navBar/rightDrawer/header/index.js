@@ -33,10 +33,10 @@ export default function Header({
 }) {
   const user = useSelector(selectUser);
   let avatar = null;
-  let username = null;
+  let fullname = null;
 
   if (user.isLogin) {
-    username = user.username;
+    fullname = user.full_name;
     avatar = user.avatar
   }
 
@@ -53,14 +53,14 @@ export default function Header({
             maxWidth: '120px',
             textAlign: 'right'
           }}>
-            {username}
+            {fullname}
           </Box>
           <Avatar
-              alt={username}
+              alt={fullname}
               src={avatar}
           >
             {/* Fallback to first letter of user's username */}
-            {username ? username.charAt(0) : null}
+            {fullname ? fullname.charAt(0) : null}
           </Avatar>
         </AlignCenter>
       </SpaceBetween>

@@ -7,16 +7,17 @@ export default function OpenDrawerButton({onClick}) {
   const user = useSelector(selectUser);
   
   if (user.isLogin) {
+    const fullname = user.full_name;
     return (
       <Button 
         color='defaultColor'
         endIcon={
           <Avatar
-            alt={user.username}
+            alt={fullname}
             src={user.avatar}
           >
-            {/* Fallback to first letter of user's username */}
-            {user.username ? user.username.charAt(0) : null}
+            {/* Fallback to first letter of user's fullname */}
+            {fullname ? fullname.charAt(0) : null}
           </Avatar>
         }
         onClick={onClick}
@@ -29,7 +30,7 @@ export default function OpenDrawerButton({onClick}) {
           maxWidth: '100px',
           textAlign: 'right'
         }}>
-          {user.username}
+          {fullname}
         </Box>
       </Button>
     )

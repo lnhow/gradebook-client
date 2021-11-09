@@ -30,6 +30,10 @@ export const handleGoogleAuthSuccess = (res, callback, failureCallback) => {
 
 export const handleGoogleAuthFailure = (err) => {
   if (err.error !== null && err.error !== 'popup_closed_by_user') {
-    toast.error('Đăng nhập không thành công. Vui lòng thử lại');
+    if (err.error === 'idpiframe_initialization_failed') {
+      toast.error('Khởi tạo đăng nhập Google không thành công');
+    } else {
+      toast.error('Đăng nhập không thành công. Vui lòng thử lại');
+    }
   }
 }

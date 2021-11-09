@@ -46,7 +46,7 @@ const validationSchema = yup.object({
     .oneOf([yup.ref('password')], 'Không khớp với mật khẩu'),
 });
 
-export default function SignUpForm() {
+export default function SignUpForm({redirect = '/'}) {
   const [formStates, setFormStates] = useState({
     isSubmitting: false,
     showPassword: false,
@@ -67,7 +67,7 @@ export default function SignUpForm() {
       
       dispatch(signIn(resData));
       handleSignInSuccess();
-      history.push('/');
+      history.push(redirect);
     })
     .catch((err) => {
       setFormStates({...formStates, isSubmitting: false});

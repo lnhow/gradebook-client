@@ -9,6 +9,7 @@ export default function AuthorizationRoute({
   authRequired = true,  // If false: only non-signed in users can go to, else go to alternative
                         // If true: only signed in users can go to, else go to alternative
   alternativePath = '/',
+  location,
 }) {
   const user = useSelector(selectUser);
   let goToPath = path;
@@ -19,7 +20,15 @@ export default function AuthorizationRoute({
       path={goToPath}
       exact={goToPathExact}
     >
-      {(user.isLogin === authRequired) ? children : <Redirect to={alternativePath}/>}
+      {(user.isLogin === authRequired) 
+      ? children 
+      : <Redirect to={{ 
+        pathname: alternativePath, 
+        state: {
+          from: location.pathname
+        } 
+       }}
+      />}
     </Route>
   )
 }

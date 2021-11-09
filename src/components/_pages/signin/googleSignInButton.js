@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import { signIn } from '../../../redux/slices/user';
 
-export default function GoogleSignInButton() {
+export default function GoogleSignInButton({redirect = '/'}) {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -19,7 +19,7 @@ export default function GoogleSignInButton() {
     handleGoogleAuthSuccess(res, (userData) => {
       setIsLoading(false);
       dispatch(signIn(userData));
-      history.push('/');
+      history.push(redirect);
     }, () => {
       setIsLoading(false);
     });

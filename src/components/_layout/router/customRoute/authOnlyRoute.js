@@ -8,6 +8,7 @@ export default function AuthOnlyRoute({
   exact = false,
   children,
   alternativePath = '/signin',
+  location
 }) {
 
   return (
@@ -15,6 +16,7 @@ export default function AuthOnlyRoute({
       path={path}
       exact={exact}
       alternativePath={alternativePath}
+      location={location}
     >
       {children}
     </AuthorizationRoute>

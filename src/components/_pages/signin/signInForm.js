@@ -35,7 +35,7 @@ const validationSchema = yup.object({
     .required('Bắt buộc')
 });
 
-export default function SignInForm() {
+export default function SignInForm({redirect = '/'}) {
   const [formStates, setFormStates] = useState({
     isSubmitting: false,
     showPassword: false
@@ -50,7 +50,7 @@ export default function SignInForm() {
     
     dispatch(signIn(resData));
     handleSignInSuccess();
-    history.push('/');
+    history.push(redirect);
   }
 
   const onSignInFailure = (err) => {

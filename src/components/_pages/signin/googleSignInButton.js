@@ -25,6 +25,8 @@ export default function GoogleSignInButton({redirect = '/'}) {
     });
   }
 
+  console.log(process.env.REACT_APP_GOOGLE_CLIENT_ID)
+
   return (
     <GoogleLogin
       clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}

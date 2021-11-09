@@ -6,7 +6,6 @@ import ClassroomAPI from '../../../helpers/api/classrooms';
 import ClassroomList from './classroomList';
 import ClassroomListToolbar from './classroomListToolbar';
 import NewClassroomDialog from './dialogs/addNew';
-import SubmitMessage from '../../_common/submitMessage';
 
 function ClassroomListPage() {
   const [classrooms, setClassrooms] = useState([]);
@@ -45,26 +44,17 @@ function ClassroomListPage() {
     )
   }
 
-  const onAddNewClassroomSuccess = (res) => {
-    toast.success(<SubmitMessage title={res.title}/>)
+  const onAddNewClassroomSuccess = (data) => {
+    toast.success(data.message);
     loadClassrooms();
   }
 
   const onAddNewClassroomFailed = (err) => {
-    let res = {};
-    res = [...err.response.data];
-    //Incase cannot request to server
-    res.data = err.response.data;
-    res.status = err.response.status;
-    res.message = err.message;
-    toast.error(
-      <SubmitMessage 
-        code={res.status}
-        title={res.title}
-        details={res.details}
-        message={res.message}
-      />
-    );
+    let message = err.message; //Incase cannot request to server
+    if (err.response && err.response.data) {
+      message = err.response.data.message;
+    }
+    toast.error(message);
   }
 
   return (

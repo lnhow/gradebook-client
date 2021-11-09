@@ -17,6 +17,9 @@ export const handleSignUpSuccess = () => {
 }
 
 export const handleFailure = (err) => {
-  const message = err.response.data.message || err.message;
+  let message = err.message; //Incase cannot request to server
+  if (err.response && err.response.data) {
+    message = err.response.data.message;
+  }
   toast.error(message);
 }

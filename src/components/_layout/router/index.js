@@ -1,9 +1,10 @@
-import ClassroomList from "../../_pages/classroomList";
+import ClassroomList from '../../_pages/classroomList';
 import { Route, Switch } from 'react-router-dom';
-import NotFoundPage from "../../_pages/notfound";
-import SignInPage from "../../_pages/signin";
-import AuthOnlyRoute from "./customRoute/authOnlyRoute";
-import NonAuthOnlyRoute from "./customRoute/nonAuthOnlyRoute";
+import NotFoundPage from '../../_pages/notfound';
+import SignInPage from '../../_pages/signin';
+import SignUpPage from '../../_pages/signup';
+import AuthOnlyRoute from './customRoute/authOnlyRoute';
+import NonAuthOnlyRoute from './customRoute/nonAuthOnlyRoute';
 
 function Router() {
   return (
@@ -13,6 +14,9 @@ function Router() {
       </AuthOnlyRoute>
       <NonAuthOnlyRoute exact path='/signin'>
         <SignInPage/>
+      </NonAuthOnlyRoute>
+      <NonAuthOnlyRoute exact path='/signup'>
+        <SignUpPage/>
       </NonAuthOnlyRoute>
       <Route>
         <NotFoundPage/>

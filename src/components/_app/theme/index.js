@@ -1,7 +1,10 @@
 // References: https://www.58bits.com/blog/2020/05/27/material-ui-theme-switcher-react
 import { useState, createContext } from "react";
 import { ThemeProvider } from '@mui/material/styles';
-import { getTheme } from "./themes";
+import { getTheme } from './themes';
+import { ToastContainer } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 const DEFAULT_THEME = 'default';
 
@@ -31,6 +34,14 @@ export default function CustomThemeProvider({children}) {
     <ThemeContext.Provider value={contextValue}>
       <ThemeProvider theme={theme}>
         {children}
+        <ToastContainer
+          theme={currentTheme !== DEFAULT_THEME ? 'dark' : 'light'}
+          position='top-center'
+          autoClose={3000}
+          pauseOnHover={false}
+          closeOnClick
+          pauseOnFocusLoss={false}
+        />
       </ThemeProvider>
     </ThemeContext.Provider>
   );

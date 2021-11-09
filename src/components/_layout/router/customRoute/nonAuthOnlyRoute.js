@@ -7,7 +7,8 @@ export default function NonAuthOnlyRoute({
   path,
   exact = false,
   children,
-  alternativePath = '/'
+  alternativePath = '/',
+  location
 }) {
 
   return (
@@ -16,6 +17,7 @@ export default function NonAuthOnlyRoute({
       exact={exact}
       authRequired={false}
       alternativePath={alternativePath}
+      location={location}
     >
       {children}
     </AuthorizationRoute>

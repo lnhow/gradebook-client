@@ -1,22 +1,35 @@
 import { toast } from 'react-toastify';
-import { googleSignIn } from '../../api/auth';
-import SubmitMessage from '../../../components/_common/submitMessage';
+import { handleGoogleSignIn } from '../../api/auth';
 
-export const handleGoogleAuthSuccess = (res, callback) => {
+const formatSignInResponse = (res) => {
+  const data = res.data.data;
+  return {
+    ...data.user_info,
+    token: data.token,
+  }
+}
+
+export const handleGoogleAuthSuccess = (res, callback, failureCallback) => {
   const token = res?.tokenId; // Exist else undefined
 
-  googleSignIn({token})
-  .then((res) => {
-    toast.success('Sign in successfully');
-    callback(res.data.user);
+  handleGoogleSignIn({token})
+  .then(formatSignInResponse)
+  .then((data) => {
+    toast.success('Đăng nhập thành công');
+    callback(data);
   })
   .catch((err) => {
-    toast.error(<SubmitMessage {...err}/>);
+    let message = err.message; //Incase cannot request to server
+    if (err.response && err.response.data) {
+      message = err.response.data.message;
+    }
+    toast.error(message);
+    failureCallback();
   });
 }
 
 export const handleGoogleAuthFailure = (err) => {
   if (err.error !== null && err.error !== 'popup_closed_by_user') {
-    toast.error('Google sign in failed. Please try again');
+    toast.error('Đăng nhập không thành công. Vui lòng thử lại');
   }
 }

@@ -1,7 +1,4 @@
-import { ToastContainer } from 'react-toastify';
 import { BrowserRouter } from 'react-router-dom';
-
-import 'react-toastify/dist/ReactToastify.css';
 
 import NavBar from './navBar';
 import Router from './router';
@@ -14,13 +11,6 @@ function DefaultLayout() {
       <div style={{minHeight: '80vh'}}>
         <Router/>
       </div>
-      <ToastContainer
-        position='top-center'
-        autoClose={3000}
-        pauseOnHover={false}
-        closeOnClick
-        pauseOnFocusLoss={false}
-      />
       <Footer />
     </BrowserRouter>
   );

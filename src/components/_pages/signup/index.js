@@ -3,10 +3,9 @@ import {
   , Box, Button
 } from '@mui/material';
 import { Link, withRouter } from 'react-router-dom';
-import GoogleSignInButton from './googleSignInButton'; 
-import SignInForm from './signInForm';
+import SignUpForm from './signUpForm';
 
-function SignInPage({ location }) {
+function SignUpPage({ location }) {
   const locationState = location?.state;
   const redirect = locationState ? locationState.from : '/';
   
@@ -23,21 +22,17 @@ function SignInPage({ location }) {
 
       <Grid item xs={3}>
       <Paper sx={{ width: 360, padding: 2 }}>
-        <Typography variant='h4' align='center'>Đăng nhập</Typography>
-        <SignInForm redirect={redirect}/>
+        <Typography variant='h4' align='center'>Đăng ký</Typography>
+        <SignUpForm redirect={redirect}/>
         <Box mt={2}>
           <Button 
             fullWidth size='small' 
             component={Link} 
-            to={{ pathname: '/signup', state: { from: redirect }}}
+            to={{ pathname: '/signin', state: { from: redirect }}}
           >
-            Chưa có tài khoản? Đăng ký
+            Đã có tài khoản? Đăng nhập
           </Button>
         </Box>
-        <Box my={1}>
-          <Typography align='center'>Hoặc</Typography>
-        </Box>
-        <GoogleSignInButton redirect={redirect}/>
       </Paper>
       </Grid>   
       
@@ -45,4 +40,4 @@ function SignInPage({ location }) {
   )
 }
 
-export default withRouter(SignInPage);
+export default withRouter(SignUpPage);

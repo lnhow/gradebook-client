@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { TOKEN } from "../../helpers/constants";
+import { TOKEN, USER_INFO } from "../../helpers/constants";
 
 const initialState = {
   isLogin: false,
@@ -38,11 +38,13 @@ export const UserSlice = createSlice({
         state.avatar = avatar;
         // To help to persist logged in user
         localStorage.setItem(TOKEN, token);
+        localStorage.setItem(USER_INFO, JSON.stringify(action.payload));
       }
     },
     signOut: (state) => {
       // To help to persist logged in user
       localStorage.removeItem(TOKEN);
+      localStorage.removeItem(USER_INFO);
       return initialState;
     }
   }

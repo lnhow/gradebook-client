@@ -1,22 +1,28 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { getLoggedInUserInfo } from '../../../helpers/api/user';
-import { signIn, signOut } from '../../../redux/slices/user';
 
-export default function FetchSignedInUser() {
+import Loader from '../../_common/loader';
+
+import { signIn } from '../../../redux/slices/user';
+import { USER_INFO } from '../../../helpers/constants';
+
+export default function FetchSignedInUser({ children }) {
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    const isSignedIn = localStorage.getItem('isSignedIn') || false;
-    if (isSignedIn) {
-      getLoggedInUserInfo()
-      .then((res) => {
-        dispatch(signIn(res.data.user));
-      })
-      .catch((err) => {
-        // Token expired
-        dispatch(signOut());
-      })
+    setIsLoading(true);
+    const userInfoString = localStorage.getItem(USER_INFO) || null;
+    if (userInfoString) {
+      try {
+        const userInfo = JSON.parse(userInfoString);
+        dispatch(signIn(userInfo));
+      } catch (parseError) { /* ignored */}
     }
+    setIsLoading(false);
   }, [dispatch]);
-  return <div/>
+
+  if (isLoading) {
+    return <Loader label='Tải thông tin đăng nhập'/>
+  }
+  return children;
 }

@@ -9,10 +9,11 @@ import FetchSignedInUser from './fetcher';
 function App() {
   return (
     <Provider store={store}>
-      <FetchSignedInUser/>
       <CustomThemeProvider>
         <CssBaseline />
-        <Layout/>
+        <FetchSignedInUser>
+          <Layout/>
+        </FetchSignedInUser>
       </CustomThemeProvider>
     </Provider>
   );

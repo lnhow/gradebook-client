@@ -1,6 +1,6 @@
 import { Container, Grid, Box, CircularProgress, useTheme } from '@mui/material';
 
-function Loader({label = 'Loading'}) {
+function Loader({label = 'Đang tải'}) {
   const theme = useTheme();
   return (
     <Container>

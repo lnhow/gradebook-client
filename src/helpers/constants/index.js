@@ -1,1 +1,2 @@
-export const TOKEN = 'PTD_TOKEN';
+export const TOKEN = 'tWERMBMNVMVCMoFGFYkRTRYUeKJDTn';
+export const USER_INFO = 'ASDFGHJQWERTmnlkijoij';

@@ -8,6 +8,11 @@ export const fetchAll = () => {
   return api.get(baseURL, config);
 }
 
+export const fetchClassroom = (classId) => {
+  const config = getAuthConfig();
+  return api.get(`${baseURL}/${classId}`, config);
+}
+
 export const addNewClassroom = (newClassroom) => {
   const config = getAuthConfig();
   return api.post(baseURL, {...newClassroom}, config);
@@ -15,7 +20,8 @@ export const addNewClassroom = (newClassroom) => {
 
 const ClassroomAPI = {
   fetchAll,
-  addNewClassroom
+  fetchClassroom,
+  addNewClassroom,
 }
 
 export default ClassroomAPI;

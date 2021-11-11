@@ -1,7 +1,12 @@
 import { 
-  Card, CardActionArea, CardContent, Typography,
-  Box, Paper
+  Card, CardContent, Typography,
+  Box, Paper, Link
 } from '@mui/material';
+
+import {
+  Link as RouterLink
+} from 'react-router-dom';
+
 import { styled } from '@mui/material/styles';
 import { useState } from 'react';
 
@@ -11,6 +16,15 @@ const Div = styled('div')(({ theme }) => ({
     '&:hover': {
       paddingLeft: theme.spacing(3),
     },
+}));
+
+const ClippedTypography = styled(Typography)(() => ({
+  wordWrap: 'break-word',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  display: '-webkit-box',
+  WebkitLineClamp: 2,  //max num of lines to show
+  WebkitBoxOrient: 'vertical'
 }));
 
 export default function ClassroomListItem({classroom}) {
@@ -27,16 +41,18 @@ export default function ClassroomListItem({classroom}) {
       onMouseOut={toggleRaised(false)}
       sx={{ height: '100%', display:'flex', flexDirection: 'column' }}
     >
-      <CardActionArea sx={{flexGrow: 1}}>
-        <CardContent>
-          <Typography gutterBottom variant="h6" component="div" sx={{wordWrap: 'break-word'}}>
+      <CardContent>
+        <Link component={RouterLink} to={`/class/${classroom.id}`}
+          underline='hover' color="inherit"
+        >
+          <ClippedTypography gutterBottom variant='h6' component='div' >
             <b>{classroom.class_name}</b>
-          </Typography>
-          <Typography variant="subtitle2" color="text.secondary" sx={{wordWrap: 'break-word'}}>
+          </ClippedTypography>
+          <ClippedTypography variant='subtitle2' color='text.secondary'>
             <b>{classroom.subject}</b>
-          </Typography>
-        </CardContent>
-      </CardActionArea>
+          </ClippedTypography>
+        </Link>
+      </CardContent>
     </Card>
   )
 }

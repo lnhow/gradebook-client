@@ -8,6 +8,7 @@ import ClassroomList from '../../_pages/classroomList';
 import ClassroomSinglePage from '../../_pages/classroomSingle';
 import SignInPage from '../../_pages/signin';
 import SignUpPage from '../../_pages/signup';
+import ProfilePage from '../../_pages/profile';
 
 // Pages
 
@@ -26,6 +27,12 @@ function Router() {
       <NonAuthOnlyRoute exact path='/signup'>
         <SignUpPage/>
       </NonAuthOnlyRoute>
+      <AuthOnlyRoute exact path='/profile'>
+        <ProfilePage/>
+      </AuthOnlyRoute>
+      <Route exact path='/notfound'>
+        <NotFoundPage/>
+      </Route>
       <Route>
         <NotFoundPage/>
       </Route>

@@ -1,5 +1,5 @@
 import { 
-  Switch, Route, useRouteMatch
+  Switch, Route, Redirect, useRouteMatch
 } from 'react-router-dom';
 
 import ClassroomDetailPage from './_pages/details';
@@ -14,6 +14,9 @@ export default function ClassroomRoutes({ classroom }) {
       </Route>
       <Route exact path={`${path}/participants`}>
         <ClassroomUsersPage classroom={classroom}/>
+      </Route>
+      <Route>
+        <Redirect to='/notfound'/>
       </Route>
     </Switch>
   )

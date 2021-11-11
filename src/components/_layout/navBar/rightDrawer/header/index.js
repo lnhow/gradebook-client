@@ -1,25 +1,18 @@
-import { Box, IconButton, Button, Avatar } from '@mui/material';
+import { Box, IconButton, Avatar } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import LoginIcon from '@mui/icons-material/Login';
 
-import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../../../../redux/slices/user';
-import SignOutButton from '../../../../_common/signOutButton';
+
+import SignedOutUserControlList from './signedOutControlList';
+import SignedInUserControlList from './signedInControlList';
 
 const SpaceBetween = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(1),
   justifyContent: 'space-between',
-}));
-
-const AlignEnd = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  padding: theme.spacing(1),
-  justifyContent: 'flex-end',
 }));
 
 const AlignCenter = styled(Box)(({ theme }) => ({
@@ -64,17 +57,13 @@ export default function Header({
           </Avatar>
         </AlignCenter>
       </SpaceBetween>
-      <AlignEnd>
+      <Box sx={{padding: 1}}>
         {user.isLogin ? 
-          <SignOutButton onAfterClicked={toggleClose}/>
+          <SignedInUserControlList toggleClose={toggleClose}/>
           :
-          <Button 
-            component={Link} to='/signin'
-            variant='outlined'
-            startIcon={<LoginIcon/>}
-          >Đăng nhập</Button>
+          <SignedOutUserControlList toggleClose={toggleClose}/>
         }
-      </AlignEnd>
+      </Box>
     </>
   )
 }

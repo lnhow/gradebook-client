@@ -4,8 +4,8 @@ export default function NotFoundPage() {
   return (
     <ErrorPage
       code={404}
-      title='Page requested not found'
-      details='The page you requested does not exist'
+      title='Không tồn tại'
+      details='Trang yêu cầu không tồn tại'
     />
   )
 }

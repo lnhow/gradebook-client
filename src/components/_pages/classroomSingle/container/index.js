@@ -10,8 +10,7 @@ function ClassroomContainer({error, isLoading, classroom}) {
       code = {error.status}
       title = {error.title}
       details = {error.details}
-      message = {error.message}
-      backToHome = {false}/>
+      message = {error.message}/>
   } else if (isLoading) {
     return <Loader/>;
   } else {

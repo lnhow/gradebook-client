@@ -34,7 +34,7 @@ function ErrorPage({ code, title, details, message = null, children = null, back
                 component={Link}
                 to='/'
               >
-                Back to Home
+                Trang chủ
               </Button> 
               : <div/>}
           </Box>

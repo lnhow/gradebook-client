@@ -21,7 +21,14 @@ function ClassroomSinglePage() {
     setIsLoading(true);
     ClassroomAPI.fetchClassroom(classId)
     .then((result) => {
-      setClassroom(result.data.data);
+      // Unauthorized / Not joined class 
+      // API does not response with 403
+      // but still 200 OK
+      if (result.data.success) {
+        setClassroom(result.data.data);
+      } else {
+        throw new Error(result.data.message);
+      }
     })
     .catch((error) => {
       let err = {};
@@ -33,7 +40,9 @@ function ClassroomSinglePage() {
           //Incase cannot request to server
           err.message = error.response.message;
         }
-      } 
+      } else {
+        err.message = error.message;
+      }
       setError(err);
     })
     .finally(() => setIsLoading(false));

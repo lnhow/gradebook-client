@@ -24,18 +24,22 @@ function ClassroomUsersPage({classroom = {}}) {
   return (
     <Container maxWidth='md'>
       <Box mt={3}>
-        <UserListByRole
-          role={USER_CLASS_ROLES.TEACHER}
-          userInfosList={teacherUsers}
-          showInviteControl={isTeacher}
-          inviteControlProps={classInfo}
-        />
-        <UserListByRole
-          role={USER_CLASS_ROLES.STUDENT}
-          userInfosList={studentUsers}
-          showInviteControl={isTeacher}
-          classInfo={classInfo}
-        />
+        <Box mb={8}>
+          <UserListByRole
+            role={USER_CLASS_ROLES.TEACHER}
+            userInfosList={teacherUsers}
+            showInviteControl={isTeacher}
+            inviteControlProps={classInfo}
+          />
+        </Box>
+        <Box mb={8}>
+          <UserListByRole
+            role={USER_CLASS_ROLES.STUDENT}
+            userInfosList={studentUsers}
+            showInviteControl={isTeacher}
+            classInfo={classInfo}
+          />
+        </Box>
       </Box>
     </Container>
   )

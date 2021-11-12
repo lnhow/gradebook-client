@@ -1,12 +1,12 @@
 import { Button, TextField, CircularProgress } from '@mui/material';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 // import InviteAPI from '../../../../helpers/api/invite'
 
 const validationSchema = yup.object({
-  class_name: yup
+  email: yup
   .string()
   .email('Email không hợp lệ')
   .required('bắt buộc')
@@ -37,13 +37,6 @@ export default function SendInviteMailForm() {
     onSubmit: handleSubmit
   });
 
-  useEffect(() => {
-    // Reset form on unmount
-    return () => {
-      formik.resetForm();
-    }
-  }, [formik])
-
   return (
     <form onSubmit={formik.handleSubmit}>
       <TextField
@@ -65,7 +58,7 @@ export default function SendInviteMailForm() {
         fullWidth 
         type='submit'
       >
-        {isSubmitting ? <CircularProgress color='inherit'/>:'Add' }
+        {isSubmitting ? <CircularProgress color='inherit'/>:'Gửi' }
       </Button>
     </form>
   )

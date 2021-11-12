@@ -18,26 +18,24 @@ function ClassroomUsersPage({classroom = {}}) {
     (student) => student.role === USER_CLASS_ROLES.STUDENT
   );
 
-  const inviteControlProps = { ...classroom };
-  delete inviteControlProps.listUser;
+  const classInfo = { ...classroom };
+  delete classInfo.listUser;
 
   return (
     <Container maxWidth='md'>
       <Box mt={3}>
         <UserListByRole
-          title='Giáo viên'
+          role={USER_CLASS_ROLES.TEACHER}
           userInfosList={teacherUsers}
           showInviteControl={isTeacher}
-          inviteControlProps={inviteControlProps}
+          inviteControlProps={classInfo}
         />
         <UserListByRole
-          title='Học sinh'
+          role={USER_CLASS_ROLES.STUDENT}
           userInfosList={studentUsers}
           showInviteControl={isTeacher}
-          inviteControlProps={inviteControlProps}
+          classInfo={classInfo}
         />
-      {JSON.stringify(classroom)}
-      <p>Is current user teacher: {`${isTeacher}`}</p>
       </Box>
     </Container>
   )

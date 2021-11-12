@@ -1,15 +1,32 @@
-import { Box, Typography, Divider, IconButton, Stack } from '@mui/material';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import SingleUserListItem from './singleUserListItem.js';
+import { Box, Typography, Divider, Stack } from '@mui/material';
 
-export default function UserListByRole({userInfosList=[], title=''}) {
+import SingleUserListItem from './singleUserListItem.js';
+import InviteUserModal from '../../../../../_common/modals/inviteUserModal/index.js';
+
+import { USER_CLASS_ROLES } from '../../../../../../helpers/constants/index.js';
+
+export default function UserListByRole({
+  userInfosList=[], role,
+  showInviteControl=false, classInfo
+}) {
+  let roleName = '';
+  switch (role) {
+    case USER_CLASS_ROLES.TEACHER:
+      roleName = 'Giáo viên';
+      break;
+    case USER_CLASS_ROLES.STUDENT:
+    default:
+      roleName = 'Học sinh';
+      break;
+  }
+
   return (
     <Box>
       <Box sx={{display: 'flex'}}>
         <Typography variant='h5' sx={{flexGrow: 1, display: 'flex', alignItems: 'center'}}>
-          <b>{title}</b>
+          <b>{roleName}</b>
         </Typography>
-        <IconButton><PersonAddIcon/></IconButton>
+        {(showInviteControl && <InviteUserModal classInfo={classInfo} role={role}/>)}
       </Box>
       <Divider/>
       <Stack m={2} spacing={2}

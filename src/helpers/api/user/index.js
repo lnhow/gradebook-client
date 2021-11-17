@@ -14,15 +14,19 @@ export const handleSignUp = async (userInfo) => {
 
 export const updateUser= async (newUser) => {
   const config = getAuthConfig();
-  console.log(config)
-  console.log({...newUser})
   return api.put(`${baseURL}/update`, newUser, config);
+}
+
+export const changePassword= async (data) => {
+  const config = getAuthConfig();
+  return api.post(`${baseURL}/change-password`, data, config);
 }
 
 const UserAPI = {
   getUserInfo,
   handleSignUp,
-  updateUser
+  updateUser,
+  changePassword
 }
 
 export default UserAPI;

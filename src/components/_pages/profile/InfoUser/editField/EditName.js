@@ -11,10 +11,6 @@ const validationSchema = yup.object({
       .min(6, 'Tối thiểu 6 ký tự')
       .max(30, 'Tối đa 50 ký tự')
       .required('Bắt buộc'),
-    // phone: yup
-    //   .string('Nhập số điện thoại')
-    //   .required('Bắt buộc')
-    //   .matches('/(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/','Số điện thoại  không hợp lệ')
   });
 
 const EditName = ({currentName,handleEditName,closeEditName}) => {

@@ -28,7 +28,7 @@ const EditCode = ({currentCode,handleEditCode,closeEditCode}) => {
                     <span style={{marginLeft:10,opacity:0.7}}>{currentCode || "Chưa cập nhập"}</span>
                 </div>
                 <div className={styles.editRow}>
-                    <span className={styles.editTitle}>Mã sinh viên mới</span>
+                    <span className={styles.editTitle}>Mã mới</span>
                     <input  id="user_code" value={formik.values.user_code} onChange={formik.handleChange} className={styles.inputEdit}/>
                     <div style={{paddingLeft:10,color:'red'}}>{formik.errors.user_code}</div>
                 </div>

@@ -18,9 +18,14 @@
   margin-bottom: 10px;
   font-size: 16px;
   border-top-right-radius: 20;
+  &:hover {
+    background-color: #ccc;
+    opacity: 0.5;
+  }
 }
 .infoMenu .actived {
-  background-color: #ccc;
+  background-color: #ccc !important;
+  opacity: 1;
 }
 
 @media (max-width: 1200px) {

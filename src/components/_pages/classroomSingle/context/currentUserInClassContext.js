@@ -3,16 +3,20 @@ import { useSelector } from 'react-redux';
 
 import { selectUser } from '../../../../redux/slices/user';
 
+import { USER_CLASS_ROLES } from '../../../../helpers/constants';
+
+const DEFAULT_USER_CLASS_ROLE = USER_CLASS_ROLES.STUDENT;
+
 const INITIAL_STATE = {
   user_id: '',
   user_code: '',
   full_name: '',
-  role: 'S',  //Student
+  role: DEFAULT_USER_CLASS_ROLE,
 }
 
 export const CurrentUserInClassContext = createContext({
   currentUser: INITIAL_STATE,
-  isTeacher: false       //Is current signed in user a teacher
+  isTeacher: INITIAL_STATE.role === USER_CLASS_ROLES.TEACHER  //Is current signed in user a teacher
 });
 
 export default function CurrentUserInClassProvider({classroom_info = {}, children}) {
@@ -26,12 +30,12 @@ export default function CurrentUserInClassProvider({classroom_info = {}, childre
     user_id: currentUserInClass.user_id,
     user_code: currentUserInClass.user_code || '',
     full_name: currentUserInClass.full_name || '',
-    role: currentUserInClass.role || 'S'
+    role: currentUserInClass.role || DEFAULT_USER_CLASS_ROLE,
   }
 
   const contextValue = {
     currentUser: currentUserInClass,
-    isTeacher: currentUserInClass.role === 'T'
+    isTeacher: currentUserInClass.role === USER_CLASS_ROLES.TEACHER,
   }
 
   return (

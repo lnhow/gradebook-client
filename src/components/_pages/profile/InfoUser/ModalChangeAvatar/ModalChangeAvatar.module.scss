@@ -1,0 +1,86 @@
+.modal {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10000;
+}
+.dark .modalContainer {
+  background: rgba(0, 0, 0);
+}
+.default .modalContainer {
+  background: white;
+}
+.modalContainer {
+  position: relative;
+  background: rgb(56, 52, 52);
+  border: 2px solid white;
+  width: 600px;
+  height: 600px;
+  border-radius: 20px 20px 20px 20px;
+}
+.avatarContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.avatarContentTitle {
+  margin-top: 20px;
+  font-size: 24px;
+}
+.avatarContentDesc {
+  text-align: center;
+  padding: 0px 80px;
+  color: #5f6367;
+}
+.avatarButonIcon {
+  margin-right: 20px;
+}
+.avatarControl {
+  .ButtonDelete {
+    background-color: #e5e5e5;
+  }
+  .ButtonChange {
+    background-color: #215fb9;
+  }
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+.avatarControlItem {
+  width: 50%;
+  align-items: center;
+}
+.dark .ButtonDelete {
+  background-color: red;
+}
+.avatarControlButton {
+  border: 1px solid #d9dce0;
+  margin: 0px 20px;
+  text-align: center;
+  padding: 10px;
+  display: block;
+  border-radius: 5px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+.fileInput {
+  display: none;
+}
+.ButtonDeleteError {
+  text-align: center;
+  color: red;
+}
+@media (max-width: 600px) {
+  .modalContainer {
+    height: 100vh !important;
+    width: 100vh !important;
+    flex-grow: 1;
+  }
+}

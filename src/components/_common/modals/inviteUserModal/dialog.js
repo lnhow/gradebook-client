@@ -29,7 +29,10 @@ function InviteUserDialog(
         { (role !== USER_CLASS_ROLES.TEACHER) && 
           <PublicInviteLinkBox link={inviteLink}/>
         }
-        <SendInviteMailForm/>
+        <SendInviteMailForm
+          role={role}
+          classInfo={classInfo}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Đóng</Button>

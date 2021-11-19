@@ -13,6 +13,11 @@ export const fetchClassroom = (classId) => {
   return api.get(`${baseURL}/${classId}`, config);
 }
 
+export const fetchClassroomByInvite = (token,classId) => {
+  const config = getAuthConfig();
+  return api.get(`${baseURL}/by-invite?token=${token}&class_id=${classId}`, config);
+}
+
 export const addNewClassroom = (newClassroom) => {
   const config = getAuthConfig();
   return api.post(baseURL, {...newClassroom}, config);

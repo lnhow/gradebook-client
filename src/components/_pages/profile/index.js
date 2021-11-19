@@ -24,7 +24,6 @@ function ProfilePage() {
   }
   return (
     <>
-      {/* <FontAwesomeIcon icon={faUserCircle}/> */}
       <Grid p={5} container spacing={10} >
         <Grid item xs={12} md={12} lg={4} >
           <InfoMenu actived={actived} setAct={setAct} />

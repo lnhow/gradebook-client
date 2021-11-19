@@ -75,7 +75,7 @@ const ChangePassword = ({actived,setAct}) => {
                 <form onSubmit={formik.handleSubmit}>
                     <div className={styles.ContentRow}>
                         <span className={styles.editTitle}>Mật khẩu cũ</span>
-                        <input id="oldpassword" value={formik.values.oldpassword} onChange={formik.handleChange} className={styles.editContent}/>
+                        <input type="password" id="oldpassword" value={formik.values.oldpassword} onChange={formik.handleChange} className={styles.editContent}/>
                     </div>
                     <div className={clsx(styles.ContentRow,styles.ContentError)}>
                         <span className={styles.editTitle}></span>
@@ -83,7 +83,7 @@ const ChangePassword = ({actived,setAct}) => {
                     </div>
                     <div className={styles.ContentRow}>
                         <span className={styles.editTitle}>Mật khẩu mới</span>
-                        <input id="newpassword" value={formik.values.newpassword} onChange={formik.handleChange} className={styles.editContent}/>
+                        <input type="password" id="newpassword" value={formik.values.newpassword} onChange={formik.handleChange} className={styles.editContent}/>
                     </div>
                     <div className={clsx(styles.ContentRow,styles.ContentError)}>
                         <span className={styles.editTitle}></span>
@@ -91,7 +91,7 @@ const ChangePassword = ({actived,setAct}) => {
                     </div>
                     <div className={styles.ContentRow}>
                         <span className={styles.editTitle}>Nhập lại mật khẩu mới </span>
-                        <input id="repeat_newpassword" value={formik.values.repeat_newpassword} onChange={formik.handleChange} className={styles.editContent}/>
+                        <input type="password" id="repeat_newpassword" value={formik.values.repeat_newpassword} onChange={formik.handleChange} className={styles.editContent}/>
                     </div>
                     <div className={clsx(styles.ContentRow,styles.ContentError)}>
                         <span className={styles.editTitle}></span>

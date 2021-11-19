@@ -2,7 +2,6 @@ import React from 'react'
 import clsx from 'clsx'
 import * as yup from 'yup'
 import { useFormik } from 'formik';
-
 import styles from '../InfoUser.module.scss'
 
 const validationSchema = yup.object({

@@ -32,6 +32,7 @@ export default function Header({
     fullname = user.full_name;
     avatar = user.avatar
   }
+  console.log(user)
 
   return (
     <>

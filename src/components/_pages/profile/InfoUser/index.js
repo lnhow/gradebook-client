@@ -1,12 +1,13 @@
 import React from 'react'
 import { Avatar, Typography } from '@mui/material'
-import styles from './InfoUser.module.scss'
 import clsx from 'clsx'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons'
 import { useState ,useEffect} from 'react'
 import { toast } from 'react-toastify'
+import { useDispatch } from 'react-redux'
 
+import { updateUser } from '../../../../redux/slices/user'
 import UserAPI from '../../../../helpers/api/user'
 import Loader from '../../../_common/loader'
 import EditName from './editField/EditName'
@@ -14,6 +15,12 @@ import EditPhone from './editField/EditPhone'
 import EditCode from './editField/EditCode'
 import EditSex from './editField/EditSex'
 import EditBirth from './editField/EditBirth'
+import ModalChangeAvatar from './ModalChangeAvatar/ModalChangeAvatar'
+import styles from './InfoUser.module.scss'
+import stylesModalChangeAvatar from './ModalChangeAvatar/ModalChangeAvatar.module.scss'
+import { TOKEN, USER_INFO } from '../../../../helpers/constants'
+
+const DEFAULT_THEME = 'default';
 
 const InfoUser = () => {
     const [user, setUser] = useState({});
@@ -22,9 +29,13 @@ const InfoUser = () => {
     const [openName,setOpenName] = useState(false);
     const [openPhone,setOpenPhone] = useState(false)
     const [openCode,setOpenCode] = useState(false)
-    const [openSex,setOpenSex] = useState(false)
+    const [openSex,setOpenSex] = useState(false) 
     const [openBirth,setOpenBirth] = useState(false)
+    const [openAvatar,setOpenAvatar] = useState(false)
     const [error, setError] = useState(null); 
+    const currentTheme = localStorage.getItem('theme') || DEFAULT_THEME;
+    const theme = currentTheme === "dark" ? true : false
+    const dispatch = useDispatch()
 
     useEffect(() => {
         loadUser();
@@ -63,7 +74,6 @@ const InfoUser = () => {
       }
       const handleEdit = async (values) =>
       {
-        console.log(values)
         setUser(
           {
             ...user,
@@ -78,7 +88,13 @@ const InfoUser = () => {
         UserAPI.updateUser(values)
         .then((res)=>
         {
+          dispatch(updateUser(res.data.data))
+          console.log(res.data.data)
+          const {full_name,avatar} =res.data.data
+          let current = localStorage.getItem(USER_INFO)
+          localStorage.setItem(USER_INFO,JSON.stringify({...JSON.parse(current),full_name,avatar}))
           toast.success(res.data.message);
+
         })
         .catch((err)=>{
           let message = err.message;
@@ -175,6 +191,15 @@ const InfoUser = () => {
         setOpenBirth(false)
     }
 
+    const openEditAvatar = () =>
+    {
+      setOpenAvatar(true)
+    }
+
+    const closeEditAvatar = () =>
+    {
+      setOpenAvatar(false)
+    }
 
     if (!isLoaded) 
         return <Loader/>
@@ -182,11 +207,11 @@ const InfoUser = () => {
     return (
         <div className={clsx(styles.wrapperInfoBasic)}>
             <Typography style={{paddingTop:20,textAlign:'center'}} variant="h4" component="div">Thông tin cá nhân</Typography>
-            <ul className={clsx(styles.InfoUserList)}>
-                <li  className={clsx(styles.InfoUserListItem)}>
+            <ul className={styles.InfoUserList}>
+                <li onClick={openEditAvatar}  className={clsx(styles.InfoUserListItem,styles.hideEdit)}>
                     <span className={clsx(styles.ItemTitle)}>Ảnh</span>
                     <span style={{fontSize:12}} className={clsx(styles.ItemContent)}>Một bức ảnh giúp cá nhân hóa tài khoản của bạn</span>
-                    <Avatar style={{width:60,height:60}} alt={user.full_name} src={user.avatar}/>
+                    <Avatar style={{width:60,height:60}} alt={user.full_name } src={user.avatar || "None"}/>
                 </li>
                 <li onClick={openEditName} className={clsx(styles.InfoUserListItem,{[styles.hideEdit]:!openName})}>
                     <span className={clsx(styles.ItemTitle)}>Tên</span>
@@ -244,6 +269,7 @@ const InfoUser = () => {
                     }
                 </li>
             </ul>
+          {openAvatar && <ModalChangeAvatar handleEdit ={handleEdit} avatar={user.avatar} closeEditAvatar={closeEditAvatar} fullName={user.full_name} theme={theme}/>}
         </div>
     )
 }

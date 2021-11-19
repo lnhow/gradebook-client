@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import Loader from '../../_common/loader';
 
 import { signIn } from '../../../redux/slices/user';
-import { USER_INFO } from '../../../helpers/constants';
+import { USER_INFO, TOKEN } from '../../../helpers/constants';
 
 export default function FetchSignedInUser({ children }) {
   const dispatch = useDispatch();
@@ -12,9 +12,11 @@ export default function FetchSignedInUser({ children }) {
   useEffect(() => {
     setIsLoading(true);
     const userInfoString = localStorage.getItem(USER_INFO) || null;
+    const token = localStorage.getItem(TOKEN) || '';
     if (userInfoString) {
       try {
-        const userInfo = JSON.parse(userInfoString);
+        let userInfo = JSON.parse(userInfoString);
+        userInfo.token = token;
         dispatch(signIn(userInfo));
       } catch (parseError) { /* ignored */}
     }

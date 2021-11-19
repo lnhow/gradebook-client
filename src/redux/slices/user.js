@@ -7,6 +7,7 @@ const initialState = {
   username: '',
   full_name: '',
   avatar: '',
+  token: 'empty_token',
 }
 
 export const UserSlice = createSlice({
@@ -14,11 +15,12 @@ export const UserSlice = createSlice({
   initialState: initialState,
   reducers: {
     updateUser: (state, action) => {
-      const { id, username, full_name, avatar } = action.payload;
+      const { id, username, full_name, avatar, token } = action.payload;
       if (id !== undefined) state.id = id;
       if (username !== undefined) state.username = username;
       if (full_name !== undefined) state.full_name = full_name;
       if (avatar !== undefined) state.avatar = avatar;
+      if (token !== undefined) state.token = token;
       if (id !== undefined) state.isLogin = true;
     },
     signIn: (state, action) => {
@@ -30,12 +32,14 @@ export const UserSlice = createSlice({
         && username !== undefined 
         && full_name !== undefined 
         && avatar !== undefined
+        && token !== undefined
       ) {
         state.isLogin = true;
         state.id = id;
         state.username = username;
         state.full_name = full_name;
         state.avatar = avatar;
+        state.token = token;
         // To help to persist logged in user
         localStorage.setItem(TOKEN, token);
         localStorage.setItem(USER_INFO, JSON.stringify(action.payload));

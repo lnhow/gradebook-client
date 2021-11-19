@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { TOKEN } from '../constants';
+// import { TOKEN } from '../constants';
+import reduxStore from '../../redux/store';
 
 const baseURL = process.env.REACT_APP_API
   ? process.env.REACT_APP_API
@@ -15,8 +16,17 @@ const api = axios.create({
   // withCredentials: true, // Required for http-only cookie
 });
 
+const getAuthToken = () => {
+  const reduxState = reduxStore.getState() || {};
+  console.log(reduxState)
+  const user = reduxState?.user || {};
+  console.log(user);
+  const token = user?.token || 'empty_token';
+  return token;
+}
+
 export const getAuthConfig = () => {
-  const authToken = localStorage.getItem(TOKEN);
+  const authToken = getAuthToken();
   const config = {
     headers: {
       'Authorization': authToken

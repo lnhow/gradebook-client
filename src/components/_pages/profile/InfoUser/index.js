@@ -17,8 +17,7 @@ import EditSex from './editField/EditSex'
 import EditBirth from './editField/EditBirth'
 import ModalChangeAvatar from './ModalChangeAvatar/ModalChangeAvatar'
 import styles from './InfoUser.module.scss'
-import stylesModalChangeAvatar from './ModalChangeAvatar/ModalChangeAvatar.module.scss'
-import { TOKEN, USER_INFO } from '../../../../helpers/constants'
+import { USER_INFO } from '../../../../helpers/constants'
 
 const DEFAULT_THEME = 'default';
 
@@ -32,7 +31,6 @@ const InfoUser = () => {
     const [openSex,setOpenSex] = useState(false) 
     const [openBirth,setOpenBirth] = useState(false)
     const [openAvatar,setOpenAvatar] = useState(false)
-    const [error, setError] = useState(null); 
     const currentTheme = localStorage.getItem('theme') || DEFAULT_THEME;
     const theme = currentTheme === "dark" ? true : false
     const dispatch = useDispatch()
@@ -68,7 +66,6 @@ const InfoUser = () => {
             }
             res.message = error.message;
             setIsLoaded(true);
-            setError(res);
           }
         )
       }

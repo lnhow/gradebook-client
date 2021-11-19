@@ -6,11 +6,9 @@ import clsx from 'clsx'
 import { useState ,useEffect} from 'react'
 import { Avatar } from '@mui/material'
 import FormData from 'form-data'
-import axios from 'axios'
 
 import { uploadImg } from '../../../../../helpers/api/upload'
 import styles from './ModalChangeAvatar.module.scss'
-import { UploadFile } from '@mui/icons-material'
 
 const ModalChangeAvatar = ({avatar,closeEditAvatar,theme,fullName,handleEdit}) => {
     const [file, setFile] = useState()
@@ -23,7 +21,7 @@ const ModalChangeAvatar = ({avatar,closeEditAvatar,theme,fullName,handleEdit}) =
     }, [file])
     const handleDeleteAvatar = () =>
     {
-        if (avatar == "NULL" || avatar == "")
+        if (avatar === "NULL" || avatar === "")
             {
                 setDeleteError("Bạn chưa cập nhập ảnh nào lên hồ sơ")
                 setTimeout(()=>setDeleteError(""), 3000);

@@ -5,7 +5,6 @@ import clsx from 'clsx'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import { toast } from 'react-toastify'
-import { useState } from 'react'
 
 import UserAPI from '../../../../helpers/api/user'
 import styles from './ChangePassword.module.css'
@@ -30,10 +29,7 @@ const validationSchema = yup.object({
     .oneOf([yup.ref('newpassword')], 'Mật khẩu nhập lại không khớp'),
   });
 const ChangePassword = ({actived,setAct}) => {
-    const [isLoaded, setIsLoaded] = useState(false);
     const handleSubmit = (values) => {
-
-        setIsLoaded(false);
         UserAPI.changePassword({oldpassword:values.oldpassword,newpassword:values.newpassword})
         .then(
           (res) => {

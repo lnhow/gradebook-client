@@ -23,8 +23,6 @@ const ModalChangeAvatar = ({avatar,closeEditAvatar,theme,fullName,handleEdit}) =
     }, [file])
     const handleDeleteAvatar = () =>
     {
-        console.log("Avatar",avatar)
-        console.log(avatar == "NULL")
         if (avatar == "NULL" || avatar == "")
             {
                 setDeleteError("Bạn chưa cập nhập ảnh nào lên hồ sơ")
@@ -39,7 +37,6 @@ const ModalChangeAvatar = ({avatar,closeEditAvatar,theme,fullName,handleEdit}) =
         file.preview=URL.createObjectURL(file)
         setFile(file)
     }
-    console.log(deleteError)
 
     const handleChangeAvatar = () => 
     {
@@ -48,8 +45,11 @@ const ModalChangeAvatar = ({avatar,closeEditAvatar,theme,fullName,handleEdit}) =
             formData.append("image", file);
             uploadImg(formData)
             .then((result)=>
-            console.log(result)
-            )
+            {
+                let linkImg=result.data.data
+                handleEdit({avatar:linkImg})
+                closeEditAvatar()
+            })
             .catch((error) => 
                 console.log(error)
             )

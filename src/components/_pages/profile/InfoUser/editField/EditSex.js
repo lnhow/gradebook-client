@@ -16,7 +16,6 @@ const EditSex = ({currentSex,handleEditSex,closeEditSex}) => {
                     <button className={styles.btnEdit} onClick={closeEditSex}>Đóng</button>
                 </div>
             </div>
-
     )
 }
 

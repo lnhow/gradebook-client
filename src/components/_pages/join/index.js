@@ -1,20 +1,12 @@
 import React, { Component } from 'react';
 import { Typography, Container, Box, Button, Grid, Avatar, Card, CardHeader, CardMedia, CardContent, CardActions } from '@mui/material';
 import Loader from '../../_common/loader';
-import { styled } from '@mui/material/styles';
 import { fetchClassroomByInvite } from '../../../helpers/api/classrooms';
 import { JoinInvite } from '../../../helpers/api/invite';
 import { toast } from 'react-toastify';
 import { USER_INFO } from '../../../helpers/constants';
 import { Redirect } from 'react-router-dom';
-const ClippedTypography = styled(Typography)(() => ({
-  wordWrap: 'break-word',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  display: '-webkit-box',
-  WebkitLineClamp: 4,  //max num of lines to show
-  WebkitBoxOrient: 'vertical'
-}));
+
 class index extends Component {
   constructor(props) {
     super(props);
@@ -23,13 +15,14 @@ class index extends Component {
   getInitialState = () => ({
     classInfo: null,
     isLoading: true,
+    redirectTo: null,
     coverClass: null,
     user_info: JSON.parse(window.localStorage.getItem(USER_INFO)),
     class_id: null,
     token: null
   });
 
-  async componentWillMount() {
+  async componentDidMount() {
     const urlParams = new URLSearchParams(window.location.search);
     let token = urlParams.get('invitation');
     let class_id = urlParams.get('class_id');
@@ -63,8 +56,10 @@ class index extends Component {
     }
     let res = await JoinInvite(params);
     if (res.data.success) {
-      this.setState({ isLoading: false });
-        return <Redirect to={`/class/${class_id}`} />
+      this.setState({ 
+        isLoading: false,
+        redirectTo: `/class/${class_id}`,
+      });
     }
     else {
       toast.error("Lỗi hệ thống");
@@ -72,11 +67,16 @@ class index extends Component {
   }
 
   render() {
-    let { classInfo, isLoading, coverClass, user_info } = this.state;
+    let { classInfo, isLoading, coverClass, user_info, redirectTo } = this.state;
 
     if (isLoading) {
       return <Loader />;
     }
+
+    if (redirectTo) {
+      return <Redirect to={redirectTo}/>
+    }
+
     return (
       <Container maxWidth='md'>
         <Grid
@@ -114,10 +114,10 @@ class index extends Component {
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button size="small" onClick={() => this.setState({ isLoading: false }, () => {
+                  <Button size="small" onClick={() => {
                     this.onJoin()
-                  })}>Tham gia</Button>
-                  <Button size="small" onClick>Từ chối</Button>
+                  }}>Tham gia</Button>
+                  {/* <Button size="small" onClick>Từ chối</Button> */}
                 </CardActions>
               </Card>
             </Box>

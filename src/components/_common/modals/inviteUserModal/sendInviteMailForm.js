@@ -28,7 +28,7 @@ export default function SendInviteMailForm({role,classInfo = {}}) {
     .catch((err) => {
       // onFailed(err);
       // console.log(err);
-      toast.error(err.data.message);
+      toast.error("Lỗi hệ thống");
     })
     .finally(() => {
       setIsSubmitting(false);

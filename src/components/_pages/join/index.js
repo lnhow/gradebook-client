@@ -1,59 +1,131 @@
-import { Typography, Container, Box, Button, Grid } from '@mui/material';
-import { useLocation } from 'react-router-dom';
-import { useMemo } from 'react';
+import React, { Component } from 'react';
+import { Typography, Container, Box, Button, Grid, Avatar, Card, CardHeader, CardMedia, CardContent, CardActions } from '@mui/material';
+import Loader from '../../_common/loader';
+import { fetchClassroomByInvite } from '../../../helpers/api/classrooms';
+import { JoinInvite } from '../../../helpers/api/invite';
+import { toast } from 'react-toastify';
+import { USER_INFO } from '../../../helpers/constants';
+import { Redirect } from 'react-router-dom';
 
-import { styled } from '@mui/material/styles';
+class index extends Component {
+  constructor(props) {
+    super(props);
+    this.state = this.getInitialState();
+  }
+  getInitialState = () => ({
+    classInfo: null,
+    isLoading: true,
+    redirectTo: null,
+    coverClass: null,
+    user_info: JSON.parse(window.localStorage.getItem(USER_INFO)),
+    class_id: null,
+    token: null
+  });
 
-const ClippedTypography = styled(Typography)(() => ({
-  wordWrap: 'break-word',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  display: '-webkit-box',
-  WebkitLineClamp: 4,  //max num of lines to show
-  WebkitBoxOrient: 'vertical'
-}));
+  async componentDidMount() {
+    const urlParams = new URLSearchParams(window.location.search);
+    let token = urlParams.get('invitation');
+    let class_id = urlParams.get('class_id');
+    let res = await fetchClassroomByInvite(token, class_id);
+    if (res.data.success) {
+      if (res.data.message === "Bạn đã tham gia lớp này") {
+        // return <Redirect to={`/class/${class_id}`} />
+      }
+      this.setState({ classInfo: res.data.data, class_id, token, coverClass: this.getRandomCover(), isLoading: false });
+    }
+    else {
+      toast.error("Lỗi hệ thống");
+    }
+  }
 
-function useQuery() {
-  const { search } = useLocation();
-  return useMemo(() => new URLSearchParams(search), [search]);
-}
+  getRandomCover() {
+    let list_cover = [
+      "https://res.cloudinary.com/dungpho/image/upload/v1637338264/images/bg_classroom3_sz8acx.jpg",
+      "https://res.cloudinary.com/dungpho/image/upload/v1637338262/images/bg_classroom2_z4uv5r.jpg",
+      "https://res.cloudinary.com/dungpho/image/upload/v1637338255/images/bg_classroom1_a5cl6k.jpg"
+    ]
 
-export default function JoinPage() {
-  const queryString = useQuery();
-  const invitation = queryString.get('invitation');
-  const classId = queryString.get('class_id');
-  return(
-    <Container maxWidth='md'>
-      <Grid
-        container
-        display='flex'
-        direction='column'
-        alignItems='center'
-        justifyContent='center'
-        style={{ minHeight: '90vh' /* Layout height */}}
-      >
-        <Grid item xs={12}>
-          <Box maxWidth='300px'>
-            <Typography variant='body1'>
-              Bạn được mời tham gia lớp
-            </Typography>
-            <ClippedTypography variant='h6'>
-              <b>[Tên lớp]</b>
-            </ClippedTypography>
-            <Typography variant='subtitle1'>
-              <b>[Giáo viên/ Học sinh]</b>
-            </Typography>
-            <Button 
-              variant='contained'
-            >
-              Tham gia
-            </Button>
-            <Typography variant='subtitle2'>
-              invitation: {invitation} | class_id: {classId}
-            </Typography>
-          </Box>
+    let random_number = Math.floor(Math.random() * 3);
+    return list_cover[random_number];
+  }
+
+  async onJoin() {
+    let { token, class_id } = this.state;
+    let params = {
+      token, class_id
+    }
+    let res = await JoinInvite(params);
+    if (res.data.success) {
+      this.setState({ 
+        isLoading: false,
+        redirectTo: `/class/${class_id}`,
+      });
+    }
+    else {
+      toast.error("Lỗi hệ thống");
+    }
+  }
+
+  render() {
+    let { classInfo, isLoading, coverClass, user_info, redirectTo } = this.state;
+
+    if (isLoading) {
+      return <Loader />;
+    }
+
+    if (redirectTo) {
+      return <Redirect to={redirectTo}/>
+    }
+
+    return (
+      <Container maxWidth='md'>
+        <Grid
+          container
+          display='flex'
+          direction='column'
+          alignItems='center'
+          justifyContent='center'
+          style={{ minHeight: '50vh' /* Layout height */ }}
+        >
+          <Grid item xs={12}>
+            <Box maxWidth='600px'>
+              <h4>Xin chào <span style={{ fontStyle: "italic" }}>{user_info.full_name}</span>, bạn có lời mời tham gia từ </h4>
+              <Card sx={{ maxWidth: 345 }}>
+                <CardHeader
+                  avatar={
+                    <Avatar src={classInfo.owner_avatar}>
+                    </Avatar>
+                  }
+                  title={classInfo.owner_name}
+                  subheader="Giáo viên phụ trách"
+                />
+                <CardMedia
+                  component="img"
+                  alt="cover classroom"
+                  height="140"
+                  image={coverClass}
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    {classInfo.class_name}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {classInfo.description}
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button size="small" onClick={() => {
+                    this.onJoin()
+                  }}>Tham gia</Button>
+                  {/* <Button size="small" onClick>Từ chối</Button> */}
+                </CardActions>
+              </Card>
+            </Box>
+          </Grid>
         </Grid>
-      </Grid>
-    </Container>
-  )
+      </Container >
+    )
+  }
 }
+
+export default index;

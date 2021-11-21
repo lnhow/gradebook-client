@@ -29,7 +29,7 @@ function ClassroomUsersPage({classroom = {}}) {
             role={USER_CLASS_ROLES.TEACHER}
             userInfosList={teacherUsers}
             showInviteControl={isTeacher}
-            inviteControlProps={classInfo}
+            classInfo={classInfo}
           />
         </Box>
         <Box mb={8}>

@@ -1,11 +1,35 @@
 import React, { Component } from 'react';
 import { Typography, Container, Box, Button, Grid, Avatar, Card, CardHeader, CardMedia, CardContent, CardActions } from '@mui/material';
 import Loader from '../../_common/loader';
+import ErrorPage from '../../_common/error';
 import { fetchClassroomByInvite } from '../../../helpers/api/classrooms';
 import { JoinInvite } from '../../../helpers/api/invite';
 import { toast } from 'react-toastify';
 import { USER_INFO } from '../../../helpers/constants';
 import { Redirect } from 'react-router-dom';
+
+const handleResponseError = (error, callback = () => {}) => {
+  let errInfo = {};
+  if (error.response) {
+    if (error.response.data) {
+      errInfo.status = error.response.status;
+      errInfo.message = error.response.data.message;
+    } else {
+      //Incase cannot request to server
+      errInfo.message = error.response.message;
+    }
+  } else {
+    errInfo.message = error.message;
+  }
+  if (errInfo.message) {
+    toast.error(errInfo.message);
+    callback(errInfo.message);
+  }
+}
+
+const getRedirectPath = (classId) => {
+  return `/class/${classId}`;
+}
 
 class index extends Component {
   constructor(props) {
@@ -15,6 +39,7 @@ class index extends Component {
   getInitialState = () => ({
     classInfo: null,
     isLoading: true,
+    errorMessage: '', 
     redirectTo: null,
     coverClass: null,
     user_info: JSON.parse(window.localStorage.getItem(USER_INFO)),
@@ -26,15 +51,22 @@ class index extends Component {
     const urlParams = new URLSearchParams(window.location.search);
     let token = urlParams.get('invitation');
     let class_id = urlParams.get('class_id');
-    let res = await fetchClassroomByInvite(token, class_id);
-    if (res.data.success) {
-      if (res.data.message === "Bạn đã tham gia lớp này") {
-        // return <Redirect to={`/class/${class_id}`} />
+    try {
+      let res = await fetchClassroomByInvite(token, class_id);
+      if (res.data.success) {
+        if (res.data.message === "Bạn đã tham gia lớp này") {
+          toast.warning(res.data.message);
+          this.setState({ redirectTo: getRedirectPath(class_id)});
+        }
+        this.setState({ classInfo: res.data.data, class_id, token, coverClass: this.getRandomCover() });
       }
-      this.setState({ classInfo: res.data.data, class_id, token, coverClass: this.getRandomCover(), isLoading: false });
-    }
-    else {
-      toast.error("Lỗi hệ thống");
+      else {
+        toast.error("Lỗi hệ thống");
+      }
+    } catch(error) {
+      handleResponseError(error, (err) => this.setState({errorMessage: err}));
+    } finally {
+      this.setState({ isLoading: false });
     }
   }
 
@@ -54,23 +86,34 @@ class index extends Component {
     let params = {
       token, class_id
     }
-    let res = await JoinInvite(params);
-    if (res.data.success) {
-      this.setState({ 
-        isLoading: false,
-        redirectTo: `/class/${class_id}`,
-      });
-    }
-    else {
-      toast.error("Lỗi hệ thống");
+    try {
+      let res = await JoinInvite(params);
+      if (res.data.success) {
+        this.setState({ 
+          isLoading: false,
+          redirectTo: getRedirectPath(class_id),
+        });
+      }
+      else {
+        toast.error("Lỗi hệ thống");
+      }
+    } catch(error) {
+      handleResponseError(error, (err) => this.setState({errorMessage: err}));
     }
   }
 
   render() {
-    let { classInfo, isLoading, coverClass, user_info, redirectTo } = this.state;
+    let { 
+      classInfo, isLoading, coverClass, user_info, 
+      redirectTo, errorMessage
+    } = this.state;
 
     if (isLoading) {
       return <Loader />;
+    }
+
+    if (errorMessage) {
+      return <ErrorPage message={errorMessage}/>
     }
 
     if (redirectTo) {

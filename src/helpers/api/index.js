@@ -18,9 +18,7 @@ const api = axios.create({
 
 const getAuthToken = () => {
   const reduxState = reduxStore.getState() || {};
-  console.log(reduxState)
   const user = reduxState?.user || {};
-  console.log(user);
   const token = user?.token || 'empty_token';
   return token;
 }

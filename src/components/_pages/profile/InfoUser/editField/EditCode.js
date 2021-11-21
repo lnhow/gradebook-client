@@ -25,7 +25,7 @@ const EditCode = ({currentCode,handleEditCode,closeEditCode}) => {
             <div>
                 <div className={styles.editRow}>
                     <span className={styles.editTitle}>Mã hiện tại</span>
-                    <span style={{marginLeft:10,opacity:0.7}}>{currentCode || "Chưa cập nhập"}</span>
+                    <span style={{marginLeft:10,opacity:0.7}}>{currentCode || "Chưa cập nhật"}</span>
                 </div>
                 <div className={styles.editRow}>
                     <span className={styles.editTitle}>Mã mới</span>

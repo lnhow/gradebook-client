@@ -41,6 +41,7 @@ export default function CustomThemeProvider({children}) {
           pauseOnHover={false}
           closeOnClick
           pauseOnFocusLoss={false}
+          hideProgressBar
         />
       </ThemeProvider>
     </ThemeContext.Provider>

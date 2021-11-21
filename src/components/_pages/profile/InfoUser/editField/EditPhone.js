@@ -25,7 +25,7 @@ const EditPhone = ({currentPhone,handleEditPhone,closeEditPhone}) => {
             <div >
                 <div className={styles.editRow}>
                     <span className={styles.editTitle}>Số điện thoại</span>
-                    <span style={{marginLeft:10,opacity:0.7}}>{currentPhone || "Chưa cập nhập"}</span>
+                    <span style={{marginLeft:10,opacity:0.7}}>{currentPhone || "Chưa cập nhật"}</span>
                 </div>
                 <div className={styles.editRow}>
                     <span className={styles.editTitle}>Số điện thoại mới</span>

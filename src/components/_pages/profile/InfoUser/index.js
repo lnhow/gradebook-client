@@ -216,7 +216,7 @@ const InfoUser = () => {
                       <EditName currentName={user.full_name} handleEditName={handleEdit} closeEditName={closeEditName}/>
                       :
                       <>
-                        <span className={clsx(styles.ItemContent)}>{user.full_name || "Chưa cập nhập"}</span>
+                        <span className={clsx(styles.ItemContent)}>{user.full_name || "Chưa cập nhật"}</span>
                         <FontAwesomeIcon icon={faAngleRight} style={{height:30,width:15}}/>
                       </>
                     }
@@ -227,7 +227,7 @@ const InfoUser = () => {
                       <EditBirth currentBirth={user.date_of_birth} handleEditBirth={handleEdit} closeEditBirth={closeEditBirth} setBirth={setBirth}/>
                       :
                       <>
-                        <span className={clsx(styles.ItemContent)}>{user.date_of_birth ? `Ngày ${birth.date} tháng ${birth.month} năm ${birth.year}` : "Chưa cập nhập"}</span>
+                        <span className={clsx(styles.ItemContent)}>{user.date_of_birth ? `Ngày ${birth.date} tháng ${birth.month} năm ${birth.year}` : "Chưa cập nhật"}</span>
                         <FontAwesomeIcon icon={faAngleRight} style={{height:30,width:15}}/>
                       </>
                     }
@@ -238,7 +238,7 @@ const InfoUser = () => {
                       <EditSex currentSex={user.sex} handleEditSex={handleEdit} closeEditSex={closeEditSex}/>
                       :
                       <>
-                        <span className={clsx(styles.ItemContent)}>{user.sex === "M" ? "Nam" : (user.sex === "F" ? "Nữ" : "Chưa cập nhập")}</span>
+                        <span className={clsx(styles.ItemContent)}>{user.sex === "M" ? "Nam" : (user.sex === "F" ? "Nữ" : "Chưa cập nhật")}</span>
                         <FontAwesomeIcon icon={faAngleRight} style={{height:30,width:15}}/>
                       </>
                     }
@@ -249,7 +249,7 @@ const InfoUser = () => {
                       <EditPhone currentPhone={user.phone} handleEditPhone={handleEdit} closeEditPhone={closeEditPhone}/>
                       :
                       <>
-                        <span className={clsx(styles.ItemContent)}>{user.phone || "Chưa cập nhập"}</span>
+                        <span className={clsx(styles.ItemContent)}>{user.phone || "Chưa cập nhật"}</span>
                         <FontAwesomeIcon icon={faAngleRight} style={{height:30,width:15}}/>
                       </>
                     }
@@ -260,7 +260,7 @@ const InfoUser = () => {
                       <EditCode currentCode={user.user_code} handleEditCode={handleEdit} closeEditCode={closeEditCode}/>
                       :
                       <>
-                        <span className={clsx(styles.ItemContent)}>{user.user_code || "Chưa cập nhập"}</span>
+                        <span className={clsx(styles.ItemContent)}>{user.user_code || "Chưa cập nhật"}</span>
                         <FontAwesomeIcon icon={faAngleRight} style={{height:30,width:15}}/>
                       </>
                     }

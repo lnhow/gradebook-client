@@ -33,7 +33,7 @@ const InfoMenu = ({actived,setAct}) => {
                 </li>
                 <li id="user-security" onClick={handleClickSecurity} className={clsx(styles.infoMenuItem)}>
                     <FontAwesomeIcon icon={faUnlockAlt}/>
-                    <span>Bảo mật</span>
+                    <span>Bảo mật | Đổi mật khẩu</span>
                 </li>
                 <li  className={clsx(styles.infoMenuItem)}>
                     <FontAwesomeIcon icon={faMoneyCheckAlt}/>

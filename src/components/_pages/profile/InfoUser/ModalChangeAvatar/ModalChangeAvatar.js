@@ -23,7 +23,7 @@ const ModalChangeAvatar = ({avatar,closeEditAvatar,theme,fullName,handleEdit}) =
     {
         if (avatar === "NULL" || avatar === "")
             {
-                setDeleteError("Bạn chưa cập nhập ảnh nào lên hồ sơ")
+                setDeleteError("Bạn chưa cập nhật ảnh nào lên hồ sơ")
                 setTimeout(()=>setDeleteError(""), 3000);
             }
         else
@@ -93,7 +93,7 @@ const ModalChangeAvatar = ({avatar,closeEditAvatar,theme,fullName,handleEdit}) =
                         <div className={styles.fileInputContainer}>
                             {file ?
                                 <label onClick={handleChangeAvatar} className={clsx(styles.avatarControlButton,styles.ButtonChange)}>
-                                    Cập nhập ảnh
+                                    Cập nhật ảnh
                                 </label>
                                 :
                                 <>

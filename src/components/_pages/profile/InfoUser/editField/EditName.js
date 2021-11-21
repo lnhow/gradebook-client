@@ -25,7 +25,7 @@ const EditName = ({currentName,handleEditName,closeEditName}) => {
             <div >
                 <div className={styles.editRow}>
                     <span className={styles.editTitle}>Họ tên</span>
-                    <span style={{marginLeft:10,opacity:0.7}}>{currentName || "Chưa cập nhập"}</span>
+                    <span style={{marginLeft:10,opacity:0.7}}>{currentName || "Chưa cập nhật"}</span>
                 </div>
                 <div className={styles.editRow}>
                     <span className={styles.editTitle}>Họ tên mới</span>

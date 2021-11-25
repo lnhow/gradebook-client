@@ -41,8 +41,6 @@ export default function CurrentClassProvider({classroom_info = {}, children}) {
     isTeacher: currentUserInClass.role === USER_CLASS_ROLES.TEACHER,
   }
 
-  console.log(contextValue);
-
   return (
     <CurrentClassContext.Provider value={contextValue}>
       {children}

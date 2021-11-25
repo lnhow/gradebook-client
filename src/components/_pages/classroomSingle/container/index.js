@@ -2,6 +2,7 @@ import { Container } from '@mui/material';
 import ErrorPage from '../../../_common/error';
 import Loader from '../../../_common/loader';
 import ClassroomRoutes from '../classroomRoutes'
+import CurrentClassProvider from '../context/currentClassContext';
 import CurrentUserInClassProvider from '../context/currentUserInClassContext';
 import ClassroomSingleToolbar from './toolbar';
 
@@ -16,12 +17,15 @@ function ClassroomContainer({error, isLoading, classroom}) {
     return <Loader/>;
   } else {
     return (
-      <CurrentUserInClassProvider classroom_info={classroom}>
-        <Container maxWidth='xl'>
-          <ClassroomSingleToolbar title={classroom.class_name}/>
-          <ClassroomRoutes classroom={classroom}/>
-        </Container>
-      </CurrentUserInClassProvider>
+      <CurrentClassProvider classroom_info={classroom}>
+        {/* CurrentUserInClassProvider offer legacy supports */}
+        <CurrentUserInClassProvider classroom_info={classroom}>
+          <Container maxWidth='xl'>
+            <ClassroomSingleToolbar title={classroom.class_name}/>
+            <ClassroomRoutes classroom={classroom}/>
+          </Container>
+        </CurrentUserInClassProvider>
+      </CurrentClassProvider>
     );
   }
 }

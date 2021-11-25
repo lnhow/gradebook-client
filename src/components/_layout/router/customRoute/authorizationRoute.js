@@ -23,10 +23,10 @@ export default function AuthorizationRoute({
       {(user.isLogin === authRequired) 
       ? children 
       : <Redirect to={{ 
-        pathname: alternativePath, 
-        state: {
-          from: location.pathname
-        } 
+          pathname: alternativePath, 
+          state: {
+            from: location
+          } 
        }}
       />}
     </Route>

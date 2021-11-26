@@ -4,11 +4,11 @@ import {
 } from 'react-router-dom';
 import { useContext } from 'react';
 
-import ClassroomDetailPage from './_pages/details';
-import ClassroomUsersPage from './_pages/userList';
-import ClassroomGradeStructure from './_pages/gradeStructure';
+import ClassroomDetailPage from '../_pages/details';
+import ClassroomUsersPage from '../_pages/userList';
+import ClassroomGradeStructure from '../_pages/gradeStructure';
 
-import { CurrentClassContext } from './context/currentClassContext';
+import { CurrentClassContext } from '../context/currentClassContext';
 
 export default function ClassroomRoutes({ classroom }) {
   let { path } = useRouteMatch();

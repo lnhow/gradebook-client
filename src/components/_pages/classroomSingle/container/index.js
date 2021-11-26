@@ -1,7 +1,7 @@
 import { Container } from '@mui/material';
 import ErrorPage from '../../../_common/error';
 import Loader from '../../../_common/loader';
-import ClassroomRoutes from '../classroomRoutes'
+import ClassroomRoutes from '../_routes'
 import CurrentClassProvider from '../context/currentClassContext';
 import CurrentUserInClassProvider from '../context/currentUserInClassContext';
 import ClassroomSingleToolbar from './toolbar';

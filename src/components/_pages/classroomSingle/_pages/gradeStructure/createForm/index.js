@@ -19,15 +19,12 @@ const validationSchema = yup.object({
 
 
 export default function CreateGradeForm() {
-  const { currentClass, addClassAssignment } = useContext(CurrentClassContext);
+  const { addClassAssignment } = useContext(CurrentClassContext);
 
   const handleSubmit = async (values) => {
-    const class_id = currentClass.class_id;
     const submitValues = {
       ...values,
-      class_id
     }
-    console.log(submitValues)
     addClassAssignment(submitValues);
     formik.resetForm();
   }

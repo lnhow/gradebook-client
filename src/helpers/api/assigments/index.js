@@ -1,7 +1,7 @@
-import api from '../..'
-import { getAuthConfig } from '../..';
+import api from '..'
+import { getAuthConfig } from '..';
 
-const baseURL = '/classrooms';
+const baseURL = '/assignment';
 
 export const addNewAssignment = (classAssignment) => {
   const config = getAuthConfig();
@@ -22,3 +22,12 @@ export const reOrderAssigments = (classAssignmentOrder = []) => {
   const config = getAuthConfig();
   return api.post(baseURL, classAssignmentOrder, config);
 }
+
+const AssignmentAPI = {
+  addNewAssignment,
+  updateAssignment,
+  deleteAssignment,
+  reOrderAssigments,
+}
+
+export default AssignmentAPI;

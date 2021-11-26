@@ -8,9 +8,12 @@ import { AlignCenter } from '../../../../../_common/utilBoxes';
 import { useContext } from 'react';
 import { CurrentClassContext } from '../../../context/currentClassContext';
 import AssigmentListItem from './assignmentListItem';
+import { AssignmentPositionSorter } from '../../../_helpers';
 
 export default function AssignmentList() {
   const { classAssignments } = useContext(CurrentClassContext);
+  let displayAssignments = [ ...classAssignments ]; // Sort is mutatable
+  displayAssignments.sort(AssignmentPositionSorter);
 
   return (
     <Box marginTop={2}>
@@ -18,12 +21,12 @@ export default function AssignmentList() {
         <Box padding={1}>
           <AlignCenter display='flex' >
             <Typography sx={{flexGrow: 1}}>Cấu trúc điểm</Typography>
-            <Button variant='contained'>Lưu vị trí</Button>
+            <Button variant='contained'>Sửa thứ tự</Button>
           </AlignCenter>
         </Box>
       </Paper>
       <Stack my={2} spacing={1}>
-        {classAssignments.map((assignment) => (
+        {displayAssignments.map((assignment) => (
           <AssigmentListItem key={assignment.id} assignment={assignment}/>
         ))}
       </Stack>

@@ -1,5 +1,6 @@
 import { createContext, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import { selectUser } from '../../../../redux/slices/user';
 import { USER_CLASS_ROLES } from '../../../../helpers/constants';
@@ -8,6 +9,9 @@ import {
   CLASS_INITIAL_STATE, CLASS_ASSIGNMENTS_INITIAL_STATE, USER_INITIAL_STATE,
   getClassInfo, getCurrentUserInfoInClass, getClassAssignments
 } from './helpers';
+
+import AssignmentAPI from '../../../../helpers/api/assigments';
+import { getErrorMessage, isErrorResponse } from '../../../../helpers/error';
 
 export const CurrentClassContext = createContext({
   currentClass: CLASS_INITIAL_STATE,
@@ -36,21 +40,56 @@ export default function CurrentClassProvider({classroom_info = {}, children}) {
   }
 
   const addClassAssignment = (newAssignment) => {
-    const assignment = {
+    const submitData = {
       ...newAssignment,
-      id: classAssignments.length,
-      position: classAssignments.length
+      class_id: currentClass.class_id
     }
-    setClassAssignments([
-      ...classAssignments,
-      assignment
-    ]);
+    
+    AssignmentAPI.addNewAssignment(submitData)
+    .then((res) => {
+      if (!isErrorResponse(res)) {
+        const assignment = res.data.data;
+        localAddClassAssignment(assignment);
+        toast.success('Thành công');
+      } else {  // There is an error
+        const err = { response: res };
+        toast.error(`Lỗi thêm điểm mới - ${getErrorMessage(err)}`);
+      }
+    })
+    .catch((err) => {
+      toast.error(`Lỗi thêm điểm mới - ${getErrorMessage(err)}`);
+    })
   }
 
   const updateClassAssignment = (updatedAssignment) => {
+    // TODO: Call API here, if success calls local update
+    localUpdateClassAssignment(updatedAssignment);
+  }
+
+  const removeClassAssignment = (assignmentId) => {
+    // TODO: Call API here, if success calls local remove
+    localRemoveClassAssignment(assignmentId);   
+  }
+
+  /**
+   * Add class assignment to LOCAL STATE
+   * @param {*} newAssignment the new assignment info object
+   */
+  const localAddClassAssignment = (newAssignment) => {
+    setClassAssignments([
+      ...classAssignments,
+      newAssignment
+    ]);
+  }
+
+  /**
+   * Update class assignment in LOCAL STATE
+   * @param {*} updatedAssignment the updated assignment info object
+   */
+  const localUpdateClassAssignment = (updatedAssignment) => {
     const index = classAssignments.findIndex(x => x.id === updatedAssignment.id);
     if (index === -1) {
-      // handle error
+      // Not found
       return;
     }
     else {
@@ -62,11 +101,14 @@ export default function CurrentClassProvider({classroom_info = {}, children}) {
     }    
   }
 
-  const removeClassAssignment = (assignmentId) => {
+  /**
+   * Remove class assignment from LOCAL STATE
+   * @param {*} assignmentId Id of the assignment to remove
+   */
+  const localRemoveClassAssignment = (assignmentId) => {
     const index = classAssignments.findIndex(x => x.id === assignmentId);
-    console.log(index)
     if (index === -1) {
-      // handle error
+      // Not found
       return;
     }
     else {

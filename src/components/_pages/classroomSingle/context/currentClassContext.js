@@ -14,6 +14,9 @@ export const CurrentClassContext = createContext({
   setCurrentClass: () => {},  //EMPTY FUNCTION
   classAssignments: CLASS_ASSIGNMENTS_INITIAL_STATE,
   setClassAssignments: () => {},
+  addClassAssignment: () => {},
+  removeClassAssignment: () => {},
+  updateClassAssignment: () => {},
   currentUser: USER_INITIAL_STATE,
   isTeacher: USER_INITIAL_STATE.role === USER_CLASS_ROLES.TEACHER  //Is current signed in user a teacher
 });
@@ -32,11 +35,21 @@ export default function CurrentClassProvider({classroom_info = {}, children}) {
     _setClassAssignments(newClassAssignments);
   }
 
+  const addClassAssignment = (newAssignment) => {
+    setClassAssignments([
+      ...classAssignments,
+      newAssignment
+    ])
+  }
+
   const contextValue = {
     currentClass: currentClass,
     setCurrentClass: setCurrentClass,
     classAssignments: classAssignments,
     setClassAssignments: setClassAssignments,
+    addClassAssignment: addClassAssignment,
+    removeClassAssignment: () => {},
+    updateClassAssignment: () => {},
     currentUser: currentUserInClass,
     isTeacher: currentUserInClass.role === USER_CLASS_ROLES.TEACHER,
   }

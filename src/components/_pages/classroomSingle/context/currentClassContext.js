@@ -87,7 +87,7 @@ export default function CurrentClassProvider({classroom_info = {}, children}) {
     AssignmentAPI.reOrderAssigments(submitData)
     .then(
     )
-    .catch(handleAPICallError('Lỗi cập nhập thứ tự API'));   
+    .catch(handleAPICallError('Lỗi cập nhập thứ tự'));   
   }
 
   /**

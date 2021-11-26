@@ -20,6 +20,7 @@ export const CurrentClassContext = createContext({
   addClassAssignment: () => {},
   removeClassAssignment: () => {},
   updateClassAssignment: () => {},
+  reOrderAssigments: () => {},
   currentUser: USER_INITIAL_STATE,
   isTeacher: USER_INITIAL_STATE.role === USER_CLASS_ROLES.TEACHER  //Is current signed in user a teacher
 });
@@ -73,6 +74,22 @@ export default function CurrentClassProvider({classroom_info = {}, children}) {
     .catch(handleAPICallError('Lỗi xóa điểm'));   
   }
 
+  const reOrderClassAssignment = (newAssignment) => {
+    let list_assignment =[]
+    newAssignment.forEach ((e) => list_assignment.push(e.id))
+    console.log(list_assignment)
+    const submitData = {
+      class_id: currentClass.class_id,
+      list_assignment
+    }
+    localReOrderClassAssignment(newAssignment)
+    
+    AssignmentAPI.reOrderAssigments(submitData)
+    .then(
+    )
+    .catch(handleAPICallError('Lỗi cập nhập thứ tự API'));   
+  }
+
   /**
    * Add class assignment to LOCAL STATE
    * @param {*} newAssignment the new assignment info object
@@ -121,6 +138,11 @@ export default function CurrentClassProvider({classroom_info = {}, children}) {
     }    
   }
 
+  const localReOrderClassAssignment = (newAssignment) => {
+    newAssignment.forEach ((e,index) => e.position=index)
+    setClassAssignments(newAssignment)
+  }
+
   const contextValue = {
     currentClass: currentClass,
     setCurrentClass: setCurrentClass,
@@ -129,6 +151,7 @@ export default function CurrentClassProvider({classroom_info = {}, children}) {
     addClassAssignment: addClassAssignment,
     removeClassAssignment,
     updateClassAssignment,
+    reOrderClassAssignment,
     currentUser: currentUserInClass,
     isTeacher: currentUserInClass.role === USER_CLASS_ROLES.TEACHER,
   }

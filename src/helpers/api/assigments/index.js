@@ -20,7 +20,7 @@ export const removeAssignment = (assignmentId) => {
 
 export const reOrderAssigments = (classAssignmentOrder = []) => {
   const config = getAuthConfig();
-  return api.post(`${baseURL}/arrange`, classAssignmentOrder, config);
+  return api.put(`${baseURL}/arrange`, classAssignmentOrder, config);
 }
 
 const AssignmentAPI = {

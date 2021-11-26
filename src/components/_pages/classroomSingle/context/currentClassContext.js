@@ -1,6 +1,5 @@
 import { createContext, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
 
 import { selectUser } from '../../../../redux/slices/user';
 import { USER_CLASS_ROLES } from '../../../../helpers/constants';
@@ -11,7 +10,7 @@ import {
 } from './helpers';
 
 import AssignmentAPI from '../../../../helpers/api/assigments';
-import { getErrorMessage, isErrorResponse } from '../../../../helpers/error';
+import { handleAPICallSuccess, handleAPICallError } from '../../../../helpers/handleAPICall';
 
 export const CurrentClassContext = createContext({
   currentClass: CLASS_INITIAL_STATE,
@@ -44,31 +43,34 @@ export default function CurrentClassProvider({classroom_info = {}, children}) {
       ...newAssignment,
       class_id: currentClass.class_id
     }
-    
+
     AssignmentAPI.addNewAssignment(submitData)
-    .then((res) => {
-      if (!isErrorResponse(res)) {
-        const assignment = res.data.data;
-        localAddClassAssignment(assignment);
-        toast.success('Thành công');
-      } else {  // There is an error
-        const err = { response: res };
-        toast.error(`Lỗi thêm điểm mới - ${getErrorMessage(err)}`);
-      }
-    })
-    .catch((err) => {
-      toast.error(`Lỗi thêm điểm mới - ${getErrorMessage(err)}`);
-    })
+    .then(handleAPICallSuccess(
+      (assignmentData) => { localAddClassAssignment(assignmentData); },
+      'Thành công',
+      'Lỗi thêm điểm mới'
+    ))
+    .catch(handleAPICallError('Lỗi thêm điểm mới'));
   }
 
   const updateClassAssignment = (updatedAssignment) => {
-    // TODO: Call API here, if success calls local update
-    localUpdateClassAssignment(updatedAssignment);
+    AssignmentAPI.updateAssignment(updatedAssignment.id, updatedAssignment)
+    .then(handleAPICallSuccess(
+      () => { localUpdateClassAssignment(updatedAssignment); },
+      'Thành công',
+      'Lỗi chỉnh sửa điểm'
+    ))
+    .catch(handleAPICallError('Lỗi chỉnh sửa điểm'));
   }
 
   const removeClassAssignment = (assignmentId) => {
-    // TODO: Call API here, if success calls local remove
-    localRemoveClassAssignment(assignmentId);   
+    AssignmentAPI.removeAssignment(assignmentId)
+    .then(handleAPICallSuccess(
+      () => { localRemoveClassAssignment(assignmentId); },
+      'Thành công',
+      'Lỗi xóa điểm'
+    ))
+    .catch(handleAPICallError('Lỗi xóa điểm'));   
   }
 
   /**

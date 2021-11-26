@@ -1,5 +1,4 @@
 import { USER_CLASS_ROLES } from '../../../../helpers/constants';
-import { AssignmentPositionSorter } from '../_helpers';
 
 export const DEFAULT_USER_CLASS_ROLE = USER_CLASS_ROLES.STUDENT;
 
@@ -50,10 +49,7 @@ export const getClassInfo = (classInfo) => {
 
 export const getClassAssignments = (classInfo) => {
   const assignments = classInfo.listAssignment || [];
-  let sortedAssignment = [...assignments];
-  sortedAssignment.sort(AssignmentPositionSorter);
-
-  return sortedAssignment;
+  return assignments;
 }
 
 export const getCurrentUserInfoInClass = (usersInClass, currentUser) => {

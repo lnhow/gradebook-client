@@ -8,25 +8,25 @@ export const addNewAssignment = (classAssignment) => {
   return api.post(baseURL, classAssignment, config);
 }
 
-export const updateAssignment = (classAssignment) => {
+export const updateAssignment = (assignmentId, classAssignment) => {
   const config = getAuthConfig();
-  return api.patch(baseURL, classAssignment, config);
+  return api.put(`${baseURL}/${assignmentId}`, classAssignment, config);
 }
 
-export const deleteAssignment = (classAssignment) => {
+export const removeAssignment = (assignmentId) => {
   const config = getAuthConfig();
-  return api.delete(baseURL, classAssignment, config);
+  return api.delete(`${baseURL}/${assignmentId}`, config);
 }
 
 export const reOrderAssigments = (classAssignmentOrder = []) => {
   const config = getAuthConfig();
-  return api.post(baseURL, classAssignmentOrder, config);
+  return api.post(`${baseURL}/arrange`, classAssignmentOrder, config);
 }
 
 const AssignmentAPI = {
   addNewAssignment,
   updateAssignment,
-  deleteAssignment,
+  removeAssignment,
   reOrderAssigments,
 }
 

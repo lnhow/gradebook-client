@@ -11,7 +11,6 @@ export default function AssignmentDeleteForm({
   const { removeClassAssignment } = useContext(CurrentClassContext);
 
   const handleDeleteAssignment = () => {
-    console.log(id)
     removeClassAssignment(id);
   }
 

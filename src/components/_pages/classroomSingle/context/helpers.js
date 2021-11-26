@@ -48,8 +48,7 @@ export const getClassInfo = (classInfo) => {
 }
 
 export const getClassAssignments = (classInfo) => {
-  const assignments = classInfo.listAssignments || [];
-
+  const assignments = classInfo.listAssignment || [];
   return assignments;
 }
 

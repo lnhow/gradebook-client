@@ -9,11 +9,17 @@ import {
   getClassInfo, getCurrentUserInfoInClass, getClassAssignments
 } from './helpers';
 
+import AssignmentAPI from '../../../../helpers/api/assigments';
+import { handleAPICallSuccess, handleAPICallError } from '../../../../helpers/handleAPICall';
+
 export const CurrentClassContext = createContext({
   currentClass: CLASS_INITIAL_STATE,
   setCurrentClass: () => {},  //EMPTY FUNCTION
   classAssignments: CLASS_ASSIGNMENTS_INITIAL_STATE,
   setClassAssignments: () => {},
+  addClassAssignment: () => {},
+  removeClassAssignment: () => {},
+  updateClassAssignment: () => {},
   currentUser: USER_INITIAL_STATE,
   isTeacher: USER_INITIAL_STATE.role === USER_CLASS_ROLES.TEACHER  //Is current signed in user a teacher
 });
@@ -32,11 +38,97 @@ export default function CurrentClassProvider({classroom_info = {}, children}) {
     _setClassAssignments(newClassAssignments);
   }
 
+  const addClassAssignment = (newAssignment) => {
+    const submitData = {
+      ...newAssignment,
+      class_id: currentClass.class_id
+    }
+
+    AssignmentAPI.addNewAssignment(submitData)
+    .then(handleAPICallSuccess(
+      (assignmentData) => { localAddClassAssignment(assignmentData); },
+      'Thành công',
+      'Lỗi thêm điểm mới'
+    ))
+    .catch(handleAPICallError('Lỗi thêm điểm mới'));
+  }
+
+  const updateClassAssignment = (updatedAssignment) => {
+    AssignmentAPI.updateAssignment(updatedAssignment.id, updatedAssignment)
+    .then(handleAPICallSuccess(
+      () => { localUpdateClassAssignment(updatedAssignment); },
+      'Thành công',
+      'Lỗi chỉnh sửa điểm'
+    ))
+    .catch(handleAPICallError('Lỗi chỉnh sửa điểm'));
+  }
+
+  const removeClassAssignment = (assignmentId) => {
+    AssignmentAPI.removeAssignment(assignmentId)
+    .then(handleAPICallSuccess(
+      () => { localRemoveClassAssignment(assignmentId); },
+      'Thành công',
+      'Lỗi xóa điểm'
+    ))
+    .catch(handleAPICallError('Lỗi xóa điểm'));   
+  }
+
+  /**
+   * Add class assignment to LOCAL STATE
+   * @param {*} newAssignment the new assignment info object
+   */
+  const localAddClassAssignment = (newAssignment) => {
+    setClassAssignments([
+      ...classAssignments,
+      newAssignment
+    ]);
+  }
+
+  /**
+   * Update class assignment in LOCAL STATE
+   * @param {*} updatedAssignment the updated assignment info object
+   */
+  const localUpdateClassAssignment = (updatedAssignment) => {
+    const index = classAssignments.findIndex(x => x.id === updatedAssignment.id);
+    if (index === -1) {
+      // Not found
+      return;
+    }
+    else {
+      setClassAssignments([
+        ...classAssignments.slice(0,index),
+        Object.assign({}, classAssignments[index], updatedAssignment),
+        ...classAssignments.slice(index + 1),
+      ])
+    }    
+  }
+
+  /**
+   * Remove class assignment from LOCAL STATE
+   * @param {*} assignmentId Id of the assignment to remove
+   */
+  const localRemoveClassAssignment = (assignmentId) => {
+    const index = classAssignments.findIndex(x => x.id === assignmentId);
+    if (index === -1) {
+      // Not found
+      return;
+    }
+    else {
+      setClassAssignments([
+        ...classAssignments.slice(0,index),
+        ...classAssignments.slice(index + 1),
+      ])
+    }    
+  }
+
   const contextValue = {
     currentClass: currentClass,
     setCurrentClass: setCurrentClass,
     classAssignments: classAssignments,
     setClassAssignments: setClassAssignments,
+    addClassAssignment: addClassAssignment,
+    removeClassAssignment,
+    updateClassAssignment,
     currentUser: currentUserInClass,
     isTeacher: currentUserInClass.role === USER_CLASS_ROLES.TEACHER,
   }

@@ -1,16 +1,16 @@
 import {
   Container,
-  Box,
-  Typography
+  Box
 } from '@mui/material';
+import GradeStructureSummary from '../../_common/gradeStructureSummary';
 import AssigmentList from './assignmentList';
 import CreateGradeForm from './createForm';
 
 export default function ClassroomGradeStructure() {
   return (
     <Container maxWidth='md'>
-      <Box margin={2}>
-        <Typography variant='h6'>Cấu trúc điểm</Typography>
+      <Box marginY={1}>
+        <GradeStructureSummary/>
       </Box>
       <CreateGradeForm/>
       <AssigmentList/>

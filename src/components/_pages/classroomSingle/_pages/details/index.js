@@ -3,6 +3,7 @@ import {
   Box,
   Typography
 } from '@mui/material';
+import GradeStructureSummary from '../../_common/gradeStructureSummary/index.js';
 import ClassroomDetailSummary from './classroomSummary.js';
 
 
@@ -13,6 +14,9 @@ function ClassroomDetailPage({classroom}) {
         <Typography variant='h6'>Chi tiết lớp</Typography>
       </Box>
       <ClassroomDetailSummary classroom={classroom}/>
+      <Box marginY={2}>
+        <GradeStructureSummary/>
+      </Box>
     </Container>
   )
 }

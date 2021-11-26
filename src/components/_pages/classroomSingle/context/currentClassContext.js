@@ -36,10 +36,45 @@ export default function CurrentClassProvider({classroom_info = {}, children}) {
   }
 
   const addClassAssignment = (newAssignment) => {
+    const assignment = {
+      ...newAssignment,
+      id: classAssignments.length,
+      position: classAssignments.length
+    }
     setClassAssignments([
       ...classAssignments,
-      newAssignment
-    ])
+      assignment
+    ]);
+  }
+
+  const updateClassAssignment = (updatedAssignment) => {
+    const index = classAssignments.findIndex(x => x.id === updatedAssignment.id);
+    if (index === -1) {
+      // handle error
+      return;
+    }
+    else {
+      setClassAssignments([
+        ...classAssignments.slice(0,index),
+        Object.assign({}, classAssignments[index], updatedAssignment),
+        ...classAssignments.slice(index + 1),
+      ])
+    }    
+  }
+
+  const removeClassAssignment = (assignmentId) => {
+    const index = classAssignments.findIndex(x => x.id === assignmentId);
+    console.log(index)
+    if (index === -1) {
+      // handle error
+      return;
+    }
+    else {
+      setClassAssignments([
+        ...classAssignments.slice(0,index),
+        ...classAssignments.slice(index + 1),
+      ])
+    }    
   }
 
   const contextValue = {
@@ -48,8 +83,8 @@ export default function CurrentClassProvider({classroom_info = {}, children}) {
     classAssignments: classAssignments,
     setClassAssignments: setClassAssignments,
     addClassAssignment: addClassAssignment,
-    removeClassAssignment: () => {},
-    updateClassAssignment: () => {},
+    removeClassAssignment,
+    updateClassAssignment,
     currentUser: currentUserInClass,
     isTeacher: currentUserInClass.role === USER_CLASS_ROLES.TEACHER,
   }

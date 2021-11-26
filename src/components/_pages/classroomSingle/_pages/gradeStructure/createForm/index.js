@@ -29,6 +29,7 @@ export default function CreateGradeForm() {
     }
     console.log(submitValues)
     addClassAssignment(submitValues);
+    formik.resetForm();
   }
 
   const formik = useFormik({

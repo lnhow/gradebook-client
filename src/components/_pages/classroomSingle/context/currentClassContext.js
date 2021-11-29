@@ -1,5 +1,6 @@
 import { createContext, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import { selectUser } from '../../../../redux/slices/user';
 import { USER_CLASS_ROLES } from '../../../../helpers/constants';
@@ -39,11 +40,13 @@ export default function CurrentClassProvider({classroom_info = {}, children}) {
     _setClassAssignments(newClassAssignments);
   }
 
-  const addClassAssignment = (newAssignment) => {
+  const addClassAssignment = (newAssignment, finalCallback = () => {}) => {
     const submitData = {
       ...newAssignment,
       class_id: currentClass.class_id
     }
+
+    const loadingToastId = toast.loading('Đang thêm điểm mới...');
 
     AssignmentAPI.addNewAssignment(submitData)
     .then(handleAPICallSuccess(
@@ -51,27 +54,50 @@ export default function CurrentClassProvider({classroom_info = {}, children}) {
       'Thành công',
       'Lỗi thêm điểm mới'
     ))
-    .catch(handleAPICallError('Lỗi thêm điểm mới'));
+    .catch(handleAPICallError('Lỗi thêm điểm mới'))
+    .finally(() => {
+      toast.dismiss(loadingToastId);
+      finalCallback();
+    });
   }
 
-  const updateClassAssignment = (updatedAssignment) => {
+  const updateClassAssignment = (updatedAssignment, finalCallback = () => {}) => {
+    const loadingToastId = toast.loading('Thực hiện chỉnh sửa...');
+
     AssignmentAPI.updateAssignment(updatedAssignment.id, updatedAssignment)
     .then(handleAPICallSuccess(
       () => { localUpdateClassAssignment(updatedAssignment); },
       'Thành công',
       'Lỗi chỉnh sửa điểm'
     ))
-    .catch(handleAPICallError('Lỗi chỉnh sửa điểm'));
+    .catch(handleAPICallError('Lỗi chỉnh sửa điểm'))
+    .finally(() => {
+      toast.dismiss(loadingToastId);
+      finalCallback();
+    });
   }
 
-  const removeClassAssignment = (assignmentId) => {
+  const removeClassAssignment = (
+    assignmentId, 
+    errCallback = () => {}, 
+    finalCallback = () => {}
+  ) => {
+    const loadingToastId = toast.loading('Thực hiện thao tác xóa...');
+
     AssignmentAPI.removeAssignment(assignmentId)
     .then(handleAPICallSuccess(
       () => { localRemoveClassAssignment(assignmentId); },
       'Thành công',
       'Lỗi xóa điểm'
     ))
-    .catch(handleAPICallError('Lỗi xóa điểm'));   
+    .catch(() => {
+      handleAPICallError('Lỗi xóa điểm');
+      errCallback();
+    })
+    .finally(() => {
+      toast.dismiss(loadingToastId);
+      finalCallback();
+    });
   }
 
   const reOrderClassAssignment = (newAssignment) => {

@@ -1,7 +1,8 @@
-import { Button, Paper, Box, Typography } from '@mui/material';
+import { Paper, Box, Typography } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { CurrentClassContext } from '../../../context/currentClassContext';
 
 import CustomTextField from '../../../../../_common/customTextField';
@@ -20,13 +21,17 @@ const validationSchema = yup.object({
 
 export default function CreateGradeForm() {
   const { addClassAssignment } = useContext(CurrentClassContext);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (values) => {
+    setIsSubmitting(true);
     const submitValues = {
       ...values,
     }
-    addClassAssignment(submitValues);
-    formik.resetForm();
+    addClassAssignment(submitValues, () => {
+      setIsSubmitting(false);
+      formik.resetForm();
+    });
   }
 
   const formik = useFormik({
@@ -68,14 +73,15 @@ export default function CreateGradeForm() {
             error={Boolean(formik.errors.weight)}
             helperText={formik.errors.weight}
           />
-          <Button 
+          <LoadingButton 
+            loading={isSubmitting}
             variant='contained'
             fullWidth
             size='small'
             type='submit'
           >
             Thêm
-          </Button>
+          </LoadingButton>
         </form>
       </Box>
     </Paper>

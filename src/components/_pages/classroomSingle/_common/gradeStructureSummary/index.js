@@ -41,6 +41,7 @@ export default function GradeStructureSummary({title='Cấu trúc điểm'}) {
         position: 'top' 
       },
     },
+    maintainAspectRatio : false
   };
 
   return (
@@ -48,7 +49,7 @@ export default function GradeStructureSummary({title='Cấu trúc điểm'}) {
       <Box padding={2}>
         <Typography variant='h6'>{title}</Typography>
         <AlignCenter flexDirection='column'>
-          <Box overflow='visible'>
+          <Box sx={{height: 250}} overflow='visible'>
             <Pie
               data={chartData}
               options={chartOptions}

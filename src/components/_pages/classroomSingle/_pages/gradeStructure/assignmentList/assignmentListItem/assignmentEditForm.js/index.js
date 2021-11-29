@@ -1,7 +1,8 @@
 import { Button, Box } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { CurrentClassContext } from '../../../../../context/currentClassContext';
 import CustomTextField from '../../../../../../../_common/customTextField';
 
@@ -22,15 +23,20 @@ export default function AssignmentEditForm({
 }) {
   const { currentClass, updateClassAssignment } = useContext(CurrentClassContext);
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleSubmit = async (values) => {
+    setIsSubmitting(true);
     const class_id = currentClass.class_id;
     const submitValues = {
       ...assignment,
       ...values,
       class_id
     }
-    updateClassAssignment(submitValues);
-    handleClose();
+    updateClassAssignment(submitValues, () => {
+      setIsSubmitting(false);
+      handleClose();
+    });
   }
 
   const onClose = () => {
@@ -75,14 +81,15 @@ export default function AssignmentEditForm({
           error={Boolean(formik.errors.weight)}
           helperText={formik.errors.weight}
         />
-        <Button 
+        <LoadingButton 
+          loading={isSubmitting}
           variant='contained'
           fullWidth
           size='small'
           type='submit'
         >
           Lưu thay đổi
-        </Button>
+        </LoadingButton>
         <Button 
           variant='outlined'
           fullWidth

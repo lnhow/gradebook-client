@@ -1,5 +1,6 @@
 import { Box, Typography, Button, Stack } from '@mui/material';
-import { useContext } from 'react';
+import { LoadingButton } from '@mui/lab';
+import { useContext, useState } from 'react';
 import { AlignCenter } from '../../../../../../../_common/utilBoxes';
 import { CurrentClassContext } from '../../../../../context/currentClassContext';
 
@@ -10,9 +11,13 @@ export default function AssignmentDeleteForm({
   const { id } = assignment;
   const { removeClassAssignment } = useContext(CurrentClassContext);
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleDeleteAssignment = () => {
-    console.log(id)
-    removeClassAssignment(id);
+    setIsSubmitting(true);
+    removeClassAssignment(id, () => {
+      setIsSubmitting(false);
+    });
   }
 
   const onClose = () => {
@@ -26,13 +31,14 @@ export default function AssignmentDeleteForm({
           <Typography>Xác nhận xóa?</Typography>
         </Box>
         <Stack spacing={2} direction='row'>
-          <Button 
+          <LoadingButton 
+            loading={isSubmitting}
             variant='contained'
             color='error'
             onClick={handleDeleteAssignment}
           >
             Xóa
-          </Button>
+          </LoadingButton>
           <Button 
             variant='outlined'
             color='defaultColor'

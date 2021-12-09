@@ -7,6 +7,7 @@ import { useContext } from 'react';
 import ClassroomDetailPage from '../_pages/details';
 import ClassroomUsersPage from '../_pages/userList';
 import ClassroomGradeStructure from '../_pages/gradeStructure';
+import ClassroomGradeBoard from '../_pages/gradeBoard';
 
 import { CurrentClassContext } from '../context/currentClassContext';
 
@@ -23,6 +24,9 @@ export default function ClassroomRoutes({ classroom }) {
       <Route exact path={`${path}/participants`}>
         <ClassroomUsersPage classroom={classroom}/>
       </Route>
+      <TeacherOnlyRoute exact path={`${path}/grade`} alternative={alternativePath}>
+        <ClassroomGradeBoard/>
+      </TeacherOnlyRoute>
       <TeacherOnlyRoute exact path={`${path}/grade-structure`} alternative={alternativePath}>
         <ClassroomGradeStructure/>
       </TeacherOnlyRoute>

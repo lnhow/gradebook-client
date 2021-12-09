@@ -2,8 +2,9 @@ import { Paper, Box, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
-import { useContext, useState } from 'react';
-import { CurrentClassContext } from '../../../context/currentClassContext';
+import { useState } from 'react';
+
+import useAddClassAssignment from '../hooks/addAssignment';
 
 import CustomTextField from '../../../../../_common/customTextField';
 
@@ -20,7 +21,7 @@ const validationSchema = yup.object({
 
 
 export default function CreateGradeForm() {
-  const { addClassAssignment } = useContext(CurrentClassContext);
+  const addClassAssignment = useAddClassAssignment();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (values) => {

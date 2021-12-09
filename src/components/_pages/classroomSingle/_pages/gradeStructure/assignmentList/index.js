@@ -12,6 +12,8 @@ import AssigmentListItem from './assignmentListItem';
 import { AssignmentPositionSorter } from '../../../_helpers';
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd'
 
+import useReOrderAssignment from '../hooks/reorderAssignment';
+
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
@@ -27,7 +29,9 @@ const getItemStyle = (isDragging, draggableStyle) => ({
 });
 
 export default function AssignmentList() {
-  const { classAssignments ,reOrderClassAssignment} = useContext(CurrentClassContext);
+  const { classAssignments } = useContext(CurrentClassContext);
+  const reOrderClassAssignment = useReOrderAssignment();
+
   useLayoutEffect(() => {
     let displayAssignments = [ ...classAssignments ]; // Sort is mutatable
     displayAssignments.sort(AssignmentPositionSorter);

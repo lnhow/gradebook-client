@@ -1,15 +1,16 @@
 import { Box, Typography, Button, Stack } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { AlignCenter } from '../../../../../../../_common/utilBoxes';
-import { CurrentClassContext } from '../../../../../context/currentClassContext';
+
+import useRemoveClassAssignment from '../../../hooks/removeAssignment';
 
 export default function AssignmentDeleteForm({
   assignment, 
   handleClose = () => {}
 }) {
   const { id } = assignment;
-  const { removeClassAssignment } = useContext(CurrentClassContext);
+  const removeClassAssignment = useRemoveClassAssignment();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 

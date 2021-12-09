@@ -6,6 +6,8 @@ import { useContext, useState } from 'react';
 import { CurrentClassContext } from '../../../../../context/currentClassContext';
 import CustomTextField from '../../../../../../../_common/customTextField';
 
+import useUpdateClassAssignment from '../../../hooks/updateAssignment';
+
 const validationSchema = yup.object({
   title: yup
     .string('Nhập tên loại điểm')
@@ -21,7 +23,8 @@ export default function AssignmentEditForm({
   assignment, 
   handleClose = () => {}
 }) {
-  const { currentClass, updateClassAssignment } = useContext(CurrentClassContext);
+  const { currentClass } = useContext(CurrentClassContext);
+  const updateClassAssignment = useUpdateClassAssignment();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 

@@ -6,7 +6,7 @@ import {
 export default function Topbar() {
   return (
     <Box>
-      <Typography variant='h6'>Chi tiết lớp</Typography>
+      <Typography variant='h6'>Điểm của lớp</Typography>
     </Box>
   )
 }

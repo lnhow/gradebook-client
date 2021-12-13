@@ -9,17 +9,17 @@ const commonRoutes = [
   { order: 1, path: '/class/:class_id/participants', 
     endpoint: '/participants', name: 'Thành viên' 
   }, 
+  { order: 2, path: '/class/:class_id/grade', 
+    endpoint: '/grade', name: 'Điểm'
+  },
   { order: 0, path: '/class/:class_id', 
-    endpoint: '', name: 'Chi tiết' 
+    endpoint: '', name: 'Chi tiết'
   }
 ];
 
 const teacherRoutes = [
   { order: 3, path: '/class/:class_id/grade-structure', 
     endpoint: '/grade-structure', name: 'Cấu trúc điểm'
-  },
-  { order: 2, path: '/class/:class_id/grade', 
-    endpoint: '/grade', name: 'Điểm'
   },
 ];
 

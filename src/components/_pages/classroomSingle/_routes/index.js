@@ -24,9 +24,9 @@ export default function ClassroomRoutes({ classroom }) {
       <Route exact path={`${path}/participants`}>
         <ClassroomUsersPage classroom={classroom}/>
       </Route>
-      <TeacherOnlyRoute exact path={`${path}/grade`} alternative={alternativePath}>
+      <Route exact path={`${path}/grade`}>
         <ClassroomGradeBoard/>
-      </TeacherOnlyRoute>
+      </Route>
       <TeacherOnlyRoute exact path={`${path}/grade-structure`} alternative={alternativePath}>
         <ClassroomGradeStructure/>
       </TeacherOnlyRoute>

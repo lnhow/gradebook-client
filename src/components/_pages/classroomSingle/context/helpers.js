@@ -25,6 +25,8 @@ export const CLASS_INITIAL_STATE = {
   }
 }
 
+export const CLASS_GRADE_INITIAL_STATE = [];
+
 export const CLASS_ASSIGNMENTS_INITIAL_STATE = [];
 
 export const getClassInfo = (classInfo) => {

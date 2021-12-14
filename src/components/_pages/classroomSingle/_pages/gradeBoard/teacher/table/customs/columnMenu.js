@@ -12,10 +12,15 @@ export default function CustomColumnMenu(props) {
   let customMenuItems = [];
 
   if (currentColumn.field !== 'student_id' && currentColumn.field !== 'fullname') {
-    customMenuItems = [
-      {title: 'Hiện điểm', onClick: () => toggleGrade(currentColumn.field)},
+    customMenuItems.push(
+      {title: 'Hiện điểm', onClick: () => toggleGrade(currentColumn.field)}
+    );
+  }
+
+  if (currentColumn.field !== 'summary') {
+    customMenuItems.push(
       {title: 'Import điểm', onClick: () => importGrade(currentColumn.field)},
-    ]
+    );
   }
 
   return (

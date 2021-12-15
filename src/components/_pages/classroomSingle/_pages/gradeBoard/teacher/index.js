@@ -56,7 +56,7 @@ export default function TeacherGradeBoard() {
     return (
       <Container maxWidth='xl'>
         <Box marginY={2}>
-          <Topbar/>
+          <Topbar refreshData={refresh}/>
         </Box>
         <GradeTable refreshData={refresh}/>
       </Container>

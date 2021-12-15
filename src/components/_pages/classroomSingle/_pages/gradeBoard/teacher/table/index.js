@@ -10,6 +10,7 @@ import {
 import { useContext } from 'react';
 import { CurrentClassContext } from '../../../../context/currentClassContext';
 import useEditGrade from '../hooks/useEditGrade';
+import useUpdateClassAssignment from '../../../gradeStructure/hooks/updateAssignment';
 
 import CustomColumnMenu from './customs/columnMenu';
 import CustomNoRowsOverlay from './customs/noRowsOverlay';
@@ -21,8 +22,9 @@ const getAssignmentField = (assignmentId) => {
 }
 
 export default function GradeTable() {
-  const { classAssignments, classGrades } = useContext(CurrentClassContext);
+  const { classAssignments, classGrades, currentClass } = useContext(CurrentClassContext);
   const editGrade = useEditGrade();
+  const updateAssignment = useUpdateClassAssignment();
   
   // A helper hash map to help with edittings
   const assignmentMap = {};
@@ -35,7 +37,8 @@ export default function GradeTable() {
     assignmentMap[fieldName] = {
       assignmentId: assignment.id,
       field: fieldName,
-      headerName: headerName
+      headerName: headerName,
+      finalized: assignment.finalized
     }
 
     return {
@@ -83,8 +86,17 @@ export default function GradeTable() {
     editGrade(studentId, assignmentId, newValue)
   }
 
-  const toggleGradeDisplay = (assignment_id) => {
-    console.log(assignment_id);
+  const toggleGradeDisplay = (assignment_field, callback = () => {}) => {
+    const assignmentId = assignmentMap[assignment_field].assignmentId;
+    const newFinalized = !assignmentMap[assignment_field].finalized;
+    const submitValues = {
+      class_id: currentClass.class_id,
+      id: assignmentId,
+      finalized: newFinalized
+    }
+    updateAssignment(submitValues, () => {
+      callback();
+    })
   }
 
   const importGrade = (assignment_id) => {
@@ -106,7 +118,8 @@ export default function GradeTable() {
           componentsProps={{
             columnMenu: {
               toggleGrade: toggleGradeDisplay,
-              importGrade
+              importGrade,
+              assignmentMap,
             }
           }}
         />

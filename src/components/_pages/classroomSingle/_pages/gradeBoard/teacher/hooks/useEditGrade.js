@@ -1,5 +1,12 @@
 import { useContext } from 'react';
+import GradeAPI from '../../../../../../../helpers/api/grade';
 import { CurrentClassContext } from '../../../../context/currentClassContext';
+import { handleAPICallError } from '../../../../../../../helpers/handleAPICall';
+import { 
+  getGradeFromAssignmentId,
+  getGradeIndexFromAssignmentId,
+  calculateSummaryAtRow
+} from './helpers';
 
 export default function useEditGrade() {
   const { 
@@ -15,21 +22,15 @@ export default function useEditGrade() {
     }
 
     const row = Object.assign({}, classGrades[index]);
-    row[assignmentId] = newGrade;
-    
-    // Re-calculate summary
-    let summary = 0;
-    let totalWeight = 0;
-    
-    classAssignments.forEach((assignment) => {
-      const grade = row[assignment.id];
-      if (grade !== null && grade !== undefined) {
-        summary += grade * assignment.weight;
-        totalWeight += assignment.weight;
-      }
-    })
-    row.summary = (summary / totalWeight).toFixed(2);
-
+    // Assign new grade
+    const gradeIndex = getGradeIndexFromAssignmentId(assignmentId, row);
+    if (gradeIndex === -1) {
+      return;
+    }
+    row.list_grade[gradeIndex].grade = newGrade;
+    row.summary = calculateSummaryAtRow(row, classAssignments);
+    // After local update
+    // console.log(row);
     
     setClassGrades([
       ...classGrades.slice(0, index),
@@ -39,20 +40,33 @@ export default function useEditGrade() {
   }
 
   const editGrade = (studentId, assignmentId, newGrade) => {
-    console.log(studentId + " " + assignmentId + " " + newGrade)
+    //console.log(studentId + " " + assignmentId + " " + newGrade)
     const index = classGrades.findIndex((row) => row.student_id === studentId);
     if (index === -1) {
       return;
     }
+
     const row = classGrades[index];
-    const oldGrade = row[assignmentId];
+    const oldGrade = getGradeFromAssignmentId(assignmentId, row);
+    const revertLocalGradeChange = () => {
+      localEditGrade(index, assignmentId, oldGrade);
+    }
     
+    // Double check to see it it should be axed
     const grade = parseFloat(newGrade);
     if (isNaN(grade)) {
-      localEditGrade(index, assignmentId, oldGrade);
+      revertLocalGradeChange();
       return;
     }
-    localEditGrade(index, assignmentId, grade)
+    GradeAPI.teacherEditGradeCell(studentId, assignmentId, grade)
+    .then((result) => {
+      console.log(result);
+      localEditGrade(index, assignmentId, grade)
+    })
+    .catch((error) => {
+      handleAPICallError('Lỗi chỉnh sửa điểm')(error);
+      revertLocalGradeChange();
+    })
   }
 
   return editGrade

@@ -9,7 +9,7 @@ import {
 
 import { useContext } from 'react';
 import { CurrentClassContext } from '../../../../context/currentClassContext';
-//import useEditGrade from '../hooks/useEditGrade';
+import useEditGrade from '../hooks/useEditGrade';
 
 import CustomColumnMenu from './customs/columnMenu';
 import CustomNoRowsOverlay from './customs/noRowsOverlay';
@@ -22,7 +22,7 @@ const getAssignmentField = (assignmentId) => {
 
 export default function GradeTable() {
   const { classAssignments, classGrades } = useContext(CurrentClassContext);
-  //const editGrade = useEditGrade();
+  const editGrade = useEditGrade();
   
   // A helper hash map to help with edittings
   const assignmentMap = {};
@@ -76,11 +76,11 @@ export default function GradeTable() {
   });
 
   const onCellEditCommit = (params, event, detail) => {
-    // console.log(params);
-    //const studentId = params.id;
-    //const assignmentId = assignmentMap[params.field].assignmentId;
-    //const newValue = params.value;
-    //editGrade(studentId, assignmentId, newValue)
+    //console.log(params);
+    const studentId = params.id;
+    const assignmentId = assignmentMap[params.field].assignmentId;
+    const newValue = params.value;
+    editGrade(studentId, assignmentId, newValue)
   }
 
   const toggleGradeDisplay = (assignment_id) => {

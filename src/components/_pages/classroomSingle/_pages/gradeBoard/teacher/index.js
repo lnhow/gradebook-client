@@ -19,7 +19,7 @@ export default function TeacherGradeBoard() {
   const loadClassGrades = useLoadClassGrade();
 
   useEffect(() => {
-    if (!isLoadedOnce && !isClassGradeLoaded) {
+    if (!isLoadedOnce || !isClassGradeLoaded) {
       setIsLoadedOnce(true);
       loadGrade(loadClassGrades)
     }

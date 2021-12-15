@@ -38,6 +38,10 @@ export default function TeacherGradeBoard() {
     })
   }
 
+  const refresh = () => {
+    loadGrade(loadClassGrades);
+  }
+
   if (error) {
     return <ErrorPage 
       code = {error.status}
@@ -54,7 +58,7 @@ export default function TeacherGradeBoard() {
         <Box marginY={2}>
           <Topbar/>
         </Box>
-        <GradeTable/>
+        <GradeTable refreshData={refresh}/>
       </Container>
     )
   }

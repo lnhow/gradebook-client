@@ -16,6 +16,7 @@ import CustomColumnMenu from './customs/columnMenu';
 import CustomNoRowsOverlay from './customs/noRowsOverlay';
 
 import validateGrade from './helpers/validation/grade';
+import { GRADE_FINALIZED, GRADE_NOT_FINALIZED, isGradeFinalized } from '../../_helpers';
 
 const getAssignmentField = (assignmentId) => {
   return assignmentId.toString();
@@ -38,7 +39,7 @@ export default function GradeTable() {
       assignmentId: assignment.id,
       field: fieldName,
       headerName: headerName,
-      finalized: assignment.finalized
+      finalized: isGradeFinalized(assignment.finalized)
     }
 
     return {
@@ -88,12 +89,15 @@ export default function GradeTable() {
 
   const toggleGradeDisplay = (assignment_field, callback = () => {}) => {
     const assignmentId = assignmentMap[assignment_field].assignmentId;
-    const newFinalized = !assignmentMap[assignment_field].finalized;
+    let isFinalized = assignmentMap[assignment_field].finalized;
+    // Toggle finalized around
+    let newFinalized = isFinalized ? GRADE_NOT_FINALIZED : GRADE_FINALIZED;
     const submitValues = {
       class_id: currentClass.class_id,
       id: assignmentId,
       finalized: newFinalized
     }
+
     updateAssignment(submitValues, () => {
       callback();
     })

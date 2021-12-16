@@ -1,4 +1,10 @@
 export const DEFAULT_GRADE = '_';
+export const GRADE_FINALIZED = 'Y';
+export const GRADE_NOT_FINALIZED = 'N';
+
+export const isGradeFinalized = (finalization) => {
+  return finalization === GRADE_FINALIZED;
+}
 
 export const getGradeFromAssignmentId = (assignmentId, row) => {
   let result = DEFAULT_GRADE;

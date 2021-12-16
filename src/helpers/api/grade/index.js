@@ -10,6 +10,13 @@ export const teacherGetGrade = (classId) => {
   return api.get(`${baseURL}${endpointURL}/${classId}`, config);
 }
 
+export const studentGetGrade = (classId) => {
+  const endpointURL = '/studentgrade';
+  const config = getAuthConfig();
+
+  return api.get(`${baseURL}${endpointURL}/${classId}`, config);
+}
+
 export const teacherEditGradeCell = (studentId, assignmentId, grade) => {
   const endpointURL = '/update';
   const config = getAuthConfig();
@@ -25,6 +32,8 @@ export const teacherEditGradeCell = (studentId, assignmentId, grade) => {
 const GradeAPI = {
   teacherGetGrade,
   teacherEditGradeCell,
+
+  studentGetGrade,
 }
 
 export default GradeAPI;

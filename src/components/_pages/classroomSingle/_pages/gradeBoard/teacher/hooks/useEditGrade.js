@@ -6,7 +6,7 @@ import {
   getGradeFromAssignmentId,
   getGradeIndexFromAssignmentId,
   calculateSummaryAtRow
-} from './helpers';
+} from '../../_helpers';
 
 export default function useEditGrade() {
   const { 
@@ -60,7 +60,7 @@ export default function useEditGrade() {
     }
     GradeAPI.teacherEditGradeCell(studentId, assignmentId, grade)
     .then((result) => {
-      console.log(result);
+      //console.log(result);
       localEditGrade(index, assignmentId, grade)
     })
     .catch((error) => {

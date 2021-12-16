@@ -6,7 +6,7 @@ import {
   DataGrid,
 } from '@mui/x-data-grid';
 
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { CurrentClassContext } from '../../../../context/currentClassContext';
 import useEditGrade from '../hooks/useEditGrade';
 import useUpdateClassAssignment from '../../../gradeStructure/hooks/updateAssignment';
@@ -17,15 +17,15 @@ import CustomNoRowsOverlay from './customs/noRowsOverlay';
 import validateGrade from './helpers/validation/grade';
 import { GRADE_FINALIZED, GRADE_NOT_FINALIZED, isGradeFinalized } from '../../_helpers';
 import CustomToolbar from './customs/toolBar';
+import ImportGradeDialog from '../dialogs/importGrade';
 
-const getAssignmentField = (assignmentId) => {
-  return assignmentId.toString();
-}
-
-export default function GradeTable() {
+export default function GradeTable({refreshData = () => {}}) {
   const { classAssignments, classGrades, currentClass } = useContext(CurrentClassContext);
   const editGrade = useEditGrade();
   const updateAssignment = useUpdateClassAssignment();
+
+  const [isImportGradeOpen, setImportGradeOpen] = useState(false);
+  const [selectedAssignment, setSelectedAssignment] = useState(null);
   
   // A helper hash map to help with edittings
   const assignmentMap = {};
@@ -117,8 +117,14 @@ export default function GradeTable() {
     })
   }
 
-  const importGrade = (assignment_id) => {
-    console.log(assignment_id);
+  const importGrade = (assignment_field) => {
+    const assignment = assignmentMap[assignment_field];
+    setSelectedAssignment(assignment);
+    toggleImportGrade(true);
+  }
+
+  const toggleImportGrade = (b) => {
+    setImportGradeOpen(b);
   }
 
   return (
@@ -142,8 +148,18 @@ export default function GradeTable() {
           }}
         />
       </Box>
+      <ImportGradeDialog 
+        open={isImportGradeOpen}
+        handleClose={() => {toggleImportGrade(false)}}
+        assignment={selectedAssignment}
+        onSuccess={() => { refreshData(); }}
+      />
     </Paper>
   )
+}
+
+const getAssignmentField = (assignmentId) => {
+  return assignmentId.toString();
 }
 
 const TableContainerSX = {

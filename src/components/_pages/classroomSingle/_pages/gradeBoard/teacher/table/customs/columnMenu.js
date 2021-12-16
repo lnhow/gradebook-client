@@ -38,6 +38,11 @@ export default function CustomColumnMenu(props) {
     }
 
     customMenuItems.push(
+      <ListItemButton key={1} onClick={handleImportGrade}>
+        Import điểm
+      </ListItemButton>
+    )
+    customMenuItems.push(
       <Tooltip key={0} 
         title={toggleDisplayTooltip}
       >
@@ -46,11 +51,6 @@ export default function CustomColumnMenu(props) {
         </ListItemButton>
       </Tooltip>
     );
-    customMenuItems.push(
-      <ListItemButton key={1} onClick={handleImportGrade}>
-        Import điểm
-      </ListItemButton>
-    )
   }
 
   return (

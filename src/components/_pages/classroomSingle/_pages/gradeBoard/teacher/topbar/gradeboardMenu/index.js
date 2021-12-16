@@ -13,7 +13,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 const studentImportTemplateURL = 'https://file-examples-com.github.io/uploads/2017/02/file_example_XLS_50.xls';
 const gradeImportTemplateURL = 'https://file-examples-com.github.io/uploads/2017/02/file_example_XLS_50.xls';
 
-export default function GradeboardMenu({handleRefresh}) {
+export default function GradeboardMenu({
+  handleRefresh,
+  toggleImportStudent
+}) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -52,7 +55,7 @@ export default function GradeboardMenu({handleRefresh}) {
           <Typography variant='caption'><b>Mẫu import</b></Typography>
         </Divider>
         <MenuItem component={Link} to={studentImportTemplateURL} download target='_blank'>
-          Mẫu thông tin sinh viên
+          Mẫu danh sách lớp
         </MenuItem>
         <MenuItem component={Link} to={gradeImportTemplateURL} download target='_blank'>
           Mẫu cột điểm
@@ -60,8 +63,8 @@ export default function GradeboardMenu({handleRefresh}) {
         <Divider textAlign='left'>
           <Typography variant='caption'><b>Import</b></Typography>
         </Divider>
-        <MenuItem onClick={() => {}}>
-          Import thông tin sinh viên
+        <MenuItem onClick={() => {toggleImportStudent()}}>
+          Import danh sách lớp
         </MenuItem>
         <Divider textAlign='left'>
         <Typography variant='caption'><b>Export</b></Typography>

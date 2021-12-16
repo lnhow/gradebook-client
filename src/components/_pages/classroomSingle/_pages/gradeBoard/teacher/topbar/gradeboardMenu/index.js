@@ -10,6 +10,8 @@ import { Link } from 'react-router-dom';
 
 import MenuIcon from '@mui/icons-material/Menu';
 
+import ExportMenuItem from './exportMenuItem'
+
 const studentImportTemplateURL = 'https://file-examples-com.github.io/uploads/2017/02/file_example_XLS_50.xls';
 const gradeImportTemplateURL = 'https://file-examples-com.github.io/uploads/2017/02/file_example_XLS_50.xls';
 
@@ -69,9 +71,7 @@ export default function GradeboardMenu({
         <Divider textAlign='left'>
         <Typography variant='caption'><b>Export</b></Typography>
         </Divider>
-        <MenuItem onClick={() => {}}>
-          Export bảng điểm
-        </MenuItem>
+        <ExportMenuItem/>
       </Menu>
     </>
   );

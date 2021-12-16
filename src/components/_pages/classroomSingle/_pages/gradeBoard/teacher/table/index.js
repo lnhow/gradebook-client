@@ -4,7 +4,6 @@ import {
 } from '@mui/material';
 import { 
   DataGrid,
-  GridToolbar,
 } from '@mui/x-data-grid';
 
 import { useContext } from 'react';
@@ -17,6 +16,7 @@ import CustomNoRowsOverlay from './customs/noRowsOverlay';
 
 import validateGrade from './helpers/validation/grade';
 import { GRADE_FINALIZED, GRADE_NOT_FINALIZED, isGradeFinalized } from '../../_helpers';
+import CustomToolbar from './customs/toolBar';
 
 const getAssignmentField = (assignmentId) => {
   return assignmentId.toString();
@@ -48,9 +48,16 @@ export default function GradeTable() {
       minWidth: 150,
       assignment_id: assignment.id,
       editable: true,
+      flex: 1,
       preProcessEditCellProps: (params) => {
         const isValid = validateGrade(params.props.value);
         return { ...params.props, error: !isValid };
+      },
+      renderHeader: (params) => {
+        return <span>{`${params.colDef.headerName} (${assignment.weight})`} </span>
+      },
+      valueFormatter: (params) => {
+        return `${params.value} / 10`;
       }
       
     }
@@ -60,7 +67,14 @@ export default function GradeTable() {
   const colsDef = [
     {field: 'student_id', headerName: 'MSSV', minWidth: 110},
     {field: 'fullname', headerName: 'Họ tên', minWidth: 200},
-    {field: 'summary', headerName: 'Tổng điểm', minWidth: 150}
+    {
+      field: 'summary', 
+      headerName: 'Tổng điểm', 
+      minWidth: 150,
+      renderCell: (params) => {
+        return params.value + ' / 10';
+      }
+    }
   ].concat(assignmentCols);
 
   // Map grade list to table
@@ -116,7 +130,7 @@ export default function GradeTable() {
           onCellEditCommit={onCellEditCommit}
           components={{
             ColumnMenu: CustomColumnMenu,
-            Toolbar: GridToolbar,
+            Toolbar: CustomToolbar,
             NoRowsOverlay: CustomNoRowsOverlay,
           }}
           componentsProps={{
@@ -134,7 +148,7 @@ export default function GradeTable() {
 
 const TableContainerSX = {
   display: 'flex', 
-  height: 700,
+  height: 600,
   // Show red color when validation fail
   '& .Mui-error': {
     bgcolor: (theme) =>

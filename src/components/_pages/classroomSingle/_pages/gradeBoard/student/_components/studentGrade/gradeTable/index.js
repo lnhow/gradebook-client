@@ -26,9 +26,13 @@ export default function StudentGradeTable({studentGrade}) {
       field: fieldName,
       headerName,
       minWidth: 150, 
+      flex: 1,
+      renderHeader: (params) => {
+        return <span>{`${params.colDef.headerName} (${assignment.weight})`} </span>
+      },
       renderCell: (params) => {
         if (finalized) {
-          return params.value;
+          return `${params.value} / 10`;
         }
         return '(Chưa có)';
       }     

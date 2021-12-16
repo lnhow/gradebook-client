@@ -54,7 +54,7 @@ export default function useEditGrade() {
     
     // Double check to see it it should be axed
     const grade = parseFloat(newGrade);
-    if (isNaN(grade)) {
+    if (isNaN(grade) || oldGrade === grade) {
       revertLocalGradeChange();
       return;
     }

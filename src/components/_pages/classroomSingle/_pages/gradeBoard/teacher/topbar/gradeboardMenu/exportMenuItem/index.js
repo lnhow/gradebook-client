@@ -1,4 +1,4 @@
-import { MenuItem } from '@mui/material';
+import { MenuItem, CircularProgress } from '@mui/material';
 import { useState } from 'react';
 
 export default function ExportMenuItem() {
@@ -14,7 +14,13 @@ export default function ExportMenuItem() {
       disabled={isLoading}
       onClick={handleExport}
     >
-      {isLoading ? 'Đang export...' : 'Export bảng điểm'}
+      {isLoading ? 
+        <span style={{display: 'flex'}}>
+          <CircularProgress size={21} sx={{marginRight: 1}}/>
+          Đang export
+        </span> 
+        : 'Export bảng điểm'
+      }
     </MenuItem>
   )
 }

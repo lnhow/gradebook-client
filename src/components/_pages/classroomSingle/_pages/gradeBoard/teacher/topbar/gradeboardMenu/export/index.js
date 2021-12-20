@@ -6,6 +6,11 @@ import MediaAPI from '../../../../../../../../../helpers/api/media';
 import DownloadHelper from '../../../../../../../../../helpers/download';
 import { handleAPICallError } from '../../../../../../../../../helpers/handleAPICall';
 
+const getExportFilename = (classId) => {
+  const currentTime = Date.now();
+  return `export_grade_class${classId}_${currentTime.toISOString()}.xlsx`;
+}
+
 export default function ExportMenuItem() {
   const { currentClass } = useContext(CurrentClassContext);
   const [isLoading, setIsLoading] = useState(false);
@@ -15,7 +20,7 @@ export default function ExportMenuItem() {
     const classId = currentClass.class_id;
     MediaAPI.getExportedGrades(classId)
     .then((res) => {
-      const filename = `export_grade_class${classId}.xlsx`;
+      const filename = getExportFilename(classId);
       DownloadHelper.downloadFileExcel(res.data, filename);
     })
     .catch(handleAPICallError('Không được lấy được mẫu'))

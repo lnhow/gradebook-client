@@ -3,12 +3,20 @@ import {
   Input,
   Button,
   Box,
+  Stack,
 } from '@mui/material';
+import {
+  LoadingButton
+} from '@mui/lab';
 import { toast } from 'react-toastify';
 
 import { CurrentClassContext } from '../../../../../../context/currentClassContext';
+import MediaAPI from '../../../../../../../../../helpers/api/media';
+import { handleAPICallError } from '../../../../../../../../../helpers/handleAPICall';
+import { ACCEPT_IMPORT_MIMETYPES } from '../../../../../../../../../helpers/constants';
 
-const acceptFileMimetype = 'application/vnd.ms-excel';
+// This leave rooms for additional special types later
+const acceptFileMimetypes = ACCEPT_IMPORT_MIMETYPES;
 
 export default function ImportStudentForm({
   onSuccess = () => {},
@@ -21,27 +29,40 @@ export default function ImportStudentForm({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleImport = () => {
-    if (file) {
-      if (file.type !== acceptFileMimetype) {
-        setFile(null);
-        toast.error('Chỉ có thể upload file excel');
-        return;
-      }
-
-      setIsSubmitting(true);
-      console.log(classId);
-      const formData = new FormData();
-      formData.append('importFile', file);
-      console.log(formData);
-      // Call API here
-      setIsSubmitting(false);
-      onSuccess();
+    if (!file) {
+      return;
     }
+    if (!acceptFileMimetypes.includes(file.type)) {
+      setFile(null);
+      toast.error('Chỉ có thể upload file excel');
+      return;
+    }
+
+    setIsSubmitting(true);
+    const formData = new FormData();
+    formData.append('file', file);
+
+    MediaAPI.importStudent(classId, formData)
+    .then((res) => {
+      if (!res.data.success) {
+        throw new Error(res.data.message);
+      }
+      toast.success('Import thành công');
+      onSuccess();
+    })
+    .catch(handleAPICallError())
+    .finally(() => {
+      setIsSubmitting(false);
+    })
   }
 
   const handleFileChange = (event) => {
     const newFile = event.target.files[0];
-    if (!newFile || newFile.type !== acceptFileMimetype) {
+    
+    if (
+      !newFile || 
+      !acceptFileMimetypes.includes(newFile.type)
+    ) {
       setFile(null);
       return;
     }
@@ -63,18 +84,21 @@ export default function ImportStudentForm({
         onChange={handleFileChange}
       />
       <Box mt={3}>
-        <Button 
-          variant='contained'
-          disabled={
-            (file == null) || isSubmitting
-          }
-          onClick={handleImport}
-        >
-          Import
-        </Button>
-        <Button onClick={handleClose}>
-          Hủy
-        </Button>
+        <Stack direction='row'>
+          <LoadingButton
+            variant='contained'
+            loading={isSubmitting}
+            disabled={
+              (file == null)
+            }
+            onClick={handleImport}
+          >
+            Import
+          </LoadingButton>
+          <Button onClick={handleClose}>
+            Hủy
+          </Button>
+        </Stack>
       </Box>
     </div>
   )

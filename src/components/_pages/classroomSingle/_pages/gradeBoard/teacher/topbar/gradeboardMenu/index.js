@@ -2,12 +2,15 @@ import { useState } from 'react';
 import { 
   Menu, 
   MenuItem,
-  IconButton,
+  Button,
   Divider,
-  Typography
+  Typography,
+  ListItemIcon,
+  ListItemText
 } from '@mui/material';
 
 import MenuIcon from '@mui/icons-material/Menu';
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 import ExportMenuItem from './export'
 import DownloadTemplateStudentMenuItem from './downloadTemplateStudent';
@@ -29,12 +32,13 @@ export default function GradeboardMenu({
 
   return (
     <>
-      <IconButton
+      <Button
         variant='contained'
         onClick={handleClick}
+        endIcon={<MenuIcon/>}
       >
-        <MenuIcon/>
-      </IconButton>
+        Menu
+      </Button>
       <Menu
         anchorEl={anchorEl}
         open={open}
@@ -49,7 +53,8 @@ export default function GradeboardMenu({
         }}
       >
         <MenuItem onClick={handleRefresh}>
-          Tải lại
+          <ListItemIcon><RefreshIcon/></ListItemIcon>
+          <ListItemText>Tải lại</ListItemText>
         </MenuItem>
         <Divider textAlign='left'>
           <Typography variant='caption'><b>Mẫu import</b></Typography>

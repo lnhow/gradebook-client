@@ -7,7 +7,7 @@ import DownloadHelper from '../../../../../../../../../helpers/download';
 import { handleAPICallError } from '../../../../../../../../../helpers/handleAPICall';
 
 const getExportFilename = (classId) => {
-  const currentTime = Date.now();
+  const currentTime = new Date();
   return `export_grade_class${classId}_${currentTime.toISOString()}.xlsx`;
 }
 

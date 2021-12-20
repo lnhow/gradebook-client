@@ -1,131 +1,174 @@
-import { 
-  // Table, 
-  // TableContainer,
-  // TableHead,
-  // TableBody,
-  // TableRow,
-  // TableCell,
+import {
   Paper,
- } from '@mui/material';
+  Box,
+} from '@mui/material';
 import { 
   DataGrid,
-  GridToolbar,
 } from '@mui/x-data-grid';
 
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { CurrentClassContext } from '../../../../context/currentClassContext';
+import useEditGrade from '../hooks/useEditGrade';
+import useUpdateClassAssignment from '../../../gradeStructure/hooks/updateAssignment';
 
 import CustomColumnMenu from './customs/columnMenu';
 import CustomNoRowsOverlay from './customs/noRowsOverlay';
 
+import validateGrade from './helpers/validation/grade';
+import { GRADE_FINALIZED, GRADE_NOT_FINALIZED, isGradeFinalized } from '../../_helpers';
+import CustomToolbar from './customs/toolBar';
+import ImportGradeDialog from '../dialogs/importGrade';
 
-export default function GradeTable() {
-  const { classAssignments } = useContext(CurrentClassContext);
-  const genTestData = (id, stu_name) => {
-    const cols = [];
-    let summary = 0;
-    let totalWeight = 0;
-    classAssignments.forEach((assignment, index) => {
-      cols[assignment.id] = 5;
-      summary += cols[assignment.id] * assignment.weight;
-      totalWeight += assignment.weight;
-    });
-    
-    summary /= totalWeight;
+export default function GradeTable({refreshData = () => {}}) {
+  const { classAssignments, classGrades, currentClass } = useContext(CurrentClassContext);
+  const editGrade = useEditGrade();
+  const updateAssignment = useUpdateClassAssignment();
+
+  const [isImportGradeOpen, setImportGradeOpen] = useState(false);
+  const [selectedAssignment, setSelectedAssignment] = useState(null);
+  
+  // A helper hash map to help with edittings
+  const assignmentMap = {};
+
+  // Map assignment to columns
+  const assignmentCols = classAssignments.map((assignment) => {
+    const fieldName = getAssignmentField(assignment.id);
+    const headerName = assignment.title;
+
+    assignmentMap[fieldName] = {
+      assignmentId: assignment.id,
+      field: fieldName,
+      headerName: headerName,
+      finalized: isGradeFinalized(assignment.finalized)
+    }
 
     return {
-      id,
-      student_id: id,
-      fullname: stu_name,
-      summary: summary.toFixed(2),
-      ...cols
+      field: fieldName,
+      headerName,
+      minWidth: 150,
+      assignment_id: assignment.id,
+      editable: true,
+      flex: 1,
+      preProcessEditCellProps: (params) => {
+        const isValid = validateGrade(params.props.value);
+        return { ...params.props, error: !isValid };
+      },
+      renderHeader: (params) => {
+        return <span>{`${params.colDef.headerName} (${assignment.weight})`} </span>
+      },
+      valueFormatter: (params) => {
+        return `${params.value} / 10`;
+      }
+      
     }
-  }
-  const data = [
-    genTestData('18120001', 'ABBBBBBBB'),
-    genTestData('18120002', 'ABBBBBBBB'),
-    genTestData('18120003', 'ABBBBBBBB'),
-  ];
+  })
 
+  // Define columns
   const colsDef = [
     {field: 'student_id', headerName: 'MSSV', minWidth: 110},
     {field: 'fullname', headerName: 'Họ tên', minWidth: 200},
-    {field: 'summary', headerName: 'Tổng điểm', minWidth: 150}
-  ].concat(classAssignments.map(assignment => {
-    return {
-      field: assignment.id,
-      headerName: assignment.title,
+    {
+      field: 'summary', 
+      headerName: 'Tổng điểm', 
       minWidth: 150,
-      assignment_id: assignment.id,
+      renderCell: (params) => {
+        return params.value + ' / 10';
+      }
     }
-  }))
+  ].concat(assignmentCols);
 
-  const toggleGradeDisplay = (assignment_id) => {
-    console.log(assignment_id);
+  // Map grade list to table
+  const data = classGrades.map((grade) => {
+    const list_grade = {};
+    grade.list_grade.forEach(grade => {
+      const formattedGrade = grade.grade === "" ? "_" : grade.grade;
+      list_grade[getAssignmentField(grade.id)] = formattedGrade;
+    });
+    const result = {
+      ...grade,
+      ...list_grade,
+    }
+    result.list_grade = undefined;
+
+    return result;
+  });
+
+  const onCellEditCommit = (params, event, detail) => {
+    //console.log(params);
+    const studentId = params.id;
+    const assignmentId = assignmentMap[params.field].assignmentId;
+    const newValue = params.value;
+    editGrade(studentId, assignmentId, newValue)
   }
 
-  const importGrade = (assignment_id) => {
-    console.log(assignment_id);
+  const toggleGradeDisplay = (assignment_field, callback = () => {}) => {
+    const assignmentId = assignmentMap[assignment_field].assignmentId;
+    let isFinalized = assignmentMap[assignment_field].finalized;
+    // Toggle finalized around
+    let newFinalized = isFinalized ? GRADE_NOT_FINALIZED : GRADE_FINALIZED;
+    const submitValues = {
+      class_id: currentClass.class_id,
+      id: assignmentId,
+      finalized: newFinalized
+    }
+
+    updateAssignment(submitValues, () => {
+      callback();
+    })
+  }
+
+  const importGrade = (assignment_field) => {
+    const assignment = assignmentMap[assignment_field];
+    setSelectedAssignment(assignment);
+    toggleImportGrade(true);
+  }
+
+  const toggleImportGrade = (b) => {
+    setImportGradeOpen(b);
   }
 
   return (
-    <Paper style={{ display: 'flex', minHeight: 400 }}>
-      <DataGrid
-        autoHeight
-        columns={colsDef}
-        rows={data}
-        components={{
-          ColumnMenu: CustomColumnMenu,
-          Toolbar: GridToolbar,
-          NoRowsOverlay: CustomNoRowsOverlay,
-        }}
-        componentsProps={{
-          columnMenu: {
-            toggleGrade: toggleGradeDisplay,
-            importGrade
-          }
-        }}
+    <Paper>
+      <Box sx={TableContainerSX}>
+        <DataGrid
+          columns={colsDef}
+          rows={data}
+          onCellEditCommit={onCellEditCommit}
+          components={{
+            ColumnMenu: CustomColumnMenu,
+            Toolbar: CustomToolbar,
+            NoRowsOverlay: CustomNoRowsOverlay,
+          }}
+          componentsProps={{
+            columnMenu: {
+              toggleGrade: toggleGradeDisplay,
+              importGrade,
+              assignmentMap,
+            }
+          }}
+        />
+      </Box>
+      <ImportGradeDialog 
+        open={isImportGradeOpen}
+        handleClose={() => {toggleImportGrade(false)}}
+        assignment={selectedAssignment}
+        onSuccess={() => { refreshData(); }}
       />
     </Paper>
   )
-  // return (
-  //   <Paper>
-  //     <TableContainer>
-  //       <Table>
-  //         <TableHead>
-  //           <TableRow>
-  //             <TableCell>MSSV</TableCell>
-  //             <TableCell>Tên</TableCell>
-  //             <TableCell><b>Điểm tổng kết</b></TableCell>
-  //             {classAssignments.map((column) => (
-  //               <TableCell
-  //                 key={column.id}
-  //               >
-  //                 {column.title}
-  //               </TableCell>
-  //             ))}
-  //           </TableRow>
-  //         </TableHead>
-  //         <TableBody>
-  //           {data.map((row, index) => {
-  //               return (
-  //                 <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-  //                   <TableCell>{row.student_id}</TableCell>
-  //                   <TableCell>{row.fullname}</TableCell>
-  //                   <TableCell>{row.summary}</TableCell>
-  //                   {row.cols.map((column, index) => {
-  //                     return (
-  //                       <TableCell key={index}>
-  //                         {column}
-  //                       </TableCell>
-  //                     );
-  //                   })}
-  //                 </TableRow>
-  //               );
-  //             })}
-  //         </TableBody>
-  //       </Table>
-  //     </TableContainer>
-  //   </Paper>
-  // )
+}
+
+const getAssignmentField = (assignmentId) => {
+  return assignmentId.toString();
+}
+
+const TableContainerSX = {
+  display: 'flex', 
+  height: 600,
+  // Show red color when validation fail
+  '& .Mui-error': {
+    bgcolor: (theme) =>
+      `rgb(126,10,15, ${theme.palette.mode === 'dark' ? 0 : 0.1})`,
+    color: (theme) => (theme.palette.mode === 'dark' ? '#ff4343' : '#750f0f'),
+  },
 }

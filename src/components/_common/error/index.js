@@ -11,7 +11,11 @@ import { Link } from 'react-router-dom';
  * @param {boolean} backToHome Display back to home button
  * @returns React Component
  */
-function ErrorPage({ code, title, details, message = null, children = null, backToHome = true }) {
+function ErrorPage({ 
+  code, title, details, message = null, 
+  children = null, backToHome = true,
+  minHeight = '90vh',
+}) {
   return (
     <Container>
       <Grid
@@ -20,7 +24,7 @@ function ErrorPage({ code, title, details, message = null, children = null, back
         direction='column'
         alignItems='center'
         justifyContent='center'
-        style={{ minHeight: '90vh' /* Layout height */}}
+        style={{ minHeight: minHeight /* Layout height */}}
       >
         <Grid item xs={3}>
           <Box>

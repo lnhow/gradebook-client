@@ -12,7 +12,7 @@ export const getErrorMessage = (error = {}) => {
   } else {
     // There is no response for this error
     // --> Get error message
-    error = error.message;
+    errorMessage = error.message;
   }
   return errorMessage;
 }

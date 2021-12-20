@@ -6,14 +6,12 @@ import {
   Divider,
   Typography
 } from '@mui/material';
-import { Link } from 'react-router-dom';
 
 import MenuIcon from '@mui/icons-material/Menu';
 
-import ExportMenuItem from './exportMenuItem'
-
-const studentImportTemplateURL = 'https://file-examples-com.github.io/uploads/2017/02/file_example_XLS_50.xls';
-const gradeImportTemplateURL = 'https://file-examples-com.github.io/uploads/2017/02/file_example_XLS_50.xls';
+import ExportMenuItem from './export'
+import DownloadTemplateStudentMenuItem from './downloadTemplateStudent';
+import DownloadTemplateGradeMenuItem from './downloadTemplateGrade';
 
 export default function GradeboardMenu({
   handleRefresh,
@@ -56,18 +54,16 @@ export default function GradeboardMenu({
         <Divider textAlign='left'>
           <Typography variant='caption'><b>Mẫu import</b></Typography>
         </Divider>
-        <MenuItem component={Link} to={studentImportTemplateURL} download target='_blank'>
-          Mẫu danh sách lớp
-        </MenuItem>
-        <MenuItem component={Link} to={gradeImportTemplateURL} download target='_blank'>
-          Mẫu cột điểm
-        </MenuItem>
+        <DownloadTemplateStudentMenuItem/>
+        <DownloadTemplateGradeMenuItem/>
+
         <Divider textAlign='left'>
           <Typography variant='caption'><b>Import</b></Typography>
         </Divider>
         <MenuItem onClick={() => {toggleImportStudent()}}>
           Import danh sách lớp
         </MenuItem>
+
         <Divider textAlign='left'>
         <Typography variant='caption'><b>Export</b></Typography>
         </Divider>

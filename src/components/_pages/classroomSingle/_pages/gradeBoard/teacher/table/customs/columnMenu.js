@@ -7,9 +7,14 @@ import {
   GridFilterMenuItem,
   GridColumnMenuContainer,
 } from '@mui/x-data-grid';
+import DownloadAssignmentTemplateMenuItem from './downloadTemplateAssignment';
 
 export default function CustomColumnMenu(props) {
-  const { hideMenu, currentColumn, toggleGrade, importGrade, assignmentMap } = props;
+  const { 
+    hideMenu, currentColumn, 
+    toggleGrade, importGrade, getAssignmentTemplate,
+    assignmentMap 
+  } = props;
   const currentField = currentColumn.field;
   const [isLoading, setIsLoading] = useState(false);
   let customMenuItems = [];
@@ -41,6 +46,12 @@ export default function CustomColumnMenu(props) {
       <ListItemButton key={1} onClick={handleImportGrade}>
         Import điểm
       </ListItemButton>
+    )
+    customMenuItems.push(
+      <DownloadAssignmentTemplateMenuItem 
+        field={currentColumn.field}
+        getTemplate={getAssignmentTemplate}
+      />
     )
     customMenuItems.push(
       <Tooltip key={0} 

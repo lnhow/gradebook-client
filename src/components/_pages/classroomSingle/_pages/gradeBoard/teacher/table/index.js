@@ -18,6 +18,7 @@ import validateGrade from './helpers/validation/grade';
 import { GRADE_FINALIZED, GRADE_NOT_FINALIZED, isGradeFinalized } from '../../_helpers';
 import CustomToolbar from './customs/toolBar';
 import ImportGradeDialog from '../dialogs/importGrade';
+import MediaAPI from '../../../../../../../helpers/api/media';
 
 export default function GradeTable({refreshData = () => {}}) {
   const { classAssignments, classGrades, currentClass } = useContext(CurrentClassContext);
@@ -117,6 +118,11 @@ export default function GradeTable({refreshData = () => {}}) {
     })
   }
 
+  const getAssignmentTemplate = (assignment_field) => {
+    const assignment = assignmentMap[assignment_field];
+    return MediaAPI.getTemplateGradeById(assignment.assignmentId);
+  }
+
   const importGrade = (assignment_field) => {
     const assignment = assignmentMap[assignment_field];
     setSelectedAssignment(assignment);
@@ -143,6 +149,7 @@ export default function GradeTable({refreshData = () => {}}) {
             columnMenu: {
               toggleGrade: toggleGradeDisplay,
               importGrade,
+              getAssignmentTemplate,
               assignmentMap,
             }
           }}

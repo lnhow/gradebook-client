@@ -23,6 +23,16 @@ export const getTemplateGrade = () => {
   return api.get(`${baseURL}${endpointURL}`, config);
 }
 
+export const getTemplateGradeById = (assignmentId) => {
+  const endpointURL = `/export-template-grades?assignment_id=${assignmentId}`;
+  const config = {
+    ...getAuthConfig(),
+    responseType: 'blob'
+  };
+
+  return api.get(`${baseURL}${endpointURL}`, config);
+}
+
 export const getExportedGrades = (classId) => {
   const endpointURL = `/export-classgrade/${classId}`;
   const config = {
@@ -56,6 +66,7 @@ export const importGrade = (assignmentid, fileFormData) => {
 const MediaAPI = {
   getTemplateStudent,
   getTemplateGrade,
+  getTemplateGradeById,
   getExportedGrades,
 
   importStudent,

@@ -33,9 +33,10 @@ const EditCode = ({currentCode,handleEditCode,closeEditCode}) => {
                     <div style={{paddingLeft:10,color:'red'}}>{formik.errors.user_code}</div>
                 </div>
                 <div className={styles.editRow}>
-                    <button className={clsx(styles.btnEdit,styles.btnConfirmEdit)} type='submit'>Thay đổi mã </button>
+                    <button disabled={currentCode}  className={clsx(styles.btnEdit,styles.btnConfirmEdit)} type='submit'>Thay đổi mã </button>
                     <button className={styles.btnEdit} onClick={closeEditCode}>Đóng</button>
                 </div>
+                {currentCode && <span style={{color:"red"}}>Bạn chỉ có thể đổi mã sinh viên 1 lần</span>}
             </div>
         </form>
 

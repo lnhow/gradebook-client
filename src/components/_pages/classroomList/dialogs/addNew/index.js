@@ -100,10 +100,10 @@ function NewClassroomDialog({open, onClose, onSuccess, onFailed}) {
             fullWidth 
             type='submit'
           >
-            {isSubmitting ? <CircularProgress color='inherit'/>:'Add' }
+            {isSubmitting ? <CircularProgress color='inherit'/>:'Tạo' }
           </Button>
           <Button sx={{marginTop: 1}} color='defaultColor' variant='outlined' fullWidth onClick={handleClose}>
-            Cancel
+            Hủy
           </Button>
         </form>
       </DialogContent>

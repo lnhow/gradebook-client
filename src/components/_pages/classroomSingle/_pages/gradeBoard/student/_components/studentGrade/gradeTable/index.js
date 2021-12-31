@@ -50,6 +50,8 @@ export default function StudentGradeTable({studentGrade}) {
   return (
     <Box sx={TableContainerSX}>
       <DataGrid
+        disableColumnMenu={true}
+        hideFooter={true}
         columns={colsDef}
         rows={data}
       />
@@ -113,7 +115,7 @@ const processRow = (row, isAllFinalized) => {
 
 const TableContainerSX = {
   display: 'flex', 
-  height: 200,
+  height: 150,
   // Show red color when validation fail
   '& .Mui-error': {
     bgcolor: (theme) =>

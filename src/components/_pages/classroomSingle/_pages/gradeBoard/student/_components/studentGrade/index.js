@@ -1,9 +1,11 @@
 import Loader from '../../../../../../../_common/loader';
 import ErrorPage from '../../../../../../../_common/error';
 
-import { Paper } from '@mui/material';
+import { Paper, Box } from '@mui/material';
 
-import { useState, useEffect } from 'react';
+import { MyGradeContext } from '../../_context/myGradeContext';
+
+import { useState, useEffect, useContext } from 'react';
 import useLoadStudentGrade from '../../_hooks/useLoadStudentGrade';
 import StudentGradeTable from './gradeTable';
 import { getErrorMessage } from '../../../../../../../../helpers/error';
@@ -11,18 +13,18 @@ import { getErrorMessage } from '../../../../../../../../helpers/error';
 export default function StudentGradeBoard() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [grade, setGrade] = useState({});
+  const {grade, setGrade} = useContext(MyGradeContext);
   const [isLoadedOnce, setIsLoadedOnce] = useState(false);
   const loadStudentGrade = useLoadStudentGrade();
 
   useEffect(() => {
     if (!isLoadedOnce) {
       setIsLoadedOnce(true);
-      loadGrade(loadStudentGrade);
+      loadGrade(loadStudentGrade, setGrade);
     }
-  }, [loadStudentGrade, isLoadedOnce]);
+  }, [loadStudentGrade, isLoadedOnce, setGrade]);
 
-  const loadGrade = (loadStudentGrade) => {
+  const loadGrade = (loadStudentGrade, setGrade) => {
     setIsLoading(true);
     loadStudentGrade()
     .then((resultData) => {
@@ -38,16 +40,27 @@ export default function StudentGradeBoard() {
   }
 
   if (error) {
-    return <ErrorPage 
-      code = {error.status}
-      title = {error.title}
-      details = {error.details}
-      message = {error.message}
-      backToHome = {false}
-      minHeight = '100%'
-      />
+    return (
+      <Paper>
+        <Box padding={2}>
+          <ErrorPage 
+            code = {error.status}
+            title = {error.title}
+            details = {error.details}
+            message = {error.message}
+            backToHome = {false}
+            minHeight = '100%'
+            />
+        </Box>
+      </Paper>)
   } else if (isLoading) {
-    return <Loader/>;
+    return (
+      <Paper>
+        <Box padding={2}>
+          <Loader/>
+        </Box>
+      </Paper>
+    )
   } else {
     return (
       <Paper>

@@ -21,6 +21,9 @@ const teacherRoutes = [
   { order: 3, path: '/class/:class_id/grade-structure', 
     endpoint: '/grade-structure', name: 'Cấu trúc điểm'
   },
+  { order: 4, path: '/class/:class_id/grade-review', 
+    endpoint: '/grade-review', name: 'DS phúc khảo'
+  },
 ];
 
 export default function ToolbarLinkTabs() {

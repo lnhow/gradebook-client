@@ -10,6 +10,7 @@ import ClassroomGradeStructure from '../_pages/gradeStructure';
 import ClassroomGradeBoard from '../_pages/gradeBoard';
 
 import { CurrentClassContext } from '../context/currentClassContext';
+import ClassroomGradeReview from '../_pages/gradeReview';
 
 export default function ClassroomRoutes({ classroom }) {
   let { path } = useRouteMatch();
@@ -29,6 +30,9 @@ export default function ClassroomRoutes({ classroom }) {
       </Route>
       <TeacherOnlyRoute exact path={`${path}/grade-structure`} alternative={alternativePath}>
         <ClassroomGradeStructure/>
+      </TeacherOnlyRoute>
+      <TeacherOnlyRoute exact path={`${path}/grade-review`} alternative={alternativePath}>
+        <ClassroomGradeReview/>
       </TeacherOnlyRoute>
       <Route>
         <Redirect to='/notfound'/>

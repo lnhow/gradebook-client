@@ -1,11 +1,11 @@
 import { Button } from '@mui/material';
 import { useState } from 'react';
 
-import AddIcon from '@mui/icons-material/Add';
+import CommentDialog from './dialog';
 
-import RequestReviewDialog from './dialog';
-
-export default function GradeReviewModal({
+export default function CommentModal({
+  review = {},
+  comments = [],
   onSuccess = () => {}
 }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,10 +20,12 @@ export default function GradeReviewModal({
 
   return (
     <>
-      <Button onClick={toggleOpen} startIcon={<AddIcon />}>
-        Tạo yêu cầu
+      <Button fullWidth onClick={toggleOpen}>
+        Xem Comment {comments.length > 0 && `(${comments.length})`}
       </Button>
-      <RequestReviewDialog 
+      <CommentDialog 
+        review={review}
+        comments={comments}
         open={isOpen}
         toggleClose={toggleClose}
         onSuccess={onSuccess}

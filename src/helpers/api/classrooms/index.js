@@ -3,9 +3,15 @@ import { getAuthConfig } from "..";
 
 const baseURL = '/classrooms';
 
-export const fetchAll = () => {
+export const fetchAll = (fetchDisableClass=false) => {
   const config = getAuthConfig();
-  return api.get(baseURL, config);
+  let query = '?';
+  if (fetchDisableClass) {
+    query += 'status=D';
+  } else {
+    query += 'status=A'
+  }
+  return api.get(`${baseURL}${query}`, config);
 }
 
 export const fetchClassroom = (classId) => {

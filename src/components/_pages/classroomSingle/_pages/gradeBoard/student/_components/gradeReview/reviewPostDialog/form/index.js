@@ -3,8 +3,8 @@ import {
 } from '@mui/lab';
 import { 
   MenuItem,
-  Stack,
-  TextField 
+  TextField,
+  Grid,
 } from '@mui/material';
 
 import {
@@ -93,48 +93,55 @@ export default function ReviewPostForm({
         error={Boolean(formik.errors.message)}
         helperText={formik.errors.message || ' '}
       />
+      <Grid container maxWidth='xl' spacing={1}>
+        <Grid item sm={8} xs={12}>
+        <TextField
+          id='assignmentId'
+          label='Cột điểm'
+          name='assignment_id'
+          margin='normal'
+          fullWidth
+          select
+          value={formik.values.assignment_id}
+          onChange={handleAssignmentChange}
+          error={Boolean(formik.errors.assignment_id)}
+          helperText={formik.errors.assignment_id || ' '}
+        >
+          <MenuItem value={''}>(Chọn)</MenuItem>
+          {listGrade.map((col) => {
+            if (isGradeFinalized(col.finalized)) {
+              return (
+                <MenuItem key={col.id} value={col.id}>{col.title}</MenuItem>
+              );
+            }
+            return null;
+          })}
+        </TextField>
+        </Grid>
+        <Grid item sm={4} xs={12}>
+          <TextField
+            fullWidth
+            label='Điểm hiện tại'
+            size='medium'
+            margin='normal'
+            value={currentSelectedGrade}
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+        </Grid>
+      </Grid>
       <TextField
-        id='assignmentId'
-        label='Cột điểm'
-        name='assignment_id'
-        margin='normal'
         fullWidth
-        select
-        value={formik.values.assignment_id}
-        onChange={handleAssignmentChange}
-        error={Boolean(formik.errors.assignment_id)}
-        helperText={formik.errors.assignment_id || ' '}
-      >
-        <MenuItem value={''}>(Chọn)</MenuItem>
-        {listGrade.map((col) => {
-          if (isGradeFinalized(col.finalized)) {
-            return (
-              <MenuItem key={col.id} value={col.id}>{col.title}</MenuItem>
-            );
-          }
-          return null;
-        })}
-      </TextField>
-      <Stack direction='row' spacing={1}>
-        <TextField
-          label='Điểm hiện tại'
-          size='medium'
-          value={currentSelectedGrade}
-          InputProps={{
-            readOnly: true,
-          }}
-        />
-        <TextField
-          id='expected_grade'
-          label='Điểm mong muốn'
-          name='expected_grade'
-          type='number'
-          value={formik.values.expected_grade}
-          onChange={formik.handleChange}
-          error={Boolean(formik.errors.expected_grade)}
-          helperText={formik.errors.expected_grade || ' '}
-        />
-      </Stack>
+        id='expected_grade'
+        label='Điểm mong muốn'
+        name='expected_grade'
+        type='number'
+        value={formik.values.expected_grade}
+        onChange={formik.handleChange}
+        error={Boolean(formik.errors.expected_grade)}
+        helperText={formik.errors.expected_grade || ' '}
+      />
       
       <LoadingButton 
         loading={isSubmitting}

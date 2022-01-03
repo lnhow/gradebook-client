@@ -1,5 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
+import {
+    useHistory
+} from 'react-router-dom';
 import { faAddressCard, faUserCircle, faToggleOn, faUnlockAlt, faMoneyCheckAlt, faInfoCircle} from '@fortawesome/free-solid-svg-icons'
 import clsx from 'clsx'
 
@@ -16,10 +19,14 @@ const InfoMenu = ({actived,setAct}) => {
         document.getElementById(actived).className=styles.infoMenuItem
         setAct("user-info")
     }
+    const history = useHistory();
+    const handleClickHome = () => {
+        history.push('/');
+    }
     return (
         <div className={clsx(styles.wrapperInfoMenu)}>
             <ul className={clsx(styles.infoMenu)}>
-                <li className={clsx(styles.infoMenuItem)}>
+                <li className={clsx(styles.infoMenuItem)} onClick={handleClickHome}>
                     <FontAwesomeIcon icon={faUserCircle}/>
                     <span>Trang chủ</span>
                 </li>

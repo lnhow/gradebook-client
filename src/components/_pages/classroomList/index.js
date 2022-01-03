@@ -21,10 +21,10 @@ function ClassroomListPage() {
   const loadClassrooms = () => {
     setClassrooms([]);
     setIsLoaded(false);
+    setError(null);
     ClassroomAPI.fetchAll()
     .then(
       (result) => {
-        setIsLoaded(true);
         setClassrooms(result.data.data);
       },
     )
@@ -42,10 +42,12 @@ function ClassroomListPage() {
         else {
           res.message = error.message;
         }
-        setIsLoaded(true);
         setError(res);
       }
     )
+    .finally(() => {
+      setIsLoaded(true);
+    })
   }
 
   const onAddNewClassroomSuccess = (data) => {
@@ -64,7 +66,7 @@ function ClassroomListPage() {
   return (
     <div>
       <ClassroomListToolbar
-        handleRefresh = {loadClassrooms}
+        handleRefresh = {() => loadClassrooms()}
         handleOpenNewDialog = {() => {setIsNewFormOpen(true)}}
       />
       <ClassroomList 

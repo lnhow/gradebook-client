@@ -26,8 +26,9 @@ import {
 import { handleSignUp } from '../../../helpers/api/user';
 
 const validationSchema = yup.object({
-  username: yup
-    .string('Nhập username')
+  email: yup
+    .string('Nhập email')
+    .email('Email không hợp lệ')
     .required('Bắt buộc'),
   full_name: yup
     .string('Nhập họ và tên')
@@ -58,7 +59,7 @@ export default function SignUpForm({redirect = '/'}) {
 
   const handleSignIn = () => {
     selfMakeSignIn({
-      username: formik.values.username,
+      username: formik.values.email,
       password: formik.values.password
     })
     .then((res) => {
@@ -75,7 +76,12 @@ export default function SignUpForm({redirect = '/'}) {
     })
   }
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (formValues) => {
+    const values = {
+      ...formValues,
+      username: formValues.email,
+    }
+    values.email = undefined;
     setFormStates({...formStates, isSubmitting: true});
     handleSignUp(values)
     .then(() => {
@@ -97,7 +103,7 @@ export default function SignUpForm({redirect = '/'}) {
   
   const formik = useFormik({
     initialValues: {
-      username: '',
+      email: '',
       full_name: '',
       password: '',
       passwordConfirm: '',
@@ -112,13 +118,13 @@ export default function SignUpForm({redirect = '/'}) {
         fullWidth
         disabled={formStates.isSubmitting}
         autoFocus
-        id='username'
-        name='username'
-        label='Username'
-        value={formik.values.username}
+        id='email'
+        name='email'
+        label='Email'
+        value={formik.values.email}
         onChange={formik.handleChange}
-        error={Boolean(formik.errors.username)}
-        helperText={formik.errors.username}
+        error={Boolean(formik.errors.email)}
+        helperText={formik.errors.email}
       />
       <CustomTextField
         fullWidth

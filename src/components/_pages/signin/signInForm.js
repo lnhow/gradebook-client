@@ -23,7 +23,7 @@ import { formatSignInResponse, handleFailure, handleSignInSuccess } from '../../
 
 const validationSchema = yup.object({
   username: yup
-    .string('Nhập username')
+    .string('Nhập username / email')
     .required('Bắt buộc'),
   password: yup
     .string('Nhập mật khẩu')
@@ -84,7 +84,7 @@ export default function SignInForm({redirect = '/'}) {
         autoFocus
         id='username'
         name='username'
-        label='Username'
+        label='Email / Username'
         value={formik.values.username}
         onChange={formik.handleChange}
         error={Boolean(formik.errors.username)}

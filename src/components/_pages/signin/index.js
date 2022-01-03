@@ -33,6 +33,13 @@ function SignInPage({ location }) {
           >
             Chưa có tài khoản? Đăng ký
           </Button>
+          <Button 
+            fullWidth size='small' 
+            component={Link} 
+            to={{ pathname: '/password/forgot', state: { from: redirect }}}
+          >
+            Quên mật khẩu?
+          </Button>
         </Box>
         <Box my={1}>
           <Typography align='center'>Hoặc</Typography>

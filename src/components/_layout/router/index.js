@@ -10,6 +10,9 @@ import SignInPage from '../../_pages/signin';
 import SignUpPage from '../../_pages/signup';
 import ProfilePage from '../../_pages/profile';
 import JoinPage from '../../_pages/join';
+import AccountActivationPage from '../../_pages/activation';
+import PasswordForgotPage from '../../_pages/passwordForgot';
+import PasswordResetPage from '../../_pages/passwordReset';
 
 // Pages
 
@@ -30,6 +33,15 @@ function Router() {
       </NonAuthOnlyRoute>
       <NonAuthOnlyRoute exact path='/signup'>
         <SignUpPage/>
+      </NonAuthOnlyRoute>
+      <NonAuthOnlyRoute exact path='/activation'>
+        <AccountActivationPage/>
+      </NonAuthOnlyRoute>
+      <NonAuthOnlyRoute exact path='/password/forgot'>
+        <PasswordForgotPage/>
+      </NonAuthOnlyRoute>
+      <NonAuthOnlyRoute exact path='/password/reset'>
+        <PasswordResetPage/>
       </NonAuthOnlyRoute>
       <AuthOnlyRoute exact path='/profile'>
         <ProfilePage/>

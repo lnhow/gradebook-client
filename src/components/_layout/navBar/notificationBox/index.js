@@ -38,13 +38,13 @@ export default function NotificationBox() {
     setAnchorEl(event.currentTarget);
   };
   const markAllAsRead = () => {
+    console.log('Click')
     const updatedNotifications = notifications;
     updatedNotifications.forEach((noti) => noti.read = true);
     setNotifications(updatedNotifications);
   }
   const handleClose = () => {
     setAnchorEl(null);
-    markAllAsRead();
   };
 
   const notReadNotifications = notifications.filter((noti) => noti.read === false);
@@ -59,6 +59,8 @@ export default function NotificationBox() {
         anchorEl={anchorEl}
         notifications={notifications}
         handleClose={handleClose}
+        disableMarkRead={notReadNotifications.length === 0}
+        handleMarkRead={markAllAsRead}
       />
     </div>
   );

@@ -22,8 +22,9 @@ import CustomTextField from '../../_common/customTextField';
 import { formatSignInResponse, handleFailure, handleSignInSuccess } from '../../../helpers/auth/selfmake';
 
 const validationSchema = yup.object({
-  username: yup
-    .string('Nhập username / email')
+  email: yup
+    .string('Nhập email')
+    .email('Email không hợp lệ')
     .required('Bắt buộc'),
   password: yup
     .string('Nhập mật khẩu')
@@ -58,8 +59,12 @@ export default function SignInForm({redirect = '/'}) {
     handleFailure(err);
   }
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (formValues) => {
     setFormStates({...formStates, isSubmitting: true});
+    const values = {
+      ...formValues,
+      username: formValues.email,
+    }
     selfMakeSignIn(values)
     .then(onSignInSuccess)
     .catch(onSignInFailure)
@@ -70,7 +75,7 @@ export default function SignInForm({redirect = '/'}) {
   
   const formik = useFormik({
     initialValues: {
-      username: '',
+      email: '',
       password: ''
     },
     validationSchema: validationSchema,
@@ -82,13 +87,13 @@ export default function SignInForm({redirect = '/'}) {
       <CustomTextField
         fullWidth
         autoFocus
-        id='username'
-        name='username'
-        label='Email / Username'
-        value={formik.values.username}
+        id='email'
+        name='email'
+        label='Email'
+        value={formik.values.email}
         onChange={formik.handleChange}
-        error={Boolean(formik.errors.username)}
-        helperText={formik.errors.username}
+        error={Boolean(formik.errors.email)}
+        helperText={formik.errors.email}
       />
       <CustomTextField
         fullWidth

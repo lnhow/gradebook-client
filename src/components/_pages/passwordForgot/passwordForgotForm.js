@@ -12,6 +12,8 @@ import CustomTextField from '../../_common/customTextField';
 import { toast } from 'react-toastify';
 import { getErrorMessage } from '../../../helpers/error';
 
+import UserAPI from '../../../helpers/api/client/user';
+
 const validationSchema = yup.object({
   email: yup
     .string('Nhập email')
@@ -28,22 +30,19 @@ export default function FormPasswordForgot() {
 
   const handleSubmit = async (formValues) => {
     const redirect = '/signin';
-    // const values = {
-    //   ...formValues,
-    //   username: formValues.email,
-    // }
+    const values = {
+      ...formValues,
+      username: formValues.email,
+    }
 
     setFormStates({...formStates, isSubmitting: true});
-    const doSt = async () => {};
-    doSt()
+    UserAPI.handleForgotPassword(values)
     .then(() => {
       toast.success('Thành công, vui lòng check email của bạn');
       history.push(redirect);
     })
     .catch((err) => {
-      toast.error(`Lỗi - ${getErrorMessage(err)}`)
-    })
-    .finally(() => {
+      toast.error(`Lỗi - ${getErrorMessage(err)}`);
       setFormStates({...formStates, isSubmitting: false});
     })
   }

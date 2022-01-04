@@ -6,33 +6,56 @@ import {
   Typography,
   Button,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import Loader from '../../_common/loader';
 import ErrorPage from '../../_common/error';
 
 import { getErrorMessage } from '../../../helpers/error';
+import UserAPI from '../../../helpers/api/client/user';
 
 export default function AccountActivationPage() {
   const urlParams = new URLSearchParams(window.location.search);
-  const activation_token = urlParams.get('activation');
+  const activation_id = urlParams.get('activation');
+  const history = useHistory();
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     setIsLoading(true);
-    console.log(activation_token);
     setError(null);
-    setIsLoading(false);
-  }, [activation_token])
+    UserAPI.handleActivation(activation_id)
+    .then(() => {
+      toast.success('Kích hoạt tài khoản thành công')
+      history.push('/signin');
+    })
+    .catch((err) => {
+      setError(err);
+    })
+    .finally(() => {
+      setIsLoading(false);
+    })
+    
+  }, [activation_id, history])
 
   if (isLoading) {
     return <Loader label='Kích hoạt tài khoản...'/>;
   }
 
   if (error) {
-    return <ErrorPage message={getErrorMessage(error)}/>
+    return (
+      <ErrorPage message={getErrorMessage(error)} backToHome={false}>
+        <Button 
+          variant='contained'
+          component={Link}
+          to='/signin'
+        >
+          Đăng nhập
+        </Button>
+      </ErrorPage>
+    )
   }
 
   return (
@@ -48,16 +71,15 @@ export default function AccountActivationPage() {
         <Grid item xs={3}>
           <Box sx={{width: '300px'}}>
             <Typography>Kích hoạt tài khoản thành công</Typography>
-            <Button 
-              variant='contained'
-              component={Link}
-              to='/signin'
-            >
-              Đăng nhập
-            </Button>
-            <Typography component='div' variant='caption'>
-              activation: {activation_token}
-            </Typography>
+            <Box mt={2}>
+              <Button 
+                variant='contained'
+                component={Link}
+                to='/signin'
+              >
+                Đăng nhập
+              </Button>
+            </Box>
           </Box>
         </Grid>
       </Grid>

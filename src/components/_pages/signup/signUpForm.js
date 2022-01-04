@@ -10,18 +10,14 @@ import {
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Visibility from '@mui/icons-material/Visibility';
 
-import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
-import { selfMakeSignIn } from '../../../helpers/api/auth';
-import { signIn } from '../../../redux/slices/user';
 
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { useState } from 'react';
 import CustomTextField from '../../_common/customTextField';
 import { 
-  formatSignInResponse, 
-  handleFailure, handleSignInSuccess, handleSignUpSuccess 
+  handleFailure, handleSignUpSuccess 
 } from '../../../helpers/auth/selfmake';
 import { handleSignUp } from '../../../helpers/api/user';
 
@@ -54,27 +50,7 @@ export default function SignUpForm({redirect = '/'}) {
     showPasswordConfirm: false,
   });
 
-  const dispatch = useDispatch();
   const history = useHistory();
-
-  const handleSignIn = () => {
-    selfMakeSignIn({
-      username: formik.values.email,
-      password: formik.values.password
-    })
-    .then((res) => {
-      const resData = formatSignInResponse(res);
-      setFormStates({...formStates, isSubmitting: false});
-      
-      dispatch(signIn(resData));
-      handleSignInSuccess();
-      history.push(redirect);
-    })
-    .catch((err) => {
-      setFormStates({...formStates, isSubmitting: false});
-      handleFailure(err);
-    })
-  }
 
   const handleSubmit = async (formValues) => {
     const values = {
@@ -86,7 +62,7 @@ export default function SignUpForm({redirect = '/'}) {
     handleSignUp(values)
     .then(() => {
       handleSignUpSuccess();
-      handleSignIn();   // If sign up success then sign in right now
+      history.push('/signin');
     })
     .catch((err) => {
       setFormStates({...formStates, isSubmitting: false});
@@ -147,6 +123,7 @@ export default function SignUpForm({redirect = '/'}) {
         endAdornment={
           <InputAdornment position='end'>
             <IconButton
+              tabIndex={-1} // Disable tab index
               onClick={handleToggleShowPassword}
               edge='end'
             >
@@ -169,6 +146,7 @@ export default function SignUpForm({redirect = '/'}) {
         endAdornment={
           <InputAdornment position='end'>
             <IconButton
+              tabIndex={-1} // Disable tab index
               onClick={handleToggleShowConfirmPassword}
               edge='end'
             >

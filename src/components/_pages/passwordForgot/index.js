@@ -17,8 +17,10 @@ export default function PasswordForgotPage() {
       style={{ minHeight: '90vh' }} //Parent content area min height
     >
       <Grid item xs={3}>
-      <Typography variant='h4' align='center'>Quên mật khẩu</Typography>
-        <Paper sx={{ width: 360, padding: 2 }}>
+        <Box display='flex' justifyContent='center' mb={2}>
+          <Typography variant='h4' align='center'>Quên mật khẩu</Typography>
+        </Box>
+        <Paper sx={{ maxWidth: 360, padding: 2 }}>
           <Box mb={1}>
             <Typography variant='caption'>Email đăng nhập tài khoản của bạn</Typography>
           </Box>

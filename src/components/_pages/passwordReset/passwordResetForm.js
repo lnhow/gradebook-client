@@ -18,6 +18,8 @@ import CustomTextField from '../../_common/customTextField';
 import { toast } from 'react-toastify';
 import { getErrorMessage } from '../../../helpers/error';
 
+import UserAPI from '../../../helpers/api/client/user';
+
 const validationSchema = yup.object({
   password: yup
     .string('Nhập mật khẩu')
@@ -33,7 +35,9 @@ const validationSchema = yup.object({
     .oneOf([yup.ref('password')], 'Không khớp với mật khẩu'),
 });
 
-export default function FormPasswordReset() {
+export default function FormPasswordReset({
+  resetId = '',
+}) {
   const [formStates, setFormStates] = useState({
     isSubmitting: false,
     showPassword: false,
@@ -44,24 +48,20 @@ export default function FormPasswordReset() {
 
   const handleSubmit = async (formValues) => {
     const redirect = '/signin';
-    // const values = {
-    //   ...formValues,
-    //   username: formValues.email,
-    // }
+    const values = {
+      ...formValues,
+    }
 
     setFormStates({...formStates, isSubmitting: true});
-    const doSt = async () => {};
-    doSt()
+    UserAPI.handleResetPassword(resetId, values)
     .then(() => {
       toast.success('Reset mật khẩu thành công');
       history.push(redirect);
     })
     .catch((err) => {
-      toast.error(`Lỗi - ${getErrorMessage(err)}`)
-    })
-    .finally(() => {
+      toast.error(`Lỗi - ${getErrorMessage(err)}`);
       setFormStates({...formStates, isSubmitting: false});
-    })
+    });
   }
 
   const handleToggleShowPassword = () => {
@@ -93,6 +93,7 @@ export default function FormPasswordReset() {
         endAdornment={
           <InputAdornment position='end'>
             <IconButton
+              tabIndex={-1} // Disable tab index
               onClick={handleToggleShowPassword}
               edge='end'
             >
@@ -115,6 +116,7 @@ export default function FormPasswordReset() {
         endAdornment={
           <InputAdornment position='end'>
             <IconButton
+              tabIndex={-1} // Disable tab index
               onClick={handleToggleShowConfirmPassword}
               edge='end'
             >

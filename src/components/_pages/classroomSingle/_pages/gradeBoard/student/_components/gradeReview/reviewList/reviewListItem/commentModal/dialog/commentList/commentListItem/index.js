@@ -4,6 +4,7 @@ import { selectUser } from '../../../../../../../../../../../../../../redux/slic
 import {
   ListItem,
   ListItemText,
+  Box,
   Typography
 } from '@mui/material';
 import {
@@ -14,36 +15,47 @@ import { getLocalDatetimeString } from '../../../../../../../../../../../../../.
 
 export default function CommentListItem({comment = {}}) {
   const loginUser = useSelector(selectUser);
-  const ownerName = comment.owner_id === loginUser.id ? 'Tôi' : `${comment.full_name}(Giáo viên)`;
+  const ownerName = comment.owner_id === loginUser.id ? 
+    `${comment.full_name} (Tôi)` : `${comment.full_name} (Giáo viên)`;
 
   // console.log(comment)
 
   return (
-    <ListItem alignItems='flex-start'>
+    <ListItem 
+      alignItems='flex-start'
+      sx={{
+        paddingY: 0
+      }}
+    >
       {/* <ListItemAvatar>
         <Avatar alt='Remy Sharp' src='/static/images/avatar/1.jpg' />
-      </ListItemAvatar> */}
+      </ListItemAvatar> */}      
       <ListItemText
         primary={
-          <ClipTypography>
-            {comment.content}
-          </ClipTypography>
+          <Box>
+            <Typography
+              variant='subtitle2'
+            >
+              <b>{ownerName}</b>
+            </Typography>
+            <ClipTypography>
+              {comment.content}
+            </ClipTypography>
+          </Box>
         }
         secondary={
-          <>
-            <Typography
-              sx={{ display: 'inline' }}
-              component='span'
-              variant='caption'
-              // color='text.secondary'
-            >
-              <b>{ownerName}</b> - 
-              {comment.created_at && ` Tạo ${getLocalDatetimeString(comment.created_at)}`}
-              {comment.updated_at && ` Cập nhật ${getLocalDatetimeString(comment.created_at)}`}
-            </Typography>
-          </>
+          <Typography
+            sx={{ display: 'inline' }}
+            component='span'
+            variant='caption'
+            // color='text.secondary'
+          >
+            {comment.created_at && `${getLocalDatetimeString(comment.created_at)}`}
+            {comment.updated_at && ` Cập nhật ${getLocalDatetimeString(comment.created_at)}`}
+          </Typography>
         }
       />
+      {/* </Box> */}
     </ListItem>
   )
 }

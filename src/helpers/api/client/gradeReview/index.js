@@ -1,7 +1,17 @@
-// import api from '..'
-// import { getAuthConfig } from '..';
+import api from '../../'
+import { getAuthConfig } from '../../';
 
-// const baseURL = '/grade';
+const baseURL = '/gradereview';
+
+export const listReview = async (classId, page) => {
+  const config = getAuthConfig();
+  const data = {
+    class_id: classId,
+    page: page,
+  }
+
+  return api.post(`${baseURL}`, data, config);
+}
 
 export const studentPostReviewRequest = async (studentId, input) => {
   // const endpointURL = '/update';
@@ -17,6 +27,7 @@ export const studentPostReviewRequest = async (studentId, input) => {
 
 const GradeReviewAPI = {
   studentPostReviewRequest,
+  listReview,
 }
 
 export default GradeReviewAPI;

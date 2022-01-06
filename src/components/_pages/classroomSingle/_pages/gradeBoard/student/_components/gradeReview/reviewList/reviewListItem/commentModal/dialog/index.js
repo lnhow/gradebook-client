@@ -2,7 +2,6 @@ import {
   Dialog, 
   DialogTitle, 
   DialogContent,
-  Button,
   Box,
   IconButton,
   DialogActions,
@@ -25,7 +24,6 @@ function CommentDialog({
   toggleClose = () => {},
   onSuccess = () => {}
 }) {
-
   const handleClose = () => {
     toggleClose();
   }
@@ -40,6 +38,7 @@ function CommentDialog({
       <DialogTitle sx={{ m: 0, px: 2, py: 1 }}>
         <Typography variant='subtitle1'>Danh sách comment</Typography>
         <IconButton
+          onClick={handleClose}
           sx={{
             position: 'absolute',
             right: 2,
@@ -57,12 +56,6 @@ function CommentDialog({
       <DialogActions>
         <Stack width='100%'>
           <CommentForm/>
-          <Button 
-            sx={{marginTop: 1}} color='defaultColor' variant='outlined' fullWidth 
-            onClick={handleClose}
-          >
-            Hủy
-          </Button>
         </Stack>
       </DialogActions>
     </CustomDialog>

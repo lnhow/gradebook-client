@@ -5,7 +5,6 @@ import CommentDialog from './dialog';
 
 export default function CommentModal({
   review = {},
-  comments = [],
   onSuccess = () => {}
 }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,11 +20,10 @@ export default function CommentModal({
   return (
     <>
       <Button fullWidth onClick={toggleOpen}>
-        Xem Comment {comments.length > 0 && `(${comments.length})`}
+        Xem Comment
       </Button>
       <CommentDialog 
         review={review}
-        comments={comments}
         open={isOpen}
         toggleClose={toggleClose}
         onSuccess={onSuccess}

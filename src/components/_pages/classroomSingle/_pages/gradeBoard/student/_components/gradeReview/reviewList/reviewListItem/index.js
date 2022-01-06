@@ -7,6 +7,9 @@ import {
 import { styled } from '@mui/material/styles';
 import CommentModal from './commentModal';
 
+import { useContext } from 'react';
+import { CurrentClassContext } from '../../../../../../../context/currentClassContext';
+
 const reviewStatus = {
   'N': {
     text: 'Đang chờ phúc khảo',
@@ -25,11 +28,14 @@ const reviewStatus = {
 export default function ReviewListItem({
   review = {}
 }) {
+  const { classAssignments } = useContext(CurrentClassContext);
   let reviewStatusText = reviewStatus[review.status];
   if (!reviewStatusText) {
     reviewStatusText = reviewStatus['N'];
   }
-  // console.log(review);
+  let assignmentInfo = classAssignments.find((x) => x.id === review.assignment_id) || {};
+  console.log(review);
+  console.log(assignmentInfo);
 
   return (
     <Paper>
@@ -41,7 +47,14 @@ export default function ReviewListItem({
           <Typography variant='caption' color={reviewStatusText.color}>
             {reviewStatusText.text}
           </Typography>
-          <Typography component='div' variant='caption'><b>MSSV</b> {review.student_id}</Typography>
+          <Box>
+            <Typography variant='caption'>
+              <b>MSSV</b> {review.student_id}
+            </Typography>
+            <Typography variant='caption' marginLeft={3}>
+              <b>Cột điểm</b> {`${assignmentInfo.title} (${assignmentInfo.weight})`}
+            </Typography>
+          </Box>
           <Typography component='div' variant='caption'><b>Lý do</b></Typography>
           <Box my={1}>
             <ClipTypography>

@@ -30,7 +30,7 @@ function CommentDialog({
       style={{padding: '0px 0px'}}
     >
       <DialogTitle sx={{ m: 0, px: 2, py: 1 }}>
-        Danh sách comment
+        Danh sách bình luận
         <IconButton
           onClick={handleClose}
           sx={{

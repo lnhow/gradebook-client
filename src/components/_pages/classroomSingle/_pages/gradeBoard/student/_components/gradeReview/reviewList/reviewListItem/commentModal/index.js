@@ -20,7 +20,7 @@ export default function CommentModal({
   return (
     <>
       <Button fullWidth onClick={toggleOpen}>
-        Xem Comment
+        Bình luận
       </Button>
       <CommentDialog 
         review={review}

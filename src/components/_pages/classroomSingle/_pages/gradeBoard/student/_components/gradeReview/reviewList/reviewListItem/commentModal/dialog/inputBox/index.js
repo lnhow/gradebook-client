@@ -16,7 +16,7 @@ import { getErrorMessage } from '../../../../../../../../../../../../../helpers/
 
 const validationSchema = yup.object({
   content: yup
-    .string('Nhập comment')
+    .string('Nhập bình luận')
     .max(128, 'Tối đa 128 ký tự')
     .required('Bắt buộc'),
 });
@@ -32,6 +32,7 @@ export default function CommentForm({
     GradeReviewCommentAPI.postComment(reviewId, submitValues)
     .then(() => {
       onSubmitSuccess();
+      formik.resetForm();
     })
     .catch((err) => {
       toast.error(`Lỗi - ${getErrorMessage(err)}`);
@@ -56,7 +57,7 @@ export default function CommentForm({
           id='content'
           name='content'
           disabled={isSubmitting}
-          placeholder='Nhập comment...'
+          placeholder='Bình luận...'
           variant='outlined'
           size='medium'
           fullWidth

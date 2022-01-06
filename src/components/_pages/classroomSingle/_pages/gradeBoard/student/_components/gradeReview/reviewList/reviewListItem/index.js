@@ -29,6 +29,7 @@ export default function ReviewListItem({
   if (!reviewStatusText) {
     reviewStatusText = reviewStatus['N'];
   }
+  // console.log(review);
 
   return (
     <Paper>
@@ -40,6 +41,7 @@ export default function ReviewListItem({
           <Typography variant='caption' color={reviewStatusText.color}>
             {reviewStatusText.text}
           </Typography>
+          <Typography component='div' variant='caption'><b>MSSV</b> {review.student_id}</Typography>
           <Typography component='div' variant='caption'><b>Lý do</b></Typography>
           <Box my={1}>
             <ClipTypography>

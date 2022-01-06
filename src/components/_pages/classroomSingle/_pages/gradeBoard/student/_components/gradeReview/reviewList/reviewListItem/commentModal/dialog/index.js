@@ -1,12 +1,7 @@
 import { 
   Dialog, 
-  DialogTitle, 
-  DialogContent,
-  Box,
+  DialogTitle,
   IconButton,
-  DialogActions,
-  Stack,
-  Typography,
 } from '@mui/material';
 
 import {
@@ -15,11 +10,10 @@ import {
 
 import CloseIcon from '@mui/icons-material/Close';
 
-import CommentList from './commentList';
-import CommentForm from './inputBox';
+import CommentContainer from './container';
 
 function CommentDialog({
-  comments=[],
+  review = {},
   open, 
   toggleClose = () => {},
   onSuccess = () => {}
@@ -27,7 +21,7 @@ function CommentDialog({
   const handleClose = () => {
     toggleClose();
   }
-
+  const reviewId = review.id;
   return (
     <CustomDialog 
       open={open} onClose={handleClose}
@@ -36,7 +30,7 @@ function CommentDialog({
       style={{padding: '0px 0px'}}
     >
       <DialogTitle sx={{ m: 0, px: 2, py: 1 }}>
-        <Typography variant='subtitle1'>Danh sách comment</Typography>
+        Danh sách comment
         <IconButton
           onClick={handleClose}
           sx={{
@@ -48,16 +42,7 @@ function CommentDialog({
           <CloseIcon/>
         </IconButton>
       </DialogTitle>
-      <DialogContent dividers={true}>
-        <Box sx={{height: '400px', overflow: 'auto'}}>
-          <CommentList comments={comments}/>
-        </Box>
-      </DialogContent>
-      <DialogActions>
-        <Stack width='100%'>
-          <CommentForm/>
-        </Stack>
-      </DialogActions>
+      <CommentContainer reviewId={reviewId}/>
     </CustomDialog>
   )
 }

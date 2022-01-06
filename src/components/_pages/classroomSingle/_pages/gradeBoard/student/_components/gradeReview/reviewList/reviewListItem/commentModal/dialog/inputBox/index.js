@@ -4,38 +4,73 @@ import {
   IconButton
 } from '@mui/material';
 
+import * as yup from 'yup';
+import { useFormik } from 'formik';
+
 import SendIcon from '@mui/icons-material/Send';
 
 import { useState } from 'react';
+import { GradeReviewCommentAPI } from '../../../../../../../../../../../../../helpers/api/client/gradeReview';
+import { toast } from 'react-toastify';
+import { getErrorMessage } from '../../../../../../../../../../../../../helpers/error';
 
-export default function CommentForm() {
-  const [formValue, setFormValue] = useState('');
+const validationSchema = yup.object({
+  content: yup
+    .string('Nhập comment')
+    .max(128, 'Tối đa 128 ký tự')
+    .required('Bắt buộc'),
+});
 
-  const sendMessage = async (e) => {
-    e.preventDefault();
-    if (!formValue) {
-      //Form value is empty
-      return;
-    }
-    
+export default function CommentForm({
+  reviewId = '',
+  onSubmitSuccess = () => {},
+}) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-    setFormValue('');
-  };
+  const handleSubmit = (submitValues) => {
+    setIsSubmitting(true);
+    GradeReviewCommentAPI.postComment(reviewId, submitValues)
+    .then(() => {
+      onSubmitSuccess();
+    })
+    .catch((err) => {
+      toast.error(`Lỗi - ${getErrorMessage(err)}`);
+    })
+    .finally(() => {
+      setIsSubmitting(false);
+    });
+  }
+
+  const formik = useFormik({
+    initialValues: {
+      content: '',
+    },
+    validationSchema: validationSchema,
+    onSubmit: handleSubmit
+  })
 
   return (
     <div>
-      <form onSubmit={sendMessage}>
+      <form onSubmit={formik.handleSubmit}>
         <TextField
+          id='content'
+          name='content'
+          disabled={isSubmitting}
           placeholder='Nhập comment...'
           variant='outlined'
           size='medium'
           fullWidth
-          value={formValue}
-          onChange={(e) => setFormValue(e.target.value)}
+          value={formik.values.content}
+          error={Boolean(formik.errors.content)}
+          helperText={formik.errors.content || ' '}
+          onChange={formik.handleChange}
           InputProps={{
             endAdornment: (
               <InputAdornment position='end'>
-                <IconButton color='primary' size='small' type='submit'>
+                <IconButton 
+                  color='primary' size='small' type='submit'
+                  disabled={isSubmitting}
+                >
                   <SendIcon />
                 </IconButton>
               </InputAdornment>

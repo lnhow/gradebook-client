@@ -1,33 +1,57 @@
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../../../../../../../../../../../../../redux/slices/user';
+
 import {
   ListItem,
-  ListItemAvatar,
-  Avatar,
   ListItemText,
   Typography
 } from '@mui/material';
+import {
+  styled
+} from '@mui/material/styles';
 
-export default function CommentListItem({comment}) {
+import { getLocalDatetimeString } from '../../../../../../../../../../../../../../helpers/datetime';
+
+export default function CommentListItem({comment = {}}) {
+  const loginUser = useSelector(selectUser);
+  const ownerName = comment.owner_id === loginUser.id ? 'Tôi' : `${comment.full_name}(Giáo viên)`;
+
+  // console.log(comment)
+
   return (
-    <ListItem alignItems="flex-start">
-      <ListItemAvatar>
-        <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-      </ListItemAvatar>
+    <ListItem alignItems='flex-start'>
+      {/* <ListItemAvatar>
+        <Avatar alt='Remy Sharp' src='/static/images/avatar/1.jpg' />
+      </ListItemAvatar> */}
       <ListItemText
-        primary="Brunch this weekend?"
+        primary={
+          <ClipTypography>
+            {comment.content}
+          </ClipTypography>
+        }
         secondary={
           <>
             <Typography
               sx={{ display: 'inline' }}
-              component="span"
-              variant="body2"
-              color="text.primary"
+              component='span'
+              variant='caption'
+              // color='text.secondary'
             >
-              Ali Connors
+              <b>{ownerName}</b> - 
+              {comment.created_at && ` Tạo ${getLocalDatetimeString(comment.created_at)}`}
+              {comment.updated_at && ` Cập nhật ${getLocalDatetimeString(comment.created_at)}`}
             </Typography>
-            {" — I'll be in your neighborhood doing errands this…"}
           </>
         }
       />
     </ListItem>
   )
 }
+
+const ClipTypography = styled(Typography)(() => ({
+  wordWrap: 'break-word',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  display: '-webkit-box',
+  WebkitBoxOrient: 'vertical'
+}));

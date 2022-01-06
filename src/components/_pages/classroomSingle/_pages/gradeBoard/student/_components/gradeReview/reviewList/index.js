@@ -17,9 +17,7 @@ import useLoadGradeReview from '../../../_hooks/useLoadGradeReview';
 import ReviewListItem from './reviewListItem';
 import { getErrorMessage } from '../../../../../../../../../helpers/error';
 
-export default function GradeReviewList({
-  handleChange = () => {}
-}) {
+export default function GradeReviewList() {
   const { reviews, isFinalPage } = useContext(MyGradeContext);
   const loadReviews = useLoadGradeReview();
   const [isLoading, setIsLoading] = useState(false);
@@ -86,7 +84,6 @@ export default function GradeReviewList({
           <LoadingButton 
             loading={isLoadingMore}
             fullWidth
-            variant='contained' 
             onClick={loadMore}>
               Tải thêm
           </LoadingButton>

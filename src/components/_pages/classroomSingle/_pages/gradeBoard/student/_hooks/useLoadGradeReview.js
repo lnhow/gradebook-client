@@ -8,6 +8,7 @@ import { handleAPICallError } from '../../../../../../../helpers/handleAPICall';
 export default function useLoadGradeReview() {
   const { currentClass } = useContext(CurrentClassContext);
   const { 
+    reviews,
     setReview,
     addReview,
     setIsFinalPage,
@@ -25,11 +26,16 @@ export default function useLoadGradeReview() {
       GradeReviewAPI.listReview(classId, nextReviewPage)
       .then((res) => {
         // console.log(res.data);
+        const total = res.data.total;
         const newReviews = res.data.data;
         if (newReviews.length === 0) {
           // There is no reviews any more
           setIsFinalPage(true);
           return resolve(newReviews);
+        }
+
+        if (reviews.length + newReviews.length >= total) {
+          setIsFinalPage(true);
         }
         addReview(newReviews);
         return resolve(newReviews);

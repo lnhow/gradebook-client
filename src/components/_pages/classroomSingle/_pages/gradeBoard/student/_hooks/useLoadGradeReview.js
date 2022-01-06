@@ -24,7 +24,7 @@ export default function useLoadGradeReview() {
       }
       GradeReviewAPI.listReview(classId, nextReviewPage)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         const newReviews = res.data.data;
         if (newReviews.length === 0) {
           // There is no reviews any more

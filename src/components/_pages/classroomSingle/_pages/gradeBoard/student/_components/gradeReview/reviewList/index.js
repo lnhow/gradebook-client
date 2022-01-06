@@ -61,14 +61,6 @@ export default function GradeReviewList({
 
   return (
     <Box sx={{marginTop: 2}}>
-      {reviews.length === 0 && <Box sx={{
-          marginTop: 2,
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center'
-        }}>
-        <Typography align='center'>Danh sách trống</Typography>
-      </Box>}
       <Grid container spacing={2}>
         {reviews.map(review => (
           <Grid
@@ -87,7 +79,7 @@ export default function GradeReviewList({
           flexDirection: 'row',
           justifyContent: 'center'
         }}>
-          <Typography align='center'>Bạn đã tới cuối danh sách</Typography>
+          <Typography align='center'>Đã tới cuối danh sách</Typography>
         </Box>
       ) : (
         <Box mt={2}>

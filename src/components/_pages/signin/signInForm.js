@@ -22,9 +22,8 @@ import CustomTextField from '../../_common/customTextField';
 import { formatSignInResponse, handleFailure, handleSignInSuccess } from '../../../helpers/auth/selfmake';
 
 const validationSchema = yup.object({
-  email: yup
-    .string('Nhập email')
-    .email('Email không hợp lệ')
+  username: yup
+    .string('Nhập username / email')
     .required('Bắt buộc'),
   password: yup
     .string('Nhập mật khẩu')
@@ -63,7 +62,7 @@ export default function SignInForm({redirect = '/'}) {
     setFormStates({...formStates, isSubmitting: true});
     const values = {
       ...formValues,
-      username: formValues.email,
+      username: formValues.username,
     }
     selfMakeSignIn(values)
     .then(onSignInSuccess)
@@ -75,7 +74,7 @@ export default function SignInForm({redirect = '/'}) {
   
   const formik = useFormik({
     initialValues: {
-      email: '',
+      username: '',
       password: ''
     },
     validationSchema: validationSchema,
@@ -87,13 +86,13 @@ export default function SignInForm({redirect = '/'}) {
       <CustomTextField
         fullWidth
         autoFocus
-        id='email'
-        name='email'
-        label='Email'
-        value={formik.values.email}
+        id='username'
+        name='username'
+        label='Email / Username'
+        value={formik.values.username}
         onChange={formik.handleChange}
-        error={Boolean(formik.errors.email)}
-        helperText={formik.errors.email}
+        error={Boolean(formik.errors.username)}
+        helperText={formik.errors.username}
       />
       <CustomTextField
         fullWidth

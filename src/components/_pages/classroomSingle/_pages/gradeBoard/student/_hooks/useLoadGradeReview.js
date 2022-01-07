@@ -10,7 +10,6 @@ export default function useLoadGradeReview() {
   const { 
     reviews,
     setReview,
-    addReview,
     setIsFinalPage,
     nextReviewPage,
   } = useContext(MyGradeContext);
@@ -19,13 +18,18 @@ export default function useLoadGradeReview() {
   const loadGradeReview = async (reload = false) => {
     return new Promise((resolve, reject) => {
       const classId = currentClass.class_id;
+      let page = nextReviewPage;
       setIsFinalPage(false);
       if (reload) { // Reset reviews
-        setReview([]);
+        setReview([], 1);
+        page = 1
       }
-      GradeReviewAPI.listReview(classId, nextReviewPage)
+      GradeReviewAPI.listReview(classId, page)
       .then((res) => {
         // console.log(res.data);
+        if (res.data.success === false) {
+          throw new Error(res.data.message);
+        }
         const total = res.data.total;
         const newReviews = res.data.data;
         if (newReviews.length === 0) {
@@ -37,7 +41,12 @@ export default function useLoadGradeReview() {
         if (reviews.length + newReviews.length >= total) {
           setIsFinalPage(true);
         }
-        addReview(newReviews);
+
+        let initialReviews = [];
+        if (!reload) {
+          initialReviews = [...reviews];
+        }
+        setReview([...initialReviews, ...newReviews], page + 1);
         return resolve(newReviews);
       })
       .catch((err) => {

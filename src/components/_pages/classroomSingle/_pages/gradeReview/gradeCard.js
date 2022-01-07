@@ -6,17 +6,17 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 import Avatar from "@mui/material/Avatar";
-import Paper from "@mui/material/Paper";
+// import Paper from "@mui/material/Paper";
 import { formatRelative, subDays } from "date-fns";
 
-const Item = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
+// const Item = styled(Paper)(({ theme }) => ({
+//   ...theme.typography.body2,
+//   padding: theme.spacing(1),
+//   textAlign: "center",
+//   color: theme.palette.text.secondary,
+// }));
 
-const CardCont = styled(CardContent)(({}) => ({
+const CardCont = styled(CardContent)(() => ({
   paddingTop: 4,
 }));
 export const GradeCard = ({ grade, onView }) => {

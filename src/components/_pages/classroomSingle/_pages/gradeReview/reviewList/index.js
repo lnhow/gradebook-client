@@ -6,24 +6,49 @@ import {
 import {
   LoadingButton,
 } from '@mui/lab';
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 
 import Loader from '../../../../../../../../_common/loader';
 
 import { MyGradeContext } from '../../../_context/myGradeContext';
+import useLoadGradeReview from '../../../_hooks/useLoadGradeReview';
 
 import ReviewListItem from './reviewListItem';
 import { getErrorMessage } from '../../../../../../../../../helpers/error';
 
-export default function GradeReviewList({
-  loading = false,
-  loadingMore = false,
-  error = null,
-  loadMore = () => {}
-}) {
+export default function GradeReviewList() {
   const { reviews, isFinalPage } = useContext(MyGradeContext);
+  const loadReviews = useLoadGradeReview();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [error, setError] = useState(null);
+  const [isLoadedOnce, setIsLoadedOnce] = useState(false);
 
-  if (loading) {
+  useEffect(() => {
+    if (!isLoadedOnce) {
+      setIsLoadedOnce(true);
+      _loadReview(loadReviews, setIsLoading);
+    }
+  }, [loadReviews, isLoadedOnce]);
+
+  const _loadReview = (loadReviews = () => {}, loadIndicate = () => {}) => {
+    loadIndicate(true);
+    loadReviews()
+    .then(() => {
+    })
+    .catch((err) => {
+      setError(err);
+    })
+    .finally(() => {
+      loadIndicate(false);
+    })
+  }
+
+  const loadMore = () => {
+    _loadReview(loadReviews, setIsLoadingMore);
+  }
+
+  if (isLoading) {
     return <Loader/>;
   }
 
@@ -65,7 +90,7 @@ export default function GradeReviewList({
       ) : (
         <Box mt={2}>
           <LoadingButton 
-            loading={loadingMore}
+            loading={isLoadingMore}
             fullWidth
             onClick={loadMore}>
               Tải thêm

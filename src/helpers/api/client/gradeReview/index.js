@@ -5,25 +5,25 @@ const baseURL = '/gradereview';
 const baseURLComment = '/gradecomment';
 
 export const listReview = async (classId, page) => {
-  const config = getAuthConfig();
-  const data = {
+  const params = {
     class_id: classId,
     page: page,
   }
+  const config = {
+    ...getAuthConfig(),
+    params: params
+  };
 
-  return api.post(`${baseURL}`, data, config);
+  return api.get(`${baseURL}`, config);
 }
 
-export const studentPostReviewRequest = async (studentId, input) => {
-  // const endpointURL = '/update';
-  // const config = getAuthConfig();
-  // const dataInput = {
-  //   student_id: studentId,
-  //   assignment_id: assignmentId,
-  //   grade
-  // }
+export const postReviewRequest = async (input) => {
+  const config = getAuthConfig();
+  const dataInput = {
+    ...input
+  }
   
-  // return api.put(`${baseURL}${endpointURL}`, dataInput, config);
+  return api.post(`${baseURL}`, dataInput, config);
 }
 
 /// Grade review----------------------------------------------------------
@@ -55,7 +55,7 @@ export const GradeReviewCommentAPI = {
 }
 
 const GradeReviewAPI = {
-  studentPostReviewRequest,
+  postReviewRequest,
   listReview,
   CommentAPI: GradeReviewCommentAPI,
 }

@@ -38,7 +38,7 @@ export default function CommentContainer({
     GradeReviewCommentAPI.listComment(id, page)
     .then((res) => {
       const additionalComments = res.data.data;
-      // console.log(res.data);
+      console.log(res.data);
       if (additionalComments.length === 0) {
         setIsEnd(true);
       }

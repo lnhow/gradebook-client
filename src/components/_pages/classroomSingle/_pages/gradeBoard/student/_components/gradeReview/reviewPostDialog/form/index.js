@@ -23,7 +23,7 @@ import { toast } from 'react-toastify';
 import { getErrorMessage } from '../../../../../../../../../../helpers/error';
 
 const validationSchema = yup.object({
-  message: yup
+  explanation: yup
     .string('Nhập lý do')
     .min(5, 'Tối thiểu 5 ký tự')
     .max(255, 'Tối đa 255 ký tự')
@@ -48,8 +48,11 @@ export default function ReviewPostForm({
 
   const handleSubmit = (values) => {
     setIsSubmitting(true);
-    GradeReviewAPI.studentPostReviewRequest('', values)
-    .then(() => {
+    GradeReviewAPI.postReviewRequest(values)
+    .then((res) => {
+      if (!res.data.success) {
+        throw new Error(res.data.message);
+      }
       toast.success('Đăng thành công');
       onPostSuccess();
     })
@@ -63,7 +66,7 @@ export default function ReviewPostForm({
 
   const formik = useFormik({
     initialValues: {
-      message: '',
+      explanation: '',
       assignment_id: '',
       expected_grade: 0,
     },
@@ -81,17 +84,17 @@ export default function ReviewPostForm({
   return (
     <form onSubmit={formik.handleSubmit}>
       <TextField
-        id='message'
+        id='explanation'
         fullWidth
         multiline
         margin='normal'
         rows={2}
         label='Lý do phúc khảo'
-        name='message'
-        value={formik.values.message}
+        name='explanation'
+        value={formik.values.explanation}
         onChange={formik.handleChange}
-        error={Boolean(formik.errors.message)}
-        helperText={formik.errors.message || ' '}
+        error={Boolean(formik.errors.explanation)}
+        helperText={formik.errors.explanation || ' '}
       />
       <Grid container maxWidth='xl' spacing={1}>
         <Grid item sm={8} xs={12}>

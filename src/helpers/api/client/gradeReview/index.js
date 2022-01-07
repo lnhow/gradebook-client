@@ -4,6 +4,8 @@ import { getAuthConfig } from '../../';
 const baseURL = '/gradereview';
 const baseURLComment = '/gradecomment';
 
+/// Grade review ----------------------------------------------------------
+
 export const listReview = async (classId, page) => {
   const params = {
     class_id: classId,
@@ -26,7 +28,16 @@ export const postReviewRequest = async (input) => {
   return api.post(`${baseURL}`, dataInput, config);
 }
 
-/// Grade review----------------------------------------------------------
+export const updateReview = async (reviewId, input) => {
+  const config = getAuthConfig();
+  const dataInput = {
+    ...input
+  }
+  
+  return api.put(`${baseURL}/${reviewId}`, dataInput, config);
+}
+
+/// Grade review comment----------------------------------------------------------
 
 export const listComment = async (reviewId, page = 1) => {
   const config = getAuthConfig();
@@ -57,6 +68,7 @@ export const GradeReviewCommentAPI = {
 const GradeReviewAPI = {
   postReviewRequest,
   listReview,
+  updateReview,
   CommentAPI: GradeReviewCommentAPI,
 }
 

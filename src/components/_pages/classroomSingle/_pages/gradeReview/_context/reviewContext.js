@@ -1,14 +1,11 @@
 import { createContext, useState } from 'react';
 
-const GRADE_INITIAL_STATE = {};
 const REVIEWS_INITIAL_STATE = [];
 const REVIEW_NEXT_PAGE_INITIAL = 1;
 const REVIEW_FINAL_PAGE_INITIAL = false;
 const FUNCTION_INITIAL_STATE = () => {};
 
-export const MyGradeContext = createContext({
-  grade: GRADE_INITIAL_STATE,
-  setGrade: FUNCTION_INITIAL_STATE,
+export const ReviewListContext = createContext({
   reviews: REVIEWS_INITIAL_STATE,
   setReview: FUNCTION_INITIAL_STATE,
   nextReviewPage: REVIEW_NEXT_PAGE_INITIAL,
@@ -16,19 +13,16 @@ export const MyGradeContext = createContext({
   setIsFinalPage: FUNCTION_INITIAL_STATE,
 })
 
-export default function MyGradeProvider({children}) {
-  const [grade, _setGrade] = useState(GRADE_INITIAL_STATE);
+export default function ReviewListProvider({children}) {
   const [reviews, _setReview] = useState(REVIEWS_INITIAL_STATE);
   const [nextReviewPage, _setNextReviewPage] = useState(REVIEW_NEXT_PAGE_INITIAL);
   const [isFinalPage, _setIsFinalPage] = useState(REVIEW_FINAL_PAGE_INITIAL);
 
-  const setGrade = (grade = {}) => {
-    _setGrade(grade);
-  }
-
   const setReview = (reviews = [], page) => {
     _setReview(reviews);
-    _setNextReviewPage(page);
+    if (page && page > 0) {
+      _setNextReviewPage(page);
+    }
   }
 
   const setIsFinalPage = (b = false) => {
@@ -36,8 +30,6 @@ export default function MyGradeProvider({children}) {
   }
 
   const contextValue = {
-    grade,
-    setGrade,
     reviews,
     setReview,
     nextReviewPage,
@@ -46,8 +38,8 @@ export default function MyGradeProvider({children}) {
   }
 
   return (
-    <MyGradeContext.Provider value={contextValue}>
+    <ReviewListContext.Provider value={contextValue}>
       {children}
-    </MyGradeContext.Provider>
+    </ReviewListContext.Provider>
   )
 }

@@ -31,6 +31,8 @@ export default function GradeTable({refreshData = () => {}}) {
   // A helper hash map to help with edittings
   const assignmentMap = {};
 
+  let totalWeight = classAssignments.reduce((prev, curr) => prev + curr.weight, 0);
+
   // Map assignment to columns
   const assignmentCols = classAssignments.map((assignment) => {
     const fieldName = getAssignmentField(assignment.id);
@@ -70,7 +72,7 @@ export default function GradeTable({refreshData = () => {}}) {
     {field: 'fullname', headerName: 'Họ tên', minWidth: 200},
     {
       field: 'summary', 
-      headerName: 'Tổng điểm', 
+      headerName: `Tổng điểm (${totalWeight})`, 
       minWidth: 150,
       renderCell: (params) => {
         return params.value + ' / 10';

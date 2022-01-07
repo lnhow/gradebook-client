@@ -42,7 +42,9 @@ function CommentDialog({
           <CloseIcon/>
         </IconButton>
       </DialogTitle>
-      <CommentContainer reviewId={reviewId}/>
+      <CommentContainer 
+        reviewId={reviewId}
+      />
     </CustomDialog>
   )
 }

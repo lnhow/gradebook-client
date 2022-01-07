@@ -9,9 +9,9 @@ import { useState, useEffect } from 'react';
 
 import CommentList from '../commentList';
 import CommentForm from '../inputBox';
-import { GradeReviewCommentAPI } from '../../../../../../../../../../../../../helpers/api/client/gradeReview';
+import { GradeReviewCommentAPI } from '../../../../../../../../../../helpers/api/client/gradeReview';
 import { toast } from 'react-toastify';
-import { getErrorMessage } from '../../../../../../../../../../../../../helpers/error';
+import { getErrorMessage } from '../../../../../../../../../../helpers/error';
 
 export default function CommentContainer({
   reviewId = '',
@@ -38,7 +38,7 @@ export default function CommentContainer({
     GradeReviewCommentAPI.listComment(id, page)
     .then((res) => {
       const additionalComments = res.data.data;
-      console.log(res.data);
+      // console.log(res.data);
       if (additionalComments.length === 0) {
         setIsEnd(true);
       }

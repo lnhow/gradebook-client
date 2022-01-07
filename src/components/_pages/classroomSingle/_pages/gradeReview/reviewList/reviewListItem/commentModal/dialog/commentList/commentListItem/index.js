@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { selectUser } from '../../../../../../../../../../../../../../redux/slices/user';
+import { selectUser } from '../../../../../../../../../../../redux/slices/user';
 
 import {
   ListItem,
@@ -11,12 +11,12 @@ import {
   styled
 } from '@mui/material/styles';
 
-import { getLocalDatetimeString } from '../../../../../../../../../../../../../../helpers/datetime';
+import { getLocalDatetimeString } from '../../../../../../../../../../../helpers/datetime';
 
 export default function CommentListItem({comment = {}}) {
   const loginUser = useSelector(selectUser);
   const ownerName = comment.owner_id === loginUser.id ? 
-    `${comment.full_name} (Tôi)` : `${comment.full_name} (Giáo viên)`;
+    `${comment.full_name} (Tôi)` : `${comment.full_name}`;
 
   // console.log(comment)
 

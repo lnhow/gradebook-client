@@ -10,9 +10,9 @@ import { useFormik } from 'formik';
 import SendIcon from '@mui/icons-material/Send';
 
 import { useState } from 'react';
-import { GradeReviewCommentAPI } from '../../../../../../../../../../../../../helpers/api/client/gradeReview';
+import { GradeReviewCommentAPI } from '../../../../../../../../../../helpers/api/client/gradeReview';
 import { toast } from 'react-toastify';
-import { getErrorMessage } from '../../../../../../../../../../../../../helpers/error';
+import { getErrorMessage } from '../../../../../../../../../../helpers/error';
 
 const validationSchema = yup.object({
   content: yup

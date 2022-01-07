@@ -8,17 +8,17 @@ import {
 } from '@mui/lab';
 import { useContext, useState, useEffect } from 'react';
 
-import Loader from '../../../../../../../../_common/loader';
+import Loader from '../../../../../_common/loader';
 
-import { MyGradeContext } from '../../../_context/myGradeContext';
-import useLoadGradeReview from '../../../_hooks/useLoadGradeReview';
+import { ReviewListContext } from '../_context/reviewContext';
+import useLoadReviews from '../_hooks/useLoadReviews';
 
 import ReviewListItem from './reviewListItem';
-import { getErrorMessage } from '../../../../../../../../../helpers/error';
+import { getErrorMessage } from '../../../../../../helpers/error';
 
 export default function GradeReviewList() {
-  const { reviews, isFinalPage } = useContext(MyGradeContext);
-  const loadReviews = useLoadGradeReview();
+  const { reviews, isFinalPage } = useContext(ReviewListContext);
+  const loadReviews = useLoadReviews();
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [error, setError] = useState(null);

@@ -4,9 +4,11 @@ import {
 } from '@mui/material';
 import ReviewPostForm from '../form';
 
-function RequestReviewDialog(
-  {open, toggleClose}
-) {
+function RequestReviewDialog({
+  open, 
+  toggleClose = () => {},
+  onSuccess = () => {}
+}) {
 
   const handleClose = () => {
     toggleClose();
@@ -19,7 +21,7 @@ function RequestReviewDialog(
     >
       <DialogTitle>Đăng yêu cầu phúc khảo</DialogTitle>
       <DialogContent>
-        <ReviewPostForm/>
+        <ReviewPostForm onPostSuccess={onSuccess}/>
         <Button 
           sx={{marginTop: 1}} color='defaultColor' variant='outlined' fullWidth 
           onClick={handleClose}

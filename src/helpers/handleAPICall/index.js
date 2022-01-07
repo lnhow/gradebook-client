@@ -7,6 +7,7 @@ export const handleAPICallSuccess = (
   errorMessage = 'Lỗi'
 ) => (res) => {
   if (!isErrorResponse(res)) {
+    console.log(res.data);
     const data = res.data.data;
     successCallback(data);
     toast.success(successMessage);

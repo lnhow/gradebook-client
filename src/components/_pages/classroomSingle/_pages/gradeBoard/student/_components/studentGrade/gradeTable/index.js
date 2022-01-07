@@ -8,10 +8,12 @@ import { isGradeFinalized } from '../../../../_helpers';
 export default function StudentGradeTable({studentGrade}) {
   const { classAssignments } = useContext(CurrentClassContext);
 
+  let totalWeight = classAssignments.reduce((prev, curr) => prev + curr.weight, 0);
   let isAllFinalized = classAssignments.every((assignment) => 
     isGradeFinalized(assignment.finalized)
   );
   let grades = {};
+  
   if (!isEmptyObject(studentGrade)) {
     grades = processRow(studentGrade, isAllFinalized);
   }
@@ -42,7 +44,7 @@ export default function StudentGradeTable({studentGrade}) {
   const colsDef = [
     {field: 'student_id', headerName: 'MSSV', minWidth: 110},
     {field: 'fullname', headerName: 'Họ tên', minWidth: 200},
-    {field: 'summary', headerName: 'Tổng điểm', minWidth: 150}
+    {field: 'summary', headerName: `Tổng điểm(${totalWeight})`, minWidth: 150}
   ].concat(assignmentCols);
 
   const data = (isEmptyObject(grades)) ? [] : [mapStudentGrade(grades)];

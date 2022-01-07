@@ -1,0 +1,50 @@
+export const IMAGE_JSON =
+  "https://znews-photo.zadn.vn/w860/Uploaded/lce_jwqqc/2022_01_06/leah_isadora_behn_1_1640666338520151545460.jpg";
+export const GRADE_REVIEWS = [
+  {
+    id: 8,
+    student_id: "18120355",
+    assignment_id: 1,
+    class_id: 4,
+    expected_grade: 9,
+    final_grade: null,
+    status: "N",
+    explanation: "Cột điểm nhầm",
+    created_at: null,
+    updated_at: null,
+    student_name: "Nguyễn Văn A",
+  },
+  {
+    id: 9,
+    student_id: "18120355",
+    assignment_id: 2,
+    class_id: 4,
+    expected_grade: 9,
+    final_grade: 8.5,
+    status: "Y",
+    explanation: "Cột điểm nhầm",
+    created_at: null,
+    updated_at: null,
+    student_name: "Phó Trí Dũng",
+  },
+  {
+    id: 10,
+    student_id: "18120355",
+    assignment_id: 2,
+    class_id: 4,
+    expected_grade: 9,
+    final_grade: 8.5,
+    status: "Y",
+    explanation: "Cột điểm nhầm",
+    created_at: null,
+    updated_at: null,
+    student_name: "Trần Văn B",
+  },
+];
+export const GRADE_MODAL = [
+  { content: "Test", status: "A", owner_avatar: "", owner_name: "Nguyễn Văn A" },
+  { content: "Test", status: "A", owner_avatar: "", owner_name: "Nguyễn Văn A" },
+  { content: "Test", status: "A", owner_avatar: "", owner_name: "Nguyễn Văn A" },
+  { content: "Test", status: "A", owner_avatar: "", owner_name: "Nguyễn Văn A" },
+  { content: "Test", status: "A", owner_avatar: "", owner_name: "Nguyễn Văn A" },
+];

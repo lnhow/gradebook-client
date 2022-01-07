@@ -13,7 +13,7 @@ export const handleSignInSuccess = () => {
 }
 
 export const handleSignUpSuccess = () => {
-  toast.success('Tạo tài khoản thành công');
+  toast.success('Tạo tài khoản thành công. Để kích hoạt tài khoản, hãy kiểm tra email');
 }
 
 export const handleFailure = (err) => {

@@ -1,34 +1,26 @@
-/**
- * This file contains a STUB form for in-house sign in
- * WHICH WAS NOT USED
- */
 
 import { 
-  Button, CircularProgress,
   InputAdornment, IconButton
 } from '@mui/material';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Visibility from '@mui/icons-material/Visibility';
+import {
+  LoadingButton,
+} from '@mui/lab';
 
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { useState } from 'react';
 import CustomTextField from '../../_common/customTextField';
-import { 
-  handleFailure, handleSignUpSuccess 
-} from '../../../helpers/auth/selfmake';
-import { handleSignUp } from '../../../helpers/api/user';
+
+import { toast } from 'react-toastify';
+import { getErrorMessage } from '../../../helpers/error';
+
+import UserAPI from '../../../helpers/api/client/user';
 
 const validationSchema = yup.object({
-  email: yup
-    .string('Nhập email')
-    .email('Email không hợp lệ')
-    .required('Bắt buộc'),
-  full_name: yup
-    .string('Nhập họ và tên')
-    .required('Bắt buộc'),
   password: yup
     .string('Nhập mật khẩu')
     .min(8, 'Tối thiểu 8 ký tự')
@@ -43,7 +35,9 @@ const validationSchema = yup.object({
     .oneOf([yup.ref('password')], 'Không khớp với mật khẩu'),
 });
 
-export default function SignUpForm({redirect = '/'}) {
+export default function FormPasswordReset({
+  resetId = '',
+}) {
   const [formStates, setFormStates] = useState({
     isSubmitting: false,
     showPassword: false,
@@ -53,22 +47,23 @@ export default function SignUpForm({redirect = '/'}) {
   const history = useHistory();
 
   const handleSubmit = async (formValues) => {
+    const redirect = '/signin';
     const values = {
       ...formValues,
-      username: formValues.email,
     }
-    values.email = undefined;
+
     setFormStates({...formStates, isSubmitting: true});
-    handleSignUp(values)
+    UserAPI.handleResetPassword(resetId, values)
     .then(() => {
-      handleSignUpSuccess();
-      history.push('/signin');
+      toast.success('Reset mật khẩu thành công');
+      history.push(redirect);
     })
     .catch((err) => {
+      toast.error(`Lỗi - ${getErrorMessage(err)}`);
       setFormStates({...formStates, isSubmitting: false});
-      handleFailure(err);
-    })
+    });
   }
+
   const handleToggleShowPassword = () => {
     setFormStates({...formStates, showPassword: !formStates.showPassword})
   }
@@ -79,8 +74,6 @@ export default function SignUpForm({redirect = '/'}) {
   
   const formik = useFormik({
     initialValues: {
-      email: '',
-      full_name: '',
       password: '',
       passwordConfirm: '',
     },
@@ -93,33 +86,10 @@ export default function SignUpForm({redirect = '/'}) {
       <CustomTextField
         fullWidth
         disabled={formStates.isSubmitting}
-        autoFocus
-        id='email'
-        name='email'
-        label='Email'
-        value={formik.values.email}
-        onChange={formik.handleChange}
-        error={Boolean(formik.errors.email)}
-        helperText={formik.errors.email}
-      />
-      <CustomTextField
-        fullWidth
-        disabled={formStates.isSubmitting}
-        id='full_name'
-        name='full_name'
-        label='Họ và tên'
-        value={formik.values.full_name}
-        onChange={formik.handleChange}
-        error={Boolean(formik.errors.full_name)}
-        helperText={formik.errors.full_name}
-      />
-      <CustomTextField
-        fullWidth
-        disabled={formStates.isSubmitting}
         type={formStates.showPassword ? 'text' : 'password'}
         id='password'
         name='password'
-        label='Mật khẩu'
+        label='Mật khẩu mới'
         endAdornment={
           <InputAdornment position='end'>
             <IconButton
@@ -159,14 +129,14 @@ export default function SignUpForm({redirect = '/'}) {
         error={Boolean(formik.errors.passwordConfirm)}
         helperText={formik.errors.passwordConfirm}
       />
-      <Button 
-        disabled={formStates.isSubmitting}
+      <LoadingButton 
+        loading={formStates.isSubmitting}
         variant='contained'
         fullWidth 
         type='submit'
       >
-        {formStates.isSubmitting ? <CircularProgress color='inherit'/>:'Đăng ký' }
-      </Button>
+        Đổi mật khẩu
+      </LoadingButton>
     </form>
   );
 }

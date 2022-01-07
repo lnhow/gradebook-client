@@ -70,28 +70,28 @@ const ChangePassword = ({actived,setAct}) => {
             <div className={styles.Content}>
                 <form onSubmit={formik.handleSubmit}>
                     <div className={styles.ContentRow}>
-                        <span className={styles.editTitle}>Mật khẩu cũ</span>
-                        <input type="password" id="oldpassword" value={formik.values.oldpassword} onChange={formik.handleChange} className={styles.editContent}/>
+                        <label for="oldpassword" className={styles.editTitle}>Mật khẩu cũ</label>
+                        <input type="password" id="oldpassword" name='oldpassword' value={formik.values.oldpassword} onChange={formik.handleChange} className={styles.editContent}/>
                     </div>
                     <div className={clsx(styles.ContentRow,styles.ContentError)}>
                         <span className={styles.editTitle}></span>
-                        <div className={clsx(styles.editContent,styles.messageError)}>{formik.errors.oldpasword}</div>
+                        <div className={clsx(styles.editContent,styles.messageError)}>{formik.errors.oldpassword || '\u00A0'}</div>
                     </div>
                     <div className={styles.ContentRow}>
-                        <span className={styles.editTitle}>Mật khẩu mới</span>
-                        <input type="password" id="newpassword" value={formik.values.newpassword} onChange={formik.handleChange} className={styles.editContent}/>
+                        <label for="newpassword" className={styles.editTitle}>Mật khẩu mới</label>
+                        <input type="password" id="newpassword" name='newpassword' value={formik.values.newpassword} onChange={formik.handleChange} className={styles.editContent}/>
                     </div>
                     <div className={clsx(styles.ContentRow,styles.ContentError)}>
                         <span className={styles.editTitle}></span>
-                        <div className={clsx(styles.editContent,styles.messageError)}>{formik.errors.newpassword}</div>
+                        <div className={clsx(styles.editContent,styles.messageError)}>{formik.errors.newpassword || '\u00A0'}</div>
                     </div>
                     <div className={styles.ContentRow}>
-                        <span className={styles.editTitle}>Nhập lại mật khẩu mới </span>
-                        <input type="password" id="repeat_newpassword" value={formik.values.repeat_newpassword} onChange={formik.handleChange} className={styles.editContent}/>
+                        <label for="repeat_newpassword" className={styles.editTitle}>Nhập lại mật khẩu mới</label>
+                        <input type="password" id="repeat_newpassword" name='repeat_newpassword' value={formik.values.repeat_newpassword} onChange={formik.handleChange} className={styles.editContent}/>
                     </div>
                     <div className={clsx(styles.ContentRow,styles.ContentError)}>
                         <span className={styles.editTitle}></span>
-                        <div className={clsx(styles.editContent,styles.messageError)}>{formik.errors.repeat_newpassword}</div>
+                        <div className={clsx(styles.editContent,styles.messageError)}>{formik.errors.repeat_newpassword || '\u00A0'}</div>
                     </div>
                     <div className={clsx(styles.ContentRow,styles.ContentError)}>
                         <span className={styles.editTitle}></span>

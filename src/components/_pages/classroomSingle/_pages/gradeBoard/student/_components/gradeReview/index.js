@@ -48,7 +48,7 @@ export default function GradeReview() {
 
 
   return (
-    <Container maxWidth='md'>
+    <Container maxWidth='lg'>
       <Box sx={{display: 'flex'}}>
         <Typography variant='h5' sx={{flexGrow: 1, display: 'flex', alignItems: 'center'}}>
           <b>Phúc khảo</b>

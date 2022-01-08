@@ -24,7 +24,7 @@ export default function StudentGrade() {
 
   return (
     <MyGradeProvider>
-      <Container maxWidth='xl'>
+      <Container maxWidth='lg'>
         <Box marginY={2}>
           <Typography>Điểm của tôi</Typography>
         </Box>

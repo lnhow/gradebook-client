@@ -80,18 +80,20 @@ export default function GradeTable({refreshData = () => {}}) {
     }
   ].concat(assignmentCols);
 
+  // console.log(colsDef)
   // Map grade list to table
   const data = classGrades.map((grade) => {
     const list_grade = {};
     grade.list_grade.forEach(grade => {
       const formattedGrade = grade.grade === "" ? "_" : grade.grade;
-      list_grade[getAssignmentField(grade.id)] = formattedGrade;
+      list_grade[`${getAssignmentField(grade.id)}`] = formattedGrade;
     });
     const result = {
       ...grade,
       ...list_grade,
     }
     result.list_grade = undefined;
+    // console.log(result);
 
     return result;
   });

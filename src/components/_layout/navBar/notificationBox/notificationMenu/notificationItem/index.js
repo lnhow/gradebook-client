@@ -7,15 +7,17 @@ import {
 
 export default function NotificationItem({
   notification = {},
+  onClick = () => { },
 }) {
 
   return (
     <ListItem disablePadding>
       <ListItemButton
-        disabled={Boolean(notification.read)}
+        disabled={Boolean(notification.is_read === 'Y')}
         sx={{ paddingX: 2, paddingY: 0}}
       >
         <ListItemText
+          onClick={onClick}
           primary={
             <Typography
               variant='subtitle1'

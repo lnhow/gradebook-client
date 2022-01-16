@@ -1,57 +1,90 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import NotificationButton from './notificationButton';
 import NotificationMenu from './notificationMenu';
-
-const options = [
-  {
-    id: 1,
-    title: 'Đã có điểm mới',
-    content: 'Giáo viên đã publish một cột điểm ở lớp [Tên lớp]',
-    read: false,
-  },
-  {
-    id: 2,
-    title: 'Có yêu cầu phúc khảo mới',
-    content: '[Sinh viên] yêu cầu phúc khảo ở lớp [Tên lớp]',
-    read: false,
-  },
-  {
-    id: 3,
-    title: 'Có cập nhật về phúc khảo',
-    content: 'Yêu cầu phúc khảo ở lớp [Tên lớp] đã có cập nhật',
-    read: false,
-  },
-  {
-    id: 4,
-    title: 'Yêu cầu phúc khảo đã có quyết định cuối cùng',
-    content: 'Yêu cầu phúc khảo ở lớp [Tên lớp] đã có quyết định cuối cùng',
-    read: true,
-  },
-];
+import NotiAPI from '../../../../helpers/api/notifications'
 
 export default function NotificationBox() {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [notifications, setNotifications] = useState(options);
+  const [notifications, setNotifications] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    loadNotifications();
+  }, []);
+
+  const loadNotifications = () => {
+    setNotifications([]);
+    setIsLoaded(false);
+    setError(null);
+    NotiAPI.fetchAll()
+      .then(
+        (result) => {
+          setNotifications(result.data.data);
+        },
+      )
+      .catch(
+        (error) => {
+          let res = {};
+          if (error.response && error.response.data) {
+            if (error.response.data) {
+              res = { ...error.response.data };
+            }
+            //Incase cannot request to server
+            res.data = error.response.data;
+            res.status = error.response.status;
+          }
+          else {
+            res.message = error.message;
+          }
+          setError(res);
+        }
+      )
+      .finally(() => {
+        setIsLoaded(true);
+      })
+  }
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const markAllAsRead = () => {
-    console.log('Click')
-    const updatedNotifications = notifications;
-    updatedNotifications.forEach((noti) => noti.read = true);
-    setNotifications(updatedNotifications);
+    NotiAPI.readAllNoti()
+      .then(
+        (result) => {
+          loadNotifications();
+        },
+      )
+      .catch(
+        (error) => {
+          let res = {};
+          if (error.response && error.response.data) {
+            if (error.response.data) {
+              res = { ...error.response.data };
+            }
+            //Incase cannot request to server
+            res.data = error.response.data;
+            res.status = error.response.status;
+          }
+          else {
+            res.message = error.message;
+          }
+          setError(res);
+        }
+      )
+      .finally(() => {
+        setIsLoaded(true);
+      })
   }
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const notReadNotifications = notifications.filter((noti) => noti.read === false);
+  const notReadNotifications = notifications.filter((noti) => noti.is_read === 'N');
 
   return (
     <div>
-      <NotificationButton 
+      <NotificationButton
         handleClick={handleClick}
         numNotifications={notReadNotifications.length}
       />
@@ -61,6 +94,7 @@ export default function NotificationBox() {
         handleClose={handleClose}
         disableMarkRead={notReadNotifications.length === 0}
         handleMarkRead={markAllAsRead}
+        handleLoadNotification={loadNotifications}
       />
     </div>
   );

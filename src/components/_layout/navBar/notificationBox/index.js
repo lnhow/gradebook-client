@@ -7,16 +7,16 @@ import NotiAPI from '../../../../helpers/api/notifications'
 export default function NotificationBox() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [notifications, setNotifications] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [error, setError] = useState(null);
+  // const [isLoaded, setIsLoaded] = useState(false);
+  // const [error, setError] = useState(null);
   useEffect(() => {
     loadNotifications();
   }, []);
 
   const loadNotifications = () => {
     setNotifications([]);
-    setIsLoaded(false);
-    setError(null);
+    // setIsLoaded(false);
+    // setError(null);
     NotiAPI.fetchAll()
       .then(
         (result) => {
@@ -37,11 +37,11 @@ export default function NotificationBox() {
           else {
             res.message = error.message;
           }
-          setError(res);
+          // setError(res);
         }
       )
       .finally(() => {
-        setIsLoaded(true);
+        // setIsLoaded(true);
       })
   }
 
@@ -69,11 +69,11 @@ export default function NotificationBox() {
           else {
             res.message = error.message;
           }
-          setError(res);
+          // setError(res);
         }
       )
       .finally(() => {
-        setIsLoaded(true);
+        // setIsLoaded(true);
       })
   }
   const handleClose = () => {
